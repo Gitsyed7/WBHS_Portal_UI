@@ -35,31 +35,18 @@
 
     <div class="stats-container">
 
-        <div class="stats-scroll">
+    <div class="stats-scroll">
 
-            <!-- First copy -->
-            <div class="scroll-content">
-                @for(stat of employeeStats; track stat.title) {
-                    <div class="stats-row">
-                        <span>{{ stat.title }}</span>
-                        <span class="stats-value">{{ stat.value }}</span>
-                    </div>
-                }
+        @for(stat of employeeStats; track stat.title) {
+            <div class="stats-row">
+                <span>{{ stat.title }}</span>
+                <span class="stats-value">{{ stat.value }}</span>
             </div>
-            
-            <!-- Second copy -->
-            <div class="scroll-content">
-                @for(stat of employeeStats; track stat.title) {
-                    <div class="stats-row">
-                        <span>{{ stat.title }}</span>
-                        <span class="stats-value">{{ stat.value }}</span>
-                    </div>
-                }
-            </div>
-
-        </div>
+        }
 
     </div>
+
+</div>
 
 
 </div>
@@ -67,7 +54,8 @@
 
         <!-- Center Content -->
         <div class="col-lg-8 col-md-6 col-12">
-            Center Content
+            <app-whats-new></app-whats-new>
+            <app-circulars></app-circulars>
         </div>
 
         <!-- Right Panel -->
@@ -100,20 +88,20 @@
     <div class="stats-header">
         Govt. Pensioner Statistics
     </div>
+<div class="stats-container">
 
-    <div class="stats-row">
-        <span>No. of Enrolled Pensioner</span>
-        <span class="stats-value">129596</span>
-    </div>
+    <div class="stats-scroll">
 
-    <div class="stats-row">
-        <span>No. of Beneficiary</span>
-        <span class="stats-value">262015</span>
+        @for(stat of PensionerStats; track stat.title) {
+            <div class="stats-row">
+                <span>{{ stat.title }}</span>
+                <span class="stats-value">{{ stat.value }}</span>
+            </div>
+        }
+
     </div>
-<div class="stats-row">
-        <span>No. of Applied Claims</span>
-        <span class="stats-value">457890</span>
-    </div>
+</div>
+    
 </div>
         </div>
 

@@ -6,4 +6,12 @@ import { Component } from '@angular/core';
   templateUrl: './circulars.html',
   styleUrl: './circulars.scss',
 })
-export class Circulars {}
+export class Circulars {
+  circulars = [
+  {
+    news: '',
+  title: '',
+  pdfUrl: ''
+  }
+];
+}

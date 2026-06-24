@@ -1,0 +1,38 @@
+<div class="content-card">
+
+    <div class="content-card-header">
+        What's New / Coming Up Next
+    </div>
+
+    <div class="whats-new-body">
+
+        @for(item of notices; track item) {
+
+            <div class="notice-row">
+
+    <span class="notice-number">
+        {{ $index + 1 }}.
+    </span>
+
+    <span class="notice-text">
+        {{ item.message }}
+    </span>
+
+    @if(item.reference) {
+<a
+  class="notice-reference"
+  [href]="item.url"
+  target="_blank">
+
+  {{ item.reference }}
+
+</a>
+        }
+
+</div>
+
+        }
+
+    </div>
+
+</div>

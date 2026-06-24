@@ -28,6 +28,9 @@
 
     border: 1px solid #d9d9d9;
     background: #fff;
+border-radius: 5px;
+    height: 180px;      /* Fixed card height */
+    overflow: hidden;   /* IMPORTANT */
 }
 
 .stats-header {
@@ -36,19 +39,23 @@
     text-align: center;
     font-weight: 600;
     padding: 8px;
+
+    position: relative;
+    z-index: 2;
 }
 
 .stats-container {
-
-    height: 220px;   // visible area
+    height: 130px;
     overflow: hidden;
     position: relative;
 }
 
 .stats-scroll {
-
-    animation: scrollUp 15s linear infinite;
+    position: absolute;
+    width: 100%;
+    animation: scrollUp 10s linear infinite;
 }
+
 
 .scroll-content {
 
@@ -82,13 +89,13 @@
 @keyframes scrollUp {
 
     from {
-        transform: translateY(0);
+        transform: translateY(100%);
     }
 
     to {
-        transform: translateY(-50%);
+        transform: translateY(-100%);
     }
 }
 .scroll-content:first-child {
-    margin-bottom: 60px;
+    margin-bottom: 0px;
 }

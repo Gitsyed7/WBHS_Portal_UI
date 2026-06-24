@@ -1,0 +1,68 @@
+.whats-new-card {
+
+    background: #fff;
+
+    border: 1px solid #d8d8d8;
+
+    min-height: 180px;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.whats-new-header {
+
+    text-align: center;
+
+    font-weight: 700;
+
+    font-size: 28px;
+
+    text-decoration: underline;
+
+    padding: 5px;
+}
+
+.whats-new-body {
+
+    height: 180px;
+
+    overflow-y: auto;
+}
+
+.notice-row {
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    color: #000;
+
+    margin-bottom: 15px;
+
+    line-height: 1.6;
+}
+.notice-number {
+
+    font-weight: 700;
+
+    margin-right: 5px;
+}
+
+.notice-text {
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    color: #6b2f11;
+}
+.notice-reference {
+
+    color: red;
+
+    text-decoration: underline;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
