@@ -1,0 +1,82 @@
+.wbhs-menu {
+    background: #e7dbc0;
+    border-top: 1px solid #d8c9b9;
+    border-bottom: 1px solid #d8c9b9;
+}
+
+.menu-items {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.menu-items > li {
+    position: relative;
+}
+
+.menu-items > li > a {
+    display: block;
+    padding: 10px 18px;
+    text-decoration: none;
+    color: #000;
+    white-space: nowrap;
+}
+
+.menu-items > li > a:hover {
+    background: #d9c8a8;
+}
+
+.submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+
+    min-width: 260px;
+
+    background: #fff;
+    border: 1px solid #ddd;
+
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    z-index: 9999;
+}
+
+.submenu li a {
+    display: block;
+    padding: 10px 15px;
+    color: #000;
+    text-decoration: none;
+}
+
+.submenu li a:hover {
+    background: #f2f2f2;
+}
+
+.dropdown:hover .submenu {
+    display: block;
+}
+
+.login-item {
+    margin-left: auto;
+    margin-right: 10px;
+    
+}
+
+.login-btn {
+    background: var(--wbhs-login);
+    font-weight: 700;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+}
+.login-btn:hover {
+    background: var(--wbhs-login-hover) !important;
+    color: white !important;
+    transform: translateY(-1px);
+}

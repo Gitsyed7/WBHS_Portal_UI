@@ -1,0 +1,21 @@
+:root {
+    --wbhs-primary: #6b2f11;
+    --wbhs-menu-bg: #e7dbc0;
+    --wbhs-menu-hover: #d9c8a8;
+    --wbhs-login: #f89b34;
+    --wbhs-login-hover: #d97706;
+}
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+body {
+    min-height: 100vh;
+}
+
+app-root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}

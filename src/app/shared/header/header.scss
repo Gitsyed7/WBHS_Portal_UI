@@ -1,0 +1,68 @@
+.wbhs-header {
+
+    background-image: url('/images/WebHead.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    width: 100%;
+    min-height: 120px;
+
+    border-bottom: 1px solid #d8c9b9;
+
+    padding: 10px;
+}
+
+.logo {
+    height: clamp(50px, 8vw, 80px);
+    max-width: 100%;
+}
+
+.portal-title {
+
+    font-family: Georgia, serif;
+    font-size: clamp(24px, 4vw, 48px);
+    font-weight: 700;
+    font-variant: small-caps;
+    color: #6b2f11;
+
+    margin-bottom: 5px;
+    line-height: 1.1;
+}
+
+.portal-subtitle {
+
+    font-family: Georgia, serif;
+    font-size: clamp(10px, 1.5vw, 14px);
+    font-weight: 600;
+    font-variant: small-caps;
+
+    color: #6b2f11;
+}
+
+.dept-text {
+
+    font-size: clamp(10px, 1.2vw, 14px);
+    font-weight: 700;
+
+    color: #5b290e;
+}
+@media (max-width: 768px) {
+
+    .wbhs-header {
+        text-align: center;
+        padding: 15px 10px;
+    }
+
+    .logo {
+        margin-bottom: 10px;
+    }
+
+    .portal-title {
+        margin-top: 5px;
+    }
+
+    .dept-text {
+        margin-bottom: 10px;
+    }
+}

@@ -1,0 +1,94 @@
+.side-menu {
+
+    margin-bottom: 20px;
+}
+
+.side-menu .list-group-item {
+
+    background: #f3f3f3;
+
+    border: 1px solid #d8d8d8;
+
+    color: #7a3b00;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    transition: all .2s ease;
+}
+
+.side-menu .list-group-item:hover {
+
+    background: #e7dbc0;
+
+    padding-left: 20px;
+}
+.stats-card {
+
+    border: 1px solid #d9d9d9;
+    background: #fff;
+}
+
+.stats-header {
+
+    background: #d8c9a5;
+    text-align: center;
+    font-weight: 600;
+    padding: 8px;
+}
+
+.stats-container {
+
+    height: 220px;   // visible area
+    overflow: hidden;
+    position: relative;
+}
+
+.stats-scroll {
+
+    animation: scrollUp 15s linear infinite;
+}
+
+.scroll-content {
+
+    display: flex;
+    flex-direction: column;
+}
+
+.stats-row {
+
+    display: flex;
+    justify-content: space-between;
+
+    padding: 8px 10px;
+
+    border-bottom: 1px solid #eee;
+
+    font-size: 14px;
+}
+
+.stats-value {
+
+    color: #d32f2f;
+    font-weight: 700;
+}
+
+.stats-container:hover .stats-scroll {
+
+    animation-play-state: paused;
+}
+
+@keyframes scrollUp {
+
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-50%);
+    }
+}
+.scroll-content:first-child {
+    margin-bottom: 60px;
+}

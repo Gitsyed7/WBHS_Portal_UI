@@ -1,0 +1,123 @@
+<div class="container-fluid mt-3">
+
+    <div class="row">
+
+        <!-- Left Panel -->
+        <div class="col-xl-2 col-lg-3 col-md-4">
+           <div class="side-menu">
+
+    <ul class="list-group">
+
+        <li class="list-group-item">
+            About the Scheme
+        </li>
+
+        <li class="list-group-item">
+            Facilities Available
+        </li>
+
+        <li class="list-group-item">
+            Download
+        </li>
+
+        <li class="list-group-item">
+            Search HoO Code
+        </li>
+
+    </ul>
+
+</div>
+<div class="stats-card">
+
+    <div class="stats-header">
+        Govt. Employee Statistics
+    </div>
+
+    <div class="stats-container">
+
+        <div class="stats-scroll">
+
+            <!-- First copy -->
+            <div class="scroll-content">
+                @for(stat of employeeStats; track stat.title) {
+                    <div class="stats-row">
+                        <span>{{ stat.title }}</span>
+                        <span class="stats-value">{{ stat.value }}</span>
+                    </div>
+                }
+            </div>
+            
+            <!-- Second copy -->
+            <div class="scroll-content">
+                @for(stat of employeeStats; track stat.title) {
+                    <div class="stats-row">
+                        <span>{{ stat.title }}</span>
+                        <span class="stats-value">{{ stat.value }}</span>
+                    </div>
+                }
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+        </div>
+
+        <!-- Center Content -->
+        <div class="col-lg-8 col-md-6 col-12">
+            Center Content
+        </div>
+
+        <!-- Right Panel -->
+        <div class="col-xl-2 col-lg-3 col-md-4">
+            <div class="side-menu">
+
+    <ul class="list-group">
+
+        <li class="list-group-item">
+            May I Assist You
+        </li>
+
+        <li class="list-group-item">
+            Dashboard
+        </li>
+
+        <li class="list-group-item">
+            Package Details
+        </li>
+
+        <li class="list-group-item">
+            CARC Status
+        </li>
+
+    </ul>
+
+</div>
+<div class="stats-card">
+
+    <div class="stats-header">
+        Govt. Pensioner Statistics
+    </div>
+
+    <div class="stats-row">
+        <span>No. of Enrolled Pensioner</span>
+        <span class="stats-value">129596</span>
+    </div>
+
+    <div class="stats-row">
+        <span>No. of Beneficiary</span>
+        <span class="stats-value">262015</span>
+    </div>
+<div class="stats-row">
+        <span>No. of Applied Claims</span>
+        <span class="stats-value">457890</span>
+    </div>
+</div>
+        </div>
+
+    </div>
+
+</div>
+
