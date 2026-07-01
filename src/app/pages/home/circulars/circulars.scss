@@ -29,3 +29,8 @@
 .table tr {
     border: none !important;
 }
+.circulars-body {
+    height: 200px;      // Adjust to your liking
+    overflow-y: auto;
+    overflow-x: hidden;
+}
