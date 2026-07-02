@@ -1,125 +1,88 @@
-<nav class="wbhs-menu">
+<button class="menu-toggle" (click)="menuOpen = !menuOpen">
+  ☰ Menu
+</button>
 
-    
+<nav class="wbhs-menu" [class.open]="menuOpen">
 
-    <ul class="menu-items">
+  <ul class="menu-items">
 
-        <li>
-            <a routerLink="#">Home Page</a>
-        </li>
+    <li>
+      <a routerLink="#">Home Page</a>
+    </li>
 
-        <li>
-            <a routerLink="#">About Us</a>
-        </li>
+    <li>
+      <a routerLink="#">About Us</a>
+    </li>
 
-        <li>
-            <a routerLink="#">Circulars & Memos</a>
-        </li>
+    <li>
+      <a routerLink="#">Circulars & Memos</a>
+    </li>
 
-        <li class="dropdown">
+    <!-- Dropdown 1 -->
+    <li class="dropdown" (click)="enrolOpen = !enrolOpen">
 
-            <a routerLink="#">
-                Online Enrolment ▼
-            </a>
+      <a routerLink="#">
+        Online Enrolment ▼
+      </a>
 
-            <ul class="submenu">
+      <ul class="submenu" [class.open]="enrolOpen">
 
-                <li>
-                    <a routerLink="#">
-                        Govt. Employee
-                    </a>
-                </li>
+        <li><a routerLink="#">Govt. Employee</a></li>
+        <li><a routerLink="#">Govt. Pensioner</a></li>
+        <li><a routerLink="#">GIA College</a></li>
+        <li><a routerLink="#">GIA University</a></li>
 
-                <li>
-                    <a routerLink="#">
-                        Govt. Pensioner
-                    </a>
-                </li>
+      </ul>
 
-                <li>
-                    <a routerLink="#">
-                        GIA College
-                    </a>
-                </li>
+    </li>
 
-                <li>
-                    <a routerLink="#">
-                        GIA University
-                    </a>
-                </li>
+    <!-- Dropdown 2 -->
+    <li class="dropdown" (click)="claimOpen = !claimOpen">
 
-            </ul>
+      <a routerLink="#">
+        Online Claim ▼
+      </a>
 
-        </li>
+      <ul class="submenu" [class.open]="claimOpen">
 
-        <li class="dropdown">
+        <li><a routerLink="#">Government Beneficiary</a></li>
+        <li><a routerLink="#">GIA Beneficiary</a></li>
 
-            <a routerLink="#">
-                Online Claim ▼
-            </a>
+      </ul>
 
-            <ul class="submenu">
+    </li>
 
-                <li>
-                    <a routerLink="#">
-                        Government Beneficiary
-                    </a>
-                </li>
+    <!-- Dropdown 3 -->
+    <li class="dropdown" (click)="hospitalOpen = !hospitalOpen">
 
-                <li>
-                    <a routerLink="#">
-                        GIA Beneficiary
-                    </a>
-                </li>
+      <a routerLink="#">
+        Hospital ▼
+      </a>
 
-            </ul>
+      <ul class="submenu" [class.open]="hospitalOpen">
 
-        </li>
+        <li><a routerLink="#">Empanelled Hospitals</a></li>
+        <li><a routerLink="#">Authenticate Beneficiary</a></li>
+        <li><a routerLink="#">View Permission</a></li>
 
-        <li class="dropdown">
+      </ul>
 
-            <a routerLink="#">
-                Hospital ▼
-            </a>
+    </li>
 
-            <ul class="submenu">
+    <li>
+      <a routerLink="#">FAQ</a>
+    </li>
 
-                <li>
-                    <a routerLink="#">
-                        Empanelled Hospitals
-                    </a>
-                </li>
+    <li>
+      <a routerLink="#">Contact Us</a>
+    </li>
 
-                <li>
-                    <a routerLink="#">
-                        Authenticate Beneficiary
-                    </a>
-                </li>
+    <li class="login-item">
+      <a class="login-btn" routerLink="#">
+        Login
+      </a>
+    </li>
 
-                <li>
-                    <a routerLink="#">
-                        View Permission
-                    </a>
-                </li>
-
-            </ul>
-
-        </li>
-
-        <li>
-            <a routerLink="#">FAQ</a>
-        </li>
-
-        <li>
-            <a routerLink="#">Contact Us</a>
-        </li>
-
-        <li class="login-item">
-            <a class="login-btn" routerLink="#">
-                Login
-            </a>
-        </li>
-
-    </ul>
+  </ul>
 
 </nav>
