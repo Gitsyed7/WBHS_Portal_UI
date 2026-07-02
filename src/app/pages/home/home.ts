@@ -4,9 +4,11 @@ import { Circulars } from './circulars/circulars';
 
 @Component({
   selector: 'app-home',
+  standalone:true,
   imports: [WhatsNew,Circulars],
   templateUrl: './home.html',
   styleUrl: './home.scss',
+  
 })
 export class Home {
  employeeStats = [
