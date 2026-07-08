@@ -4,6 +4,18 @@
     border-bottom: 1px solid #d8c9b9;
 }
 
+/* Toggle button (hidden on desktop) */
+.menu-toggle {
+    display: none;
+    background: #d9c8a8;
+    border: none;
+    padding: 10px 15px;
+    font-weight: bold;
+    width: 100%;
+    text-align: left;
+}
+
+/* Main menu */
 .menu-items {
     display: flex;
     align-items: center;
@@ -13,6 +25,7 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+/* Menu items */
 .menu-items > li {
     position: relative;
 }
@@ -29,6 +42,27 @@
     background: #d9c8a8;
 }
 
+/* Login alignment */
+.login-item {
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+.login-btn {
+    background: var(--wbhs-login);
+    font-weight: 700;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+}
+
+.login-btn:hover {
+    background: var(--wbhs-login-hover) !important;
+    color: white !important;
+    transform: translateY(-1px);
+}
+
+/* Dropdown submenu */
 .submenu {
     display: none;
     position: absolute;
@@ -58,25 +92,59 @@
     background: #f2f2f2;
 }
 
+/* Desktop hover dropdown (unchanged behavior) */
 .dropdown:hover .submenu {
     display: block;
 }
 
-.login-item {
-    margin-left: auto;
-    margin-right: 10px;
-    
-}
+/* ========================= */
+/* MOBILE RESPONSIVE SECTION */
+/* ========================= */
 
-.login-btn {
-    background: var(--wbhs-login);
-    font-weight: 700;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    border-radius: 5px;
-    transition: all 0.2s ease;
-}
-.login-btn:hover {
-    background: var(--wbhs-login-hover) !important;
-    color: white !important;
-    transform: translateY(-1px);
+@media (max-width: 992px) {
+
+    /* Show toggle button */
+    .menu-toggle {
+        display: block;
+    }
+
+    /* Hide menu by default */
+    .menu-items {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    /* Show menu when open */
+    .wbhs-menu.open .menu-items {
+        display: flex;
+    }
+
+    .menu-items > li {
+        width: 100%;
+    }
+
+    .menu-items > li > a {
+        width: 100%;
+    }
+
+    /* Submenu becomes inline instead of absolute */
+    .submenu {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        border: none;
+    }
+
+    /* Disable hover (important for mobile) */
+    .dropdown:hover .submenu {
+        display: none;
+    }
+
+    /* Open submenu via Angular state */
+    .submenu.open {
+        display: block;
+    }
 }
