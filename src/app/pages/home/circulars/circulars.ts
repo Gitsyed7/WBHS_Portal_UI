@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CircularsService } from '../../../services/circulars.service';
 import { News } from '../../../models/news.model';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-circulars',
   imports: [],
+  standalone: true,
   templateUrl: './circulars.html',
   styleUrl: './circulars.scss',
 })
@@ -13,23 +15,54 @@ export class Circulars implements OnInit {
   // Properties
   circulars: News[] = [];
 
+  loading = true;
   // Constructor
-  constructor(private circularsService: CircularsService) { }
+  constructor(private circularsService: CircularsService,
+  private cdr: ChangeDetectorRef) { }
+  
 
   // Lifecycle Method
   ngOnInit(): void {
 
-    this.circularsService.getCirculars().subscribe(data => {
+  console.log("1. Before API Call");
 
-  console.log("API Length:", data.length);
+  this.circularsService.getCirculars().subscribe({
 
-  this.circulars = [...data];
+    next: (data) => {
 
-  console.log("Component Length:", this.circulars.length);
+      console.log("2. Inside next()");
+      console.log(data);
 
-  console.log("First Item:", this.circulars[0]);
+      this.circulars = data;
+      
+      this.loading = false;
+this.cdr.detectChanges();
 
-});
-  }
+console.log("View updated");
+
+
+      
+      console.log("3. Loading =", this.loading);
+
+    },
+
+    error: (err) => {
+
+      console.log("4. ERROR");
+      console.error(err);
+
+      this.loading = false;
+
+    },
+
+    complete: () => {
+
+      console.log("5. Completed");
+
+    }
+
+  });
+
+}
 
 }

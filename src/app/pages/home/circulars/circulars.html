@@ -5,12 +5,28 @@
     </div>
 
     <div class="circulars-body">
+@if (loading) {
 
+    <div class="text-center py-4">
+
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+
+    <div class="mt-2">
+        Loading circulars...
+    </div>
+
+</div>
+
+}
+@else {
+    
         <table class="table table-hover border-0">
 
             <tbody>
 
-                @for(item of circulars; track item.id) {
+                @for(item of circulars.slice(0,20); track $index) {
 
                     <tr>
 
@@ -25,12 +41,13 @@
                         <td class="pdf-column">
 
                             <a
-                                [href]="item.filePath"
-                                target="_blank">
+    [href]="item.filePath"
+    target="_blank"
+    rel="noopener noreferrer">
 
                                 <img
                                     src="/images/icon-pdf.png"
-                                    alt="PDF"
+                                    alt="Open PDF"
                                     width="30">
 
                             </a>
@@ -44,7 +61,7 @@
             </tbody>
 
         </table>
-
+    }
     </div>
 
 </div>
