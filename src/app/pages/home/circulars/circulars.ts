@@ -36,7 +36,8 @@ export class Circulars implements OnInit {
       this.circulars = data;
       
       this.loading = false;
-this.cdr.detectChanges();
+      
+//this.cdr.detectChanges();
 
 console.log("View updated");
 
