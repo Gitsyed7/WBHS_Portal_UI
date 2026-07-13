@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CircularsService } from '../../../services/circulars.service';
 import { News } from '../../../models/news.model';
 import { ChangeDetectorRef } from '@angular/core';
@@ -15,7 +15,7 @@ export class Circulars implements OnInit {
   // Properties
   circulars: News[] = [];
 
-  loading = true;
+  loading = signal(true);
   // Constructor
   constructor(private circularsService: CircularsService,
   private cdr: ChangeDetectorRef) { }
@@ -35,7 +35,10 @@ export class Circulars implements OnInit {
 
       this.circulars = data;
       
-      this.loading = false;
+      this.loading.set(false);
+
+      
+
       
 //this.cdr.detectChanges();
 
@@ -52,7 +55,7 @@ console.log("View updated");
       console.log("4. ERROR");
       console.error(err);
 
-      this.loading = false;
+      this.loading.set(false);
 
     },
 
