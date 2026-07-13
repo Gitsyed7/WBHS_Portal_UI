@@ -5,7 +5,7 @@
     </div>
 
     <div class="circulars-body">
-@if (loading) {
+@if (loading()) {
 
     <div class="text-center py-4">
 
@@ -26,7 +26,7 @@
 
             <tbody>
 
-                @for(item of circulars.slice(0,20); track $index) {
+                @for(item of circulars; track item.id) {
 
                     <tr>
 
