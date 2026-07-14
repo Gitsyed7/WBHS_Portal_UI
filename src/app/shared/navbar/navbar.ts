@@ -16,4 +16,17 @@ export class Navbar {
 enrolOpen: boolean = false;
 claimOpen: boolean = false;
 hospitalOpen: boolean = false;
+
+toggleHospital(event: MouseEvent): void {
+  event.stopPropagation();
+  this.hospitalOpen = !this.hospitalOpen;
+}
+toggleClaim(event: MouseEvent): void {
+  event.stopPropagation();
+  this.claimOpen = !this.claimOpen;
+}
+toggleEnrol(event: MouseEvent): void {
+  event.stopPropagation();
+  this.enrolOpen = !this.enrolOpen;
+}
 }
