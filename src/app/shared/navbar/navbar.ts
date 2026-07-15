@@ -12,21 +12,18 @@ import { RouterLink } from '@angular/router';
 })
 export class Navbar {
   menuOpen: boolean = false;
+openMenu:string | null = null;
+toggleMenu(menu:string):void{
 
-enrolOpen: boolean = false;
-claimOpen: boolean = false;
-hospitalOpen: boolean = false;
+    this.openMenu=
+    this.openMenu===menu
+    ? null
+    : menu;
 
-toggleHospital(event: MouseEvent): void {
-  event.stopPropagation();
-  this.hospitalOpen = !this.hospitalOpen;
 }
-toggleClaim(event: MouseEvent): void {
-  event.stopPropagation();
-  this.claimOpen = !this.claimOpen;
-}
-toggleEnrol(event: MouseEvent): void {
-  event.stopPropagation();
-  this.enrolOpen = !this.enrolOpen;
+isMenuOpen(menu:string):boolean{
+
+    return this.openMenu===menu;
+
 }
 }

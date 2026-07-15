@@ -1,114 +1,201 @@
-<nav class="navbar navbar-expand-lg wbhs-menu">
+<nav class="navbar navbar-expand-xl wbhs-menu">
 
-  <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/">
-    WBHS
-</a>
-    <button
-    class="navbar-toggler"
-    type="button"
-    (click)="menuOpen = !menuOpen"
-    aria-label="Toggle navigation">
+    <div class="container-fluid">
 
-    <span class="navbar-toggler-icon"></span>
-
-</button>
-<div
-    class="collapse navbar-collapse"
-    [class.show]="menuOpen">
-
-</div>
-
-
-<div class="collapse navbar-collapse"
-     [class.show]="menuOpen">
-  <!-- Left Navigation -->
-<ul class="navbar-nav me-auto">
-
-    <li class="nav-item">
-        <a class="nav-link" routerLink="#">Home Page</a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link" routerLink="#">About Us</a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link" routerLink="#">Circulars & Memos</a>
-    </li>
-
-    <!-- Dropdown 1 -->
-     <li class="nav-item dropdown">
-    <a
-        class="nav-link"
-        href="javascript:void(0)"
-        (click)="toggleEnrol($event)">
-        Online Enrolment ▼
-    </a>
-        <ul class="submenu" [class.open]="enrolOpen">
-            <li><a routerLink="#">Govt. Employee</a></li>
-            <li><a routerLink="#">Govt. Pensioner</a></li>
-            <li><a routerLink="#">GIA College</a></li>
-            <li><a routerLink="#">GIA University</a></li>
-        </ul>
-
-    </li>
-
-    <!-- Dropdown 2 -->
-     <li class="nav-item dropdown">
-
-    <a
-        class="nav-link"
-        href="javascript:void(0)"
-        (click)="toggleClaim($event)">
-        Online Claim ▼
-    </a>
-        <ul class="submenu" [class.open]="claimOpen">
-            <li><a routerLink="#">Government Beneficiary</a></li>
-            <li><a routerLink="#">GIA Beneficiary</a></li>
-        </ul>
-
-    </li>
-
-    <!-- Dropdown 3 -->
-    <li class="nav-item dropdown">
-
-    <a
-        class="nav-link"
-        href="javascript:void(0)"
-        (click)="toggleHospital($event)">
-        Hospital ▼
-    </a>
-        
-
-        <ul class="submenu" [class.open]="hospitalOpen">
-            <li><a routerLink="#">Empanelled Hospitals</a></li>
-            <li><a routerLink="#">Authenticate Beneficiary</a></li>
-            <li><a routerLink="#">View Permission</a></li>
-        </ul>
-
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link" routerLink="#">FAQ</a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link" routerLink="#">Contact Us</a>
-    </li>
-
-</ul>
-
-<!-- Right Navigation -->
-<ul class="navbar-nav">
-
-    <li class="nav-item">
-        <a class="nav-link login-btn" routerLink="#">
-            Login
+        <!-- Logo -->
+        <a class="navbar-brand" routerLink="/">
+            WBHS
         </a>
-    </li>
 
-</ul>
-</div><!-- navbar-collapse -->
-  </div><!-- container-fluid -->
+        <!-- Mobile Toggle Button -->
+        <button
+            class="navbar-toggler"
+            type="button"
+            (click)="menuOpen = !menuOpen"
+            aria-label="Toggle navigation">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <!-- Navigation Section -->
+        <div
+            class="collapse navbar-collapse"
+            [class.show]="menuOpen">
+
+            <!-- Left Navigation -->
+            <ul class="navbar-nav ms-5 me-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="#">
+                        Home Page
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="#">
+                        About Us
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="#">
+                        Circulars & Memos
+                    </a>
+                </li>
+
+                <!-- Online Enrolment -->
+
+                <li class="nav-item dropdown">
+
+                    <a
+                        class="nav-link"
+                        href="javascript:void(0)"
+                        (click)="toggleMenu('enrolment')">
+
+                        Online Enrolment ▼
+
+                    </a>
+
+                    <ul class="submenu"
+                        [class.open]="isMenuOpen('enrolment')">
+
+                        <li>
+                            <a routerLink="#">
+                                Govt. Employee
+                            </a>
+                        </li>
+
+                        <li>
+                            <a routerLink="#">
+                                Govt. Pensioner
+                            </a>
+                        </li>
+
+                        <li>
+    <a routerLink="/GiaClgReg">
+        GIA College
+    </a>
+</li>
+
+                        <li>
+                            <a routerLink="#">
+                                GIA University
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+
+                <!-- Online Claim -->
+
+                <li class="nav-item dropdown">
+
+                    <a
+                        class="nav-link"
+                        href="javascript:void(0)"
+                        (click)="toggleMenu('claim')">
+
+                        Online Claim ▼
+
+                    </a>
+
+                    <ul class="submenu"
+                        [class.open]="isMenuOpen('claim')">
+
+                        <li>
+                            <a routerLink="#">
+                                Government Beneficiary
+                            </a>
+                        </li>
+
+                        <li>
+                            <a routerLink="#">
+                                GIA Beneficiary
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+
+                <!-- Hospital -->
+
+                <li class="nav-item dropdown">
+
+                    <a
+                        class="nav-link"
+                        href="javascript:void(0)"
+                        (click)="toggleMenu('hospital')">
+
+                        Hospital ▼
+
+                    </a>
+
+                    <ul class="submenu"
+                        [class.open]="isMenuOpen('hospital')">
+
+                        <li>
+                            <a routerLink="#">
+                                Empanelled Hospitals
+                            </a>
+                        </li>
+
+                        <li>
+                            <a routerLink="#">
+                                Authenticate Beneficiary
+                            </a>
+                        </li>
+
+                        <li>
+                            <a routerLink="#">
+                                View Permission
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="#">
+                        FAQ
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="#">
+                        Contact Us
+                    </a>
+                </li>
+
+            </ul>
+
+
+            <!-- Right Navigation -->
+
+            <ul class="navbar-nav">
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link login-btn"
+                        routerLink="#">
+
+                        Login
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
 </nav>

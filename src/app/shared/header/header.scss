@@ -1,7 +1,7 @@
 .wbhs-header {
 
     background-image: url('/images/WebHead.png');
-    background-size: cover;
+    background-size:cover;
     background-position: center;
     background-repeat: no-repeat;
 
@@ -20,7 +20,7 @@
 .portal-title {
 
     font-family: Georgia, serif;
-    font-size: clamp(24px, 4vw, 48px);
+    font-size: clamp(24px, 4vw, 44px);
     font-weight: 700;
     font-variant: small-caps;
     color: #6b2f11;
@@ -34,7 +34,7 @@
     font-family: Georgia, serif;
     font-size: clamp(10px, 1.5vw, 14px);
     font-weight: 600;
-    font-variant: small-caps;
+    /*font-variant: small-caps;*/
 
     color: #6b2f11;
 }
