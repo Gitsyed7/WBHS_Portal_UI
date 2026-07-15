@@ -12,8 +12,18 @@ import { RouterLink } from '@angular/router';
 })
 export class Navbar {
   menuOpen: boolean = false;
+openMenu:string | null = null;
+toggleMenu(menu:string):void{
 
-enrolOpen: boolean = false;
-claimOpen: boolean = false;
-hospitalOpen: boolean = false;
+    this.openMenu=
+    this.openMenu===menu
+    ? null
+    : menu;
+
+}
+isMenuOpen(menu:string):boolean{
+
+    return this.openMenu===menu;
+
+}
 }
