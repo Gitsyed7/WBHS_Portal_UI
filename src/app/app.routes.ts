@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { GiaCollegeComponent } from './GiaClgReg/GiaClgReg.component';
+import { GiaClgReg } from './pages/GiaClgReg/GiaClgReg';
 
 
 export const routes: Routes = [
@@ -9,10 +9,9 @@ export const routes: Routes = [
       import('./pages/home/home').then(m => m.Home)
   },
   {
-    path: '',
-    loadComponent: () =>
-      import('./pages/GiaClgReg/GiaClgReg').then(m => m.GiaClgReg)
-  },
+        path:'gia-college',
+        component:GiaClgReg
+    },
   
 
   { path: 'about-us', loadComponent: () => import('./pages/about-us/about-us').then(m => m.AboutUs) },

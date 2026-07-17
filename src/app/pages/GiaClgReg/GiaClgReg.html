@@ -1,9 +1,258 @@
 <header></header>
+<app-navbar></app-navbar>
+<div class="gia-page">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-8 col-md-10 col-12">
 
 
-<div class="college-container">
+                <div class="card registration-card">
 
-    <!-- content goes here -->
+                    <div class="card-body">
+
+
+                        <!-- Title -->
+
+                        <h3 class="registration-title text-center">
+
+                            ONLINE REGISTRATION FOR COLLEGE
+
+                        </h3>
+
+
+                        <!-- Download Links -->
+
+                        <div class="text-center mb-4">
+
+                            <a
+                            href="#"
+                            class="download-link">To reduce mistakes, you can download and fill up this form manually and then proceed.</a>
+<a href="/assets/pdf/DownloadOffline.pdf"
+       target="_blank"
+       class="download-link">
+
+        Download Offline Form
+
+        <img src="/images/icon-pdf.png"
+             width="30">
+
+    </a>
+
+                            <a href="/assets/pdf/DownloadOffline.pdf"
+       target="_blank"
+       class="download-link">
+
+                                College Treasury & DDO List
+
+                                <img src="/images/icon-pdf.png"
+             width="30">
+
+                            </a>
+
+                        </div>
+
+
+                        <!-- HRMS ID -->
+
+    <div class="card-body">
+        <label class="form-label row justify-content-center">
+
+    Enter HRMS ID
+
+</label>
+
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-6 col-md-8 col-sm-10">
+<div class="input-group">
+
+    <span class="input-group-text">
+
+        G
+
+    </span>
+
+    <input
+
+    type="text"
+
+    class="form-control"
+type="text"
+    maxlength="10"
+    (input)="onlyNumbers($event)"
+    [(ngModel)]="hrmsID"
+    (blur)="checkHRMS()"
+    placeholder="Enter 10 digits of HRMS ID"
+    (keyup)="checkHRMS()"
+  [disabled]="currentStatus === 'DOB'">   
+
+</div>
+
+</div>
+
+
+@if(errorMessage){
+
+<div class="text-danger text-center mt-2">
+
+    {{errorMessage}}
+
+</div>
+
+}
+
+
+<div class="text-center mt-4">
+@if(currentStatus !== 'DOB') {
+
+    <button
+
+    class="btn btn-primary"
+
+    (click)="checkHRMS()">
+
+        OK
+
+    </button>
+}
+
+</div>
+
+
+    </div>
+
+
+
+
+                        
+
+                        <!-- DOB SECTION -->
+
+
+                        @if(currentStatus=="DOB"){
+
+                        <hr>
+                            
+
+                        <div class="mb-4">
+
+                            <label class="form-label row justify-content-center">
+
+                                Date of Birth
+
+                            </label>
+
+<div class="row justify-content-center">
+
+        <div class="col-lg-6 col-md-8 col-sm-10">
+
+            <input
+type="date"
+class="form-control"
+[max]="today"
+(click)="openPicker($event)"
+(keydown)="$event.preventDefault()">
+
+        </div>
+
+</div>
+
+                        </div>
+
+
+                        <div class="text-center">
+
+                            <button
+                            class="btn btn-success">
+
+                                SAVE
+
+                            </button>
+                            <button 
+  type="button"
+  class="btn btn-danger ms-3"
+  (click)="resetForm()">
+  Reset
+</button>
+
+                        </div>
+
+                        }
+
+
+
+                        <!-- STATUS SECTION -->
+
+
+                        @if(currentStatus=="STATUS"){
+
+                        <hr>
+
+
+                        <div class="text-center">
+
+                            <h5>
+
+                                Your Enrolment has been
+                                completed successfully.
+
+                            </h5>
+
+
+                            <p>
+
+                                Verification is Pending.
+
+                            </p>
+
+                        </div>
+
+                        }
+
+
+
+                        <!-- CONTINUE SECTION -->
+
+
+                        @if(currentStatus=="CONTINUE"){
+
+                        <hr>
+
+
+                        <div class="text-center">
+
+                            <h5 class="mb-4">
+
+                                Your Enrolment is incomplete.
+
+                            </h5>
+
+
+                            <button
+                            class="btn btn-warning">
+
+                                CONTINUE ENROLMENT
+
+                            </button>
+
+                        </div>
+
+                        }
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 

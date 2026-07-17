@@ -1,0 +1,103 @@
+.gia-page{
+
+    background:#FFF5EA;
+    min-height:100vh;
+    padding:40px 15px;
+
+}
+
+
+.registration-card{
+
+    background:white;
+    border:none;
+    border-radius:12px;
+    box-shadow:0 0 20px rgba(0,0,0,.08);
+
+}
+
+
+.registration-title{
+
+    color:#094F7C;
+    font-weight:700;
+    font-size:2rem;
+
+    margin-bottom:30px;
+
+}
+
+
+.download-link{
+
+    display:block;
+    text-decoration:none;
+    font-weight:600;
+    margin-bottom:15px;
+    color: #1F4E79;
+
+}
+
+
+.form-label{
+
+    font-weight:600;
+    margin-bottom:10px;
+
+}
+
+
+.form-control{
+
+    height:48px;
+    border-radius:8px;
+
+}
+
+
+.btn{
+
+    min-width:80px;
+    border-radius:8px;
+    font-weight:600;
+
+}
+
+
+.status-card{
+
+    background:white;
+    border:none;
+    border-radius:12px;
+    box-shadow:0 0 20px rgba(0,0,0,.08);
+
+}
+
+
+@media(max-width:768px){
+
+    .gia-page{
+
+        padding:20px 10px;
+
+    }
+
+
+    .registration-title{
+
+        font-size:1.5rem;
+
+    }
+
+}
+.input-group-text{
+
+background:#E9ECEF;
+
+font-weight:700;
+
+min-width:50px;
+
+justify-content:center;
+font-size:1.1rem;
+}
