@@ -10,7 +10,6 @@ import { Footer } from './shared/footer/footer';
   standalone: true,
   imports: [
     Header,
-    Navbar,
     RouterOutlet,
     Footer
   ],

@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Navbar } from '../../shared/navbar/navbar';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { CollegeRegistrationService }
+from '../../services/college-registration.service';
+
 
 @Component({
   selector: 'GiaClgReg',
@@ -12,6 +15,7 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
   templateUrl: './GiaClgReg.html',
   styleUrl: './GiaClgReg.scss',
 })
+
 export class GiaClgReg {
 
   //PAGE STATUS
@@ -22,6 +26,12 @@ export class GiaClgReg {
   errorMessage:string='';
   dob:string='';
   today:string='';
+constructor(
+      private service: CollegeRegistrationService
+  )
+  {
+
+  }
 
   //HRMS OK button actions
 
@@ -48,28 +58,50 @@ this.hrmsID.substring(0,10);
     return pattern.test(this.hrmsID);
 
   }
+//MAKE COMPLETE HRMS ID
 
+  getCompleteHRMSID(): string {
+
+    return 'G' + this.hrmsID;
+
+  }
 
   //OK BUTTON
 
-  checkHRMS():void{
+  checkHRMS(): void {
 
     this.errorMessage='';
+
     if(!this.validateHRMS()){
-
-      this.errorMessage=
-      'Please enter a valid HRMS ID.';
-
-      return;
-
+        this.errorMessage =
+        'Please enter 10 digit of HRMS ID.';
+        return;
     }
 
+    let completeHRMSID =
+        this.getCompleteHRMSID();
 
-    //API WILL COME HERE LATER
-if (this.hrmsID.length === 10) {
-    // temporary valid HRMS check
-      this.currentStatus = 'DOB';
-    }
+    this.service
+        .checkHRMS(completeHRMSID)
+        .subscribe(response=>{
+
+            console.log(response);
+
+            switch(response.status)
+            {
+                case "0":
+                    this.currentStatus='DOB';
+                    break;
+
+                case "1":
+                case "2":
+                case "3":
+                case "4":
+                case "5":
+                    alert(response.message);
+                    break;
+            }
+        });
 }
 onlyNumbers(event: any) {
   event.target.value = event.target.value.replace(/[^0-9]/g, '');
