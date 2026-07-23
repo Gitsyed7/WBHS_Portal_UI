@@ -4,6 +4,7 @@ import { Navbar } from '../../shared/navbar/navbar';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { CollegeRegistrationService }
 from '../../services/college-registration.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 
 @Component({
@@ -26,12 +27,12 @@ export class GiaClgReg {
   errorMessage:string='';
   dob:string='';
   today:string='';
+  showMessageModal = false;
+  modalMessage = '';
 constructor(
-      private service: CollegeRegistrationService
-  )
-  {
-
-  }
+    private service: CollegeRegistrationService,
+    private cdr: ChangeDetectorRef
+) {}
 
   //HRMS OK button actions
 
@@ -54,10 +55,13 @@ this.hrmsID.substring(0,10);
   validateHRMS():boolean{
 
     const pattern=/\d{10}$/;
-
     return pattern.test(this.hrmsID);
 
   }
+//Validator works until lenght reaches 10
+
+
+
 //MAKE COMPLETE HRMS ID
 
   getCompleteHRMSID(): string {
@@ -86,26 +90,64 @@ this.hrmsID.substring(0,10);
         .subscribe(response=>{
 
             console.log(response);
-
             switch(response.status)
             {
+                case null:
+                    this.currentStatus='DOB';
+                    this.cdr.detectChanges();
+                    //alert(response.message);
+                    this.openModal(response.message);
+                    break;   
                 case "0":
                     this.currentStatus='DOB';
+                    this.cdr.detectChanges();
+                    //alert(response.message);
+                    this.openModal(response.message);
+                    break;
+
+                case "3":
+                    this.currentStatus = 'DOB';
+                    this.cdr.detectChanges();
+                    //alert(response.message);
+                    this.openModal(response.message);
                     break;
 
                 case "1":
                 case "2":
-                case "3":
                 case "4":
                 case "5":
-                    alert(response.message);
+                    this.currentStatus='HRMS';
+                    this.hrmsID = '';
+                    this.cdr.detectChanges();
+                    //alert(response.message);
+                    this.openModal(response.message);
+                    
                     break;
             }
         });
 }
-onlyNumbers(event: any) {
-  event.target.value = event.target.value.replace(/[^0-9]/g, '');
-  this.hrmsID = event.target.value;
+// onlyNumbers(event: any) {
+//   event.target.value = event.target.value.replace(/[^0-9]/g, '');
+//   this.hrmsID = event.target.value;
+// }
+onlyNumbers(event: any): void {
+
+    event.target.value =
+        event.target.value.replace(/[^0-9]/g, '');
+
+    this.hrmsID = event.target.value;
+
+    if (this.hrmsID.length < 10) {
+
+        this.errorMessage =
+            'Please enter 10 digit of HRMS ID.';
+
+    }
+    else {
+
+        this.errorMessage = '';
+
+    }
 }
 resetForm(): void {
 
@@ -116,6 +158,22 @@ resetForm(): void {
   this.currentStatus = 'HRMS';
 
 }
+
+openModal(message: string): void {
+
+  this.modalMessage = message;
+  this.showMessageModal = true;
+
+}
+
+
+closeModal(): void {
+
+  this.showMessageModal = false;
+
+}
+
+
 ngOnInit(){
 
  this.today=

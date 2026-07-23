@@ -1,5 +1,6 @@
 <header></header>
 <app-navbar></app-navbar>
+
 <div class="gia-page">
 
     <div class="container">
@@ -8,135 +9,121 @@
 
             <div class="col-lg-8 col-md-10 col-12">
 
-
                 <div class="card registration-card">
 
                     <div class="card-body">
 
-
-                        <!-- Title -->
+                        <!-- TITLE -->
 
                         <h3 class="registration-title text-center">
-
                             ONLINE REGISTRATION FOR COLLEGE
-
                         </h3>
 
-
-                        <!-- Download Links -->
+                        <!-- DOWNLOAD LINKS -->
 
                         <div class="text-center mb-4">
 
                             <a
-                            href="#"
-                            class="download-link">To reduce mistakes, you can download and fill up this form manually and then proceed.</a>
-<a href="/assets/pdf/DownloadOffline.pdf"
-       target="_blank"
-       class="download-link">
+                                href="#"
+                                class="download-link">
+                                To reduce mistakes, you can download and fill up this form manually and then proceed.
+                            </a>
 
-        Download Offline Form
+                            <a
+                                href="/assets/pdf/DownloadOffline.pdf"
+                                target="_blank"
+                                class="download-link">
 
-        <img src="/images/icon-pdf.png"
-             width="30">
+                                Download Offline Form
 
-    </a>
+                                <img
+                                    src="/images/icon-pdf.png"
+                                    width="30">
 
-                            <a href="/assets/pdf/DownloadOffline.pdf"
-       target="_blank"
-       class="download-link">
+                            </a>
+
+                            <a
+                                href="/assets/pdf/DownloadOffline.pdf"
+                                target="_blank"
+                                class="download-link">
 
                                 College Treasury & DDO List
 
-                                <img src="/images/icon-pdf.png"
-             width="30">
+                                <img
+                                    src="/images/icon-pdf.png"
+                                    width="30">
 
                             </a>
 
                         </div>
 
+                        <!-- HRMS SECTION -->
 
-                        <!-- HRMS ID -->
+                        <label class="form-label row justify-content-center">
 
-    <div class="card-body">
-        <label class="form-label row justify-content-center">
+                            Enter HRMS ID
 
-    Enter HRMS ID
+                        </label>
 
-</label>
+                        <div class="row justify-content-center">
 
+                            <div class="col-lg-6 col-md-8 col-sm-10">
 
-<div class="row justify-content-center">
+                                <div class="input-group">
 
-    <div class="col-lg-6 col-md-8 col-sm-10">
-<div class="input-group">
+                                    <span class="input-group-text">
+                                        G
+                                    </span>
 
-    <span class="input-group-text">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        maxlength="10"
+                                        (input)="onlyNumbers($event)"
+                                        [(ngModel)]="hrmsID"
+                                        (keyup)="validateHRMS()"
+                                        placeholder="Enter 10 digits of HRMS ID"
+                                        [disabled]="currentStatus === 'DOB'">
 
-        G
+                                </div>
 
-    </span>
+                            </div>
 
-    <input
+                        </div>
 
-    type="text"
+                        @if(errorMessage){
 
-    class="form-control"
-type="text"
-    maxlength="10"
-    (input)="onlyNumbers($event)"
-    [(ngModel)]="hrmsID"
-    (blur)="checkHRMS()"
-    placeholder="Enter 10 digits of HRMS ID"
-    (keyup)="checkHRMS()"
-  [disabled]="currentStatus === 'DOB'">   
+                        <div class="text-danger text-center mt-2">
 
-</div>
+                            {{ errorMessage }}
 
-</div>
+                        </div>
 
+                        }
 
-@if(errorMessage){
+                        <!-- HRMS BUTTON -->
 
-<div class="text-danger text-center mt-2">
+                        @if(currentStatus === 'HRMS'){
 
-    {{errorMessage}}
+                        <div class="text-center mt-4">
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                (click)="checkHRMS()">
 
-</div>
+                                OK
 
-}
+                            </button>
 
+                        </div>
 
-<div class="text-center mt-4">
-@if(currentStatus !== 'DOB') {
-
-    <button
-
-    class="btn btn-primary"
-
-    (click)="checkHRMS()">
-
-        OK
-
-    </button>
-}
-
-</div>
-
-
-    </div>
-
-
-
-
-                        
+                        }
 
                         <!-- DOB SECTION -->
 
-
-                        @if(currentStatus=="DOB"){
+                        @if(currentStatus === 'DOB'){
 
                         <hr>
-                            
 
                         <div class="mb-4">
 
@@ -146,103 +133,45 @@ type="text"
 
                             </label>
 
-<div class="row justify-content-center">
+                            <div class="row justify-content-center">
 
-        <div class="col-lg-6 col-md-8 col-sm-10">
+                                <div class="col-lg-6 col-md-8 col-sm-10">
 
-            <input
-type="date"
-class="form-control"
-[max]="today"
-(click)="openPicker($event)"
-(keydown)="$event.preventDefault()">
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        [max]="today"
+                                        (click)="openPicker($event)"
+                                        (keydown)="$event.preventDefault()">
 
-        </div>
+                                </div>
 
-</div>
+                            </div>
 
                         </div>
-
 
                         <div class="text-center">
 
                             <button
-                            class="btn btn-success">
+                                type="button"
+                                class="btn btn-success">
 
                                 SAVE
 
                             </button>
-                            <button 
-  type="button"
-  class="btn btn-danger ms-3"
-  (click)="resetForm()">
-  Reset
-</button>
-
-                        </div>
-
-                        }
-
-
-
-                        <!-- STATUS SECTION -->
-
-
-                        @if(currentStatus=="STATUS"){
-
-                        <hr>
-
-
-                        <div class="text-center">
-
-                            <h5>
-
-                                Your Enrolment has been
-                                completed successfully.
-
-                            </h5>
-
-
-                            <p>
-
-                                Verification is Pending.
-
-                            </p>
-
-                        </div>
-
-                        }
-
-
-
-                        <!-- CONTINUE SECTION -->
-
-
-                        @if(currentStatus=="CONTINUE"){
-
-                        <hr>
-
-
-                        <div class="text-center">
-
-                            <h5 class="mb-4">
-
-                                Your Enrolment is incomplete.
-
-                            </h5>
-
 
                             <button
-                            class="btn btn-warning">
+                                type="button"
+                                class="btn btn-danger ms-3"
+                                (click)="resetForm()">
 
-                                CONTINUE ENROLMENT
+                                Reset
 
                             </button>
 
                         </div>
 
                         }
-
 
                     </div>
 
@@ -255,5 +184,63 @@ class="form-control"
     </div>
 
 </div>
+@if(showMessageModal){
+
+<div class="modal-backdrop fade show"></div>
+
+
+<div class="modal fade show d-block"
+     tabindex="-1">
+
+
+    <div class="modal-dialog modal-dialog-centered">
+
+
+        <div class="modal-content">
+
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    WBHS Portal
+                </h5>
+
+                <button 
+                    type="button"
+                    class="btn-close"
+                    (click)="closeModal()">
+                </button>
+
+            </div>
+
+
+            <div class="modal-body text-center">
+
+                {{modalMessage}}
+
+            </div>
+
+
+            <div class="modal-footer justify-content-center">
+
+                <button
+                    class="btn btn-primary"
+                    (click)="closeModal()">
+
+                    OK
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+}
 
 <footer></footer>
