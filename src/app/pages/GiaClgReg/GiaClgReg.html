@@ -141,6 +141,7 @@
                                         type="date"
                                         class="form-control"
                                         [max]="today"
+                                        [(ngModel)]="dob"
                                         (click)="openPicker($event)"
                                         (keydown)="$event.preventDefault()">
 
@@ -154,7 +155,8 @@
 
                             <button
                                 type="button"
-                                class="btn btn-success">
+                                class="btn btn-success"
+                                (click)="saveCollegeRegistration()">
 
                                 SAVE
 

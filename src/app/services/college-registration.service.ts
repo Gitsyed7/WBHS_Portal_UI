@@ -8,6 +8,8 @@ import { CheckHRMSResponse } from '../models/check-hrms-response';
   providedIn: 'root'
 })
 export class CollegeRegistrationService {
+private apiUrl =
+    environment.apiUrl;
 
   constructor(
     private http: HttpClient
@@ -17,10 +19,17 @@ export class CollegeRegistrationService {
   checkHRMS(hrmsId: string): Observable<CheckHRMSResponse> {
 
     return this.http.post<CheckHRMSResponse>(
-        'http://localhost:5114/api/CollegeRegistration',
+        `${this.apiUrl}/CollegeRegistration/check-hrms`,
         {
             hrmsId: hrmsId
         }
     );
+    
+}
+saveCollegeRegistration(request: any) {
+  return this.http.post<any>(
+    `${this.apiUrl}/CollegeRegistration/save-college-registration`,
+    request
+  );
 }
 }

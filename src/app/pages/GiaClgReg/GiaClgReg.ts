@@ -126,10 +126,7 @@ this.hrmsID.substring(0,10);
             }
         });
 }
-// onlyNumbers(event: any) {
-//   event.target.value = event.target.value.replace(/[^0-9]/g, '');
-//   this.hrmsID = event.target.value;
-// }
+
 onlyNumbers(event: any): void {
 
     event.target.value =
@@ -172,7 +169,42 @@ closeModal(): void {
   this.showMessageModal = false;
 
 }
+saveCollegeRegistration(): void {
+console.log("DOB before save:", this.dob);
+  const request = {
+    hrmsId: this.getCompleteHRMSID(),
+    dob: this.dob
+  };
 
+  console.log(request);
+
+  this.service
+      .saveCollegeRegistration(request)
+      .subscribe({
+
+        next: (response) => {
+
+          console.log(response);
+
+          if(response.isSuccess){
+
+            alert(response.message);
+
+            console.log(
+              "Application ID:",
+              response.applicationId
+            );
+
+          }
+        },
+
+        error: (err) => {
+
+          console.error(err);
+
+        }
+      });
+}
 
 ngOnInit(){
 
