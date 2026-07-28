@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { GiaClgReg } from './pages/GiaClgReg/GiaClgReg';
+import { Master } from './pages/gia-clg-reg/master/master';
 
 
 export const routes: Routes = [
@@ -10,7 +10,7 @@ export const routes: Routes = [
   },
   {
         path:'gia-college',
-        component:GiaClgReg
+        component:Master
     },
   
 

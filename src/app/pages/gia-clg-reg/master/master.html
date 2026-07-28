@@ -1,0 +1,65 @@
+<app-navbar></app-navbar>
+<div class="gia-page">
+<div class="tracker-card">
+
+    <div class="registration-tracker">
+
+        @for(step of steps; track step.name; let i = $index) {
+
+            <div class="step"
+     [class]="getStepStatus(i)">
+
+                <div class="step-number">
+                    @if(i < currentStep) {
+
+        <i class="bi bi-patch-check-fill text-success"></i>
+
+    }
+    @else {
+
+        <i class="bi {{step.icon}}"></i>
+
+    }
+
+                </div>
+
+                <label>{{ step.name }}</label>
+
+            </div>
+
+            @if(i < steps.length - 1) {
+                <div class="line"></div>
+            }
+
+        }
+
+    </div> <!-- registration-tracker -->
+</div> <!-- tracker-card -->
+
+<!-- Components to open based on step number -->
+ 
+@if(currentStep === 0){
+    <app-registration></app-registration>
+}
+
+@if(currentStep === 1){
+    <app-personal-information></app-personal-information>
+}
+
+@if(currentStep === 2){
+    <app-office-information></app-office-information>
+}
+
+@if(currentStep === 3){
+    <app-beneficiary></app-beneficiary>
+}
+
+@if(currentStep === 4){
+    <app-administrative></app-administrative>
+}
+
+</div>
+
+
+
+

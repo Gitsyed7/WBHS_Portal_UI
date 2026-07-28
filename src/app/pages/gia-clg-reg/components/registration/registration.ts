@@ -1,9 +1,320 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
+
+import { CollegeRegistrationService } from '../../../../services/college-registration.service';
+
+
+
 
 @Component({
   selector: 'app-registration',
-  imports: [],
+  imports: [FormsModule,
+    CommonModule],
   templateUrl: './registration.html',
   styleUrl: './registration.scss',
 })
-export class Registration {}
+export class Registration {
+
+//#region Variables
+
+//PAGE STATUS
+
+  currentStatus:string='HRMS';
+  registrationCompleted = false;
+
+
+  //TEXTBOX VARIABLES
+
+  hrmsID:string='';
+  errorMessage:string='';
+  dob:string='';
+  today:string='';
+  applicationId = '';
+
+  //MODAL VARIABLES
+
+  showMessageModal = false;
+  modalMessage = '';
+  modalType = 'info';
+  modalTitle = '';
+  buttonText = 'Continue';
+
+  
+//#endregion
+
+constructor(
+    private service: CollegeRegistrationService,
+    private cdr: ChangeDetectorRef
+) {}
+
+ngOnInit(){
+
+ this.today=
+ new Date().toISOString().split('T')[0];
+
+}
+//OK BUTTON
+
+  checkHRMS(): void {
+
+    this.applicationId = '';
+    this.errorMessage='';
+
+    if(!this.validateHRMS()){
+        this.errorMessage =
+        'Please enter 10 digit of HRMS ID.';
+        return;
+    }
+
+    let completeHRMSID =
+        this.getCompleteHRMSID();
+
+    this.service
+        .checkHRMS(completeHRMSID)
+        .subscribe(response=>{
+
+            console.log(response);
+            switch(response.status)
+            {
+                case null:
+                    this.currentStatus='DOB';
+                    this.cdr.detectChanges();
+                    //alert(response.message);
+                    this.openModal(
+        response.message,
+        'success'
+    );
+                    break;   
+                case "0":
+                    this.currentStatus='DOB';
+                    this.cdr.detectChanges();
+                    //alert(response.message);
+                    this.openModal(
+        response.message,
+        'success'
+    );
+                    break;
+
+                case "3":
+                    this.currentStatus = 'DOB';
+                    this.cdr.detectChanges();
+                    //alert(response.message);
+                    this.openModal(
+        response.message,
+        'warning');
+                    break;
+
+                case "1":
+                  this.currentStatus = 'HRMS';
+    this.hrmsID = '';
+    this.cdr.detectChanges();
+    this.openModal(
+        response.message,
+        'warning'
+    );
+
+    break;
+                case "2":
+                  this.currentStatus = 'HRMS';
+    this.hrmsID = '';
+    this.cdr.detectChanges();
+    this.openModal(
+        response.message,
+        'warning'
+    );
+
+    break;
+                case "4":
+                case "5":
+                    this.currentStatus = 'HRMS';
+    this.hrmsID = '';
+this.cdr.detectChanges();
+    this.openModal(
+        response.message,
+        'error'
+    );
+
+    break;
+            }
+        });
+}
+
+// Save button Click
+
+saveCollegeRegistration(): void {
+if(!this.dob)
+{
+    this.errorMessage =
+        'DOB is mandatory field.';
+    return;
+}
+  const request = {
+    hrmsId: this.getCompleteHRMSID(),
+    dob: this.dob
+  };
+
+  console.log(request);
+
+  this.service
+      .saveCollegeRegistration(request)
+      .subscribe({
+
+        next: (response) => {
+
+          console.log(response);
+
+          if(response.isSuccess){
+
+            this.applicationId =
+        response.applicationId;
+        this.registrationCompleted = true;
+        //this.currentStep = 1;
+    this.openModal(
+        response.message,
+        'success',
+        response.applicationId
+    );
+            this.cdr.detectChanges();
+          }
+        },
+
+        error: (err) => {
+
+          console.error(err);
+
+        }
+      });
+}
+
+//#region Utility Methods
+
+//HRMS OK button actions
+
+  onHRMSChange():void{
+
+
+//ONLY NUMBERS
+
+this.hrmsID=
+this.hrmsID.replace(/\D/g,'');
+
+
+//MAXIMUM 10 DIGITS
+
+this.hrmsID=
+this.hrmsID.substring(0,10);
+}
+//VALIDATE HRMS ID
+
+  validateHRMS():boolean{
+
+    const pattern=/\d{10}$/;
+    return pattern.test(this.hrmsID);
+
+  }
+
+//MAKE COMPLETE HRMS ID
+
+  getCompleteHRMSID(): string {
+
+    return 'G' + this.hrmsID;
+
+  }
+onlyNumbers(event: any): void {
+
+    event.target.value =
+        event.target.value.replace(/[^0-9]/g, '');
+
+    this.hrmsID = event.target.value;
+
+    if (this.hrmsID.length < 10) {
+
+        this.errorMessage =
+            'Please enter 10 digit of HRMS ID.';
+
+    }
+    else {
+
+        this.errorMessage = '';
+
+    }
+}
+openPicker(event: Event): void {
+
+  const input = event.target as HTMLInputElement;
+
+  if (typeof input.showPicker === 'function') {
+    input.showPicker();
+  }
+
+}
+resetForm(): void {
+
+  this.hrmsID = '';
+  this.dob = '';
+  this.errorMessage = '';
+
+  this.currentStatus = 'HRMS';
+  
+
+}
+
+openModal(
+    message: string,
+    type: string = 'info',
+    appId:string=''
+): void {
+
+    this.applicationId = appId;
+    this.modalMessage = message;
+    this.modalType = type;
+
+    switch(type)
+{
+    case 'success':
+
+        this.modalTitle = 'Success';
+        this.buttonText = 'Continue →';
+        break;
+
+    case 'warning':
+
+        this.modalTitle = 'Warning';
+        this.buttonText = 'OK';
+        break;
+
+    case 'error':
+
+        this.modalTitle = 'Error';
+        this.buttonText = 'Close';
+        break;
+
+    default:
+
+        this.modalTitle = 'Information';
+        this.buttonText = 'OK';
+        break;
+}
+
+    this.showMessageModal = true;
+}
+
+closeModal(): void {
+
+    this.showMessageModal = false;
+
+    this.modalType = 'info';
+    this.modalTitle = '';
+    this.modalMessage = '';
+    this.applicationId = '';
+
+}
+continueEnrollment(): void {
+    this.showMessageModal = false;
+}
+//#endregion
+
+
+}
