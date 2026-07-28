@@ -23,8 +23,18 @@
 
                 </div>
 
-                <label>{{ step.name }}</label>
+                <label class="desktop-label">{{ step.name }}</label>
 
+<label class="mobile-label">
+
+    @if(currentStep === i) {
+        {{ step.shortName }}
+    }
+    @else {
+        {{ i + 1 }}
+    }
+
+</label>
             </div>
 
             @if(i < steps.length - 1) {
@@ -39,7 +49,9 @@
 <!-- Components to open based on step number -->
  
 @if(currentStep === 0){
-    <app-registration></app-registration>
+    <app-registration
+        (moveNext)="goToPersonal()">
+    </app-registration>
 }
 
 @if(currentStep === 1){

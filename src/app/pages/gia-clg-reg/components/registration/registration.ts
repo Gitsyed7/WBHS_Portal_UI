@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
 
 import { CollegeRegistrationService } from '../../../../services/college-registration.service';
-
+import { Output, EventEmitter } from '@angular/core';
 
 
 
@@ -15,6 +15,9 @@ import { CollegeRegistrationService } from '../../../../services/college-registr
   templateUrl: './registration.html',
   styleUrl: './registration.scss',
 })
+
+
+
 export class Registration {
 
 //#region Variables
@@ -86,16 +89,33 @@ ngOnInit(){
         response.message,
         'success'
     );
-                    break;   
-                case "0":
-                    this.currentStatus='DOB';
-                    this.cdr.detectChanges();
-                    //alert(response.message);
-                    this.openModal(
-        response.message,
-        'success'
-    );
                     break;
+                       
+                case "0":
+
+                if(response.applicationId){
+
+                    this.registrationCompleted = true;
+                    this.currentStatus = 'DOB';
+                    this.cdr.detectChanges();
+                    this.openModal(
+                        response.message,
+                        'success',
+                        'Applicatio ID - ' + response.applicationId
+                    );
+                }
+                else{
+
+                    this.registrationCompleted = false;
+                    this.currentStatus = 'DOB';
+                    this.cdr.detectChanges();
+                    this.openModal(
+                        response.message,
+                        'success'
+                    );
+                }
+
+                break;
 
                 case "3":
                     this.currentStatus = 'DOB';
@@ -311,8 +331,14 @@ closeModal(): void {
     this.applicationId = '';
 
 }
+@Output()
+moveNext = new EventEmitter<void>();
+
 continueEnrollment(): void {
+
     this.showMessageModal = false;
+
+    this.moveNext.emit();
 }
 //#endregion
 

@@ -133,42 +133,73 @@
     margin-top: -20px;
 
 }
+.mobile-label {
+    display: none;
+}
+
+.desktop-label {
+    display: block;
+}
+.mobile-name {
+    display: none;
+}
+
+.desktop-name {
+    display: block;
+}
 
 // Mobile view Tracker
 @media (max-width: 768px) {
+    .desktop-label {
+        display: none;
+    }
+
+    .mobile-label {
+        display: block;
+    }
+    .desktop-name {
+        display: none;
+    }
+
+    .mobile-name {
+        display: block;
+    }
+    .tracker-card {
+        padding: 10px;
+    }
+
 
     .registration-tracker {
 
-        flex-direction: column;
-        align-items: stretch;
+        display: flex;
+        flex-wrap: nowrap;       // prevents second line
+        width: 100%;
+        gap: 0;
+        overflow: hidden;
 
     }
 
 
     .step {
 
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        justify-content: flex-start;
-
-        text-align: left;
+        flex: 1;
+        min-width: 0;            // important
+        text-align: center;
 
     }
 
 
     .step-number {
 
-        margin-bottom: 0;
+        white-space: nowrap;
 
     }
 
 
     .line {
 
-        width: 2px;
-        height: 30px;
-        margin: 0 auto;
+        flex: 0 0 15px;
+        height: 2px;
 
     }
 

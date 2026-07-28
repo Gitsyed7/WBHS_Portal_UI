@@ -30,25 +30,23 @@ import { Administrative } from '../components/administrative/administrative';
 })
 
 export class Master {
+
 //#region Variable declaration
 
 //Tracker Variables
 
   steps = [
-  { name: 'Registration', icon: 'bi-person-badge' },
-  { name: 'Personal Information', icon: 'bi-person-vcard' },
-  { name: 'Office Information', icon: 'bi-building' },
-  { name: 'Beneficiary Addition', icon: 'bi-people-fill' },
-  { name: 'Administrative Information', icon: 'bi-clipboard-check' }
+  { name: 'Registration',shortName: 'Registration', icon: 'bi-person-badge' },
+  { name: 'Personal Information',shortName: 'Personal', icon: 'bi-person-vcard' },
+  { name: 'Office Information',shortName: 'Office', icon: 'bi-building' },
+  { name: 'Beneficiary Addition',shortName: 'Beneficiary', icon: 'bi-people-fill' },
+  { name: 'Administrative Information',shortName: 'Administration', icon: 'bi-clipboard-check' }
 ];
 
 currentStep = 0;
 
 
 //#endregion
-
-
-
 
 getStepStatus(index: number): string {
 
@@ -65,6 +63,11 @@ getStepStatus(index: number): string {
   }
 
   return 'upcoming';
+
+}
+goToPersonal(): void {
+
+    this.currentStep = 1;
 
 }
 
