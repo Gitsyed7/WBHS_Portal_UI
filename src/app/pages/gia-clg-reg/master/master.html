@@ -50,12 +50,18 @@
  
 @if(currentStep === 0){
     <app-registration
-        (moveNext)="goToPersonal()">
+        (moveNext)="goToPersonal($event)">
     </app-registration>
 }
 
 @if(currentStep === 1){
-    <app-personal-information></app-personal-information>
+    @if(currentStep === 1){
+    <app-personal-information
+        [applicationId]="applicationId"
+        [slrNo]="slrNo"
+        [dob]="dob">
+    </app-personal-information>
+}
 }
 
 @if(currentStep === 2){

@@ -31,10 +31,11 @@ export class Registration {
   //TEXTBOX VARIABLES
 
   hrmsID:string='';
-  errorMessage:string='';
-  dob:string='';
-  today:string='';
+  slrNo = '';
+  dob='';
   applicationId = '';
+  today:string='';
+  errorMessage:string='';
 
   //MODAL VARIABLES
 
@@ -94,6 +95,10 @@ ngOnInit(){
                 case "0":
 
                 if(response.applicationId){
+                    
+                    this.applicationId = response.applicationId;
+                    this.slrNo = response.slrNo;
+                    this.dob = response.dob;
 
                     this.registrationCompleted = true;
                     this.currentStatus = 'DOB';
@@ -101,7 +106,7 @@ ngOnInit(){
                     this.openModal(
                         response.message,
                         'success',
-                        'Applicatio ID - ' + response.applicationId
+                        response.applicationId
                     );
                 }
                 else{
@@ -123,7 +128,7 @@ ngOnInit(){
                     //alert(response.message);
                     this.openModal(
         response.message,
-        'warning');
+        'Warning');
                     break;
 
                 case "1":
@@ -132,8 +137,7 @@ ngOnInit(){
     this.cdr.detectChanges();
     this.openModal(
         response.message,
-        'warning'
-    );
+        'warning');
 
     break;
                 case "2":
@@ -142,7 +146,7 @@ ngOnInit(){
     this.cdr.detectChanges();
     this.openModal(
         response.message,
-        'warning'
+        'info'
     );
 
     break;
@@ -332,13 +336,27 @@ closeModal(): void {
 
 }
 @Output()
-moveNext = new EventEmitter<void>();
+moveNext = new EventEmitter<any>();
+
+
 
 continueEnrollment(): void {
 
     this.showMessageModal = false;
-
-    this.moveNext.emit();
+    if(this.modalType === 'success' && this.applicationId)
+    {
+        //this.moveNext.emit();
+        console.log({
+    applicationId: this.applicationId,
+    slrNo: this.slrNo,
+    dob: this.dob
+});
+        this.moveNext.emit({
+            applicationId: this.applicationId,
+            slrNo: this.slrNo,
+            dob: this.dob
+        });
+    }
 }
 //#endregion
 

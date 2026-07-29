@@ -33,6 +33,10 @@ export class Master {
 
 //#region Variable declaration
 
+slrNo = '';
+dob='';
+applicationId = '';
+
 //Tracker Variables
 
   steps = [
@@ -65,7 +69,13 @@ getStepStatus(index: number): string {
   return 'upcoming';
 
 }
-goToPersonal(): void {
+goToPersonal(data: any): void {
+
+    console.log(data);
+    
+    this.applicationId = data.applicationId;
+    this.slrNo = data.slrNo;
+    this.dob = data.dob;
 
     this.currentStep = 1;
 
