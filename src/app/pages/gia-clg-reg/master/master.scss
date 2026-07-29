@@ -12,6 +12,10 @@
 
 // Tracker
 
+// ===============================
+// Tracker Card
+// ===============================
+
 .tracker-card {
 
     background: white;
@@ -23,74 +27,70 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
 }
 
+
+// ===============================
+// Tracker Container
+// ===============================
+
 .registration-tracker {
 
     display: flex;
     align-items: center;
     justify-content: center;
+
     width: 100%;
+
     flex-wrap: wrap;
     gap: 2px;
 
 }
 
+
+// ===============================
+// Common Step
+// ===============================
+
 .step {
 
     flex: 1;
+
     text-align: center;
+
     min-width: 120px;
 
-}
-
-// Completed
-
-.step.completed {
-
-    color: #198754;
+    transition: all .3s ease;
 
 }
 
 
-// Current
+// ===============================
+// Icons
+// ===============================
 
-.step.active {
-
-    color: #0d6efd;
-    transform: scale(1.05);
-
-}
-
-
-// Immediate next
-
-.step.next {
-
-    color: #495057;
-
-    .step-number i {
-
-        opacity: 0.8;
-
-    }
-
-}
-
-
-// Future steps
-
-.step.upcoming {
-
-    color: #adb5bd;
-
-}
 .step-number i {
 
-    font-size: 26px;
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    font-size: 24px;
+
     margin-bottom: 8px;
+
+    transition: all .3s ease;
 
 }
 
-// Completed step
+
+// ===============================
+// Completed
+// ===============================
 
 .step.completed {
 
@@ -101,80 +101,153 @@
 
 .step.completed .step-number i {
 
+    background: #d8f3df;
+
+    color: #198754;
+
     font-size: 30px;
 
 }
 
 
-// Active step
+// ===============================
+// Active
+// ===============================
 
 .step.active {
 
-    color: #0d6efd;
+    color: #c2410c;
+
     transform: scale(1.05);
 
 }
 
 
-.step.active .step-number {
+.step.active .step-number i {
 
-    font-size: 15px;
+    background: #ffedd5;
+
+    color: #c2410c;
+
+    box-shadow:
+        0 0 0 5px rgba(234, 88, 12, .12);
 
 }
 
 
-// Connecting line
+// ===============================
+// Immediate Next
+// ===============================
+
+.step.next {
+
+    color: #2563eb;
+
+}
+
+
+.step.next .step-number i {
+
+    background: #dbeafe;
+
+    color: #2563eb;
+
+}
+
+
+// ===============================
+// Future Steps
+// ===============================
+
+.step.upcoming {
+
+    color: #9ca3af;
+
+}
+
+
+.step.upcoming .step-number i {
+
+    background: #f3f4f6;
+
+    color: #9ca3af;
+
+}
+
+
+// ===============================
+// Connector Line
+// ===============================
 
 .line {
 
-    height: 2px;
+    height: 3px;
+
     flex: 0 0 60px;
-    background: #dee2e6;
+
+    background: #ead8c5;
+
+    border-radius: 10px;
+
     margin-top: -20px;
 
 }
+
+
+// ===============================
+// Desktop / Mobile Labels
+// ===============================
+
 .mobile-label {
+
     display: none;
+
 }
+
 
 .desktop-label {
+
     display: block;
+
 }
+
+
 .mobile-name {
+
     display: none;
+
 }
+
 
 .desktop-name {
+
     display: block;
+
 }
 
-// Mobile view Tracker
+
+// ===============================
+// Mobile Tracker
+// ===============================
+
 @media (max-width: 768px) {
-    .desktop-label {
-        display: none;
-    }
 
-    .mobile-label {
-        display: block;
-    }
-    .desktop-name {
-        display: none;
-    }
 
-    .mobile-name {
-        display: block;
-    }
     .tracker-card {
+
         padding: 10px;
+
     }
 
 
     .registration-tracker {
 
-        display: flex;
-        flex-wrap: nowrap;       // prevents second line
+        flex-wrap: nowrap;
+
         width: 100%;
+
         gap: 0;
+
         overflow: hidden;
 
     }
@@ -183,15 +256,21 @@
     .step {
 
         flex: 1;
-        min-width: 0;            // important
+
+        min-width: 0;
+
         text-align: center;
 
     }
 
 
-    .step-number {
+    .step-number i {
 
-        white-space: nowrap;
+        width: 34px;
+
+        height: 34px;
+
+        font-size: 18px;
 
     }
 
@@ -199,7 +278,38 @@
     .line {
 
         flex: 0 0 15px;
+
         height: 2px;
+
+    }
+
+
+    // Mobile short labels
+
+    .desktop-label {
+
+        display: none;
+
+    }
+
+
+    .mobile-label {
+
+        display: block;
+
+    }
+
+
+    .desktop-name {
+
+        display: none;
+
+    }
+
+
+    .mobile-name {
+
+        display: block;
 
     }
 
