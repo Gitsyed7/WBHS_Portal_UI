@@ -36,6 +36,7 @@ export class Master {
 slrNo = '';
 dob='';
 applicationId = '';
+hrmsId ='';
 
 //Tracker Variables
 
@@ -74,6 +75,7 @@ goToPersonal(data: any): void {
     console.log(data);
     
     this.applicationId = data.applicationId;
+    this.hrmsId = data.hrmsId;
     this.slrNo = data.slrNo;
     this.dob = data.dob;
 

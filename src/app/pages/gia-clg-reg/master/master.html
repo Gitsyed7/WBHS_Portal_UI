@@ -46,6 +46,27 @@
     </div> <!-- registration-tracker -->
 </div> <!-- tracker-card -->
 
+<!-- Employee Information Banner -->
+@if (currentStep > 0) {
+    <div class="employee-info-banner shadow-sm rounded-3">
+        
+        <div class="banner-item">
+            <span class="banner-label">HRMS ID:</span>
+            <span class="banner-value">{{ hrmsId }}</span>
+        </div>
+        <div class="banner-divider"></div>
+        <div class="banner-item dob-item">
+            <span class="banner-label">DOB:</span>
+            <span class="banner-value">{{ dob }}</span>
+        </div>
+        <div class="banner-divider dob-divider"></div>
+        <div class="banner-item">
+            <span class="banner-label">Application ID:</span>
+            <span class="banner-value">{{ applicationId }}</span>
+        </div>
+    </div>
+}
+
 <!-- Components to open based on step number -->
  
 @if(currentStep === 0){
@@ -58,6 +79,7 @@
     @if(currentStep === 1){
     <app-personal-information
         [applicationId]="applicationId"
+        [hrmsId]="hrmsId"
         [slrNo]="slrNo"
         [dob]="dob">
     </app-personal-information>

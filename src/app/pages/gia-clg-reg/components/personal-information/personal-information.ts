@@ -10,6 +10,7 @@ import { Input } from '@angular/core';
 
 
 export class PersonalInformation {
+@Input() hrmsId ='';
 @Input() applicationId = '';
 @Input() slrNo = '';
 @Input() dob = '';
@@ -17,8 +18,12 @@ export class PersonalInformation {
 ngOnInit() {
 
     console.log('APP ID :', this.applicationId);
+    console.log("HRMS ID :", this.hrmsId);
     console.log('SLR NO :', this.slrNo);
     console.log('DOB :', this.dob);
+
+    
+    
 
 }
 
