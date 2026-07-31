@@ -1,0 +1,108 @@
+$wbhs-bg: #FFF5EA;
+$wbhs-primary: #094F7C;
+$wbhs-primary-dark: #063554;
+$wbhs-accent-red: #EE3535;
+$wbhs-card-bg: #ffffff;
+$wbhs-border-color: #E2D5C5;
+
+.wbhs-page-wrapper {
+  background-color: $wbhs-bg;
+  min-height: 100%;
+  border-radius: 8px;
+}
+
+.text-wbhs-primary {
+  color: $wbhs-primary;
+}
+
+.text-wbhs-navy {
+  color: $wbhs-primary-dark;
+}
+
+.alert-wbhs-notice {
+  background-color: #FFF0F0;
+  border-left: 5px solid $wbhs-accent-red;
+  border-top: 1px solid #FAD2D2;
+  border-right: 1px solid #FAD2D2;
+  border-bottom: 1px solid #FAD2D2;
+  color: #333333;
+  font-size: 0.9rem;
+}
+
+.wbhs-card {
+  border: 1px solid $wbhs-border-color;
+  border-radius: 8px;
+  background-color: $wbhs-card-bg;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease;
+
+  &:hover {
+    box-shadow: 0 0.5rem 1rem rgba(9, 79, 124, 0.08) !important;
+  }
+}
+
+.wbhs-card-header {
+  background: linear-gradient(135deg, #094F7C 0%, #063554 100%);
+  color: #ffffff;
+  border-bottom: none;
+
+  .header-icon {
+    font-size: 1.25rem;
+  }
+
+  .card-title {
+    color: #ffffff !important;
+    text-decoration: none !important;
+  }
+}
+
+.retirement-box, .identity-box {
+  background-color: #FAF4EB;
+  border: 1px solid #E8DAC8;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  margin-bottom: 0.35rem;
+}
+
+.form-control, .form-select {
+  border-color: #D1C5B5;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus {
+    border-color: $wbhs-primary;
+    box-shadow: 0 0 0 0.2rem rgba(9, 79, 124, 0.18);
+  }
+}
+
+.display-field {
+  background-color: #F8F9FA;
+  border: 1px solid #D1C5B5;
+  color: $wbhs-primary-dark;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+}
+
+.btn-wbhs-submit {
+  background-color: $wbhs-primary;
+  color: #ffffff;
+  border: none;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+
+  &:hover, &:focus {
+    background-color: $wbhs-primary-dark;
+    color: #ffffff;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+.fs-7 {
+  font-size: 0.8rem;
+}

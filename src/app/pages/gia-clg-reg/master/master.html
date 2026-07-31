@@ -1,0 +1,105 @@
+<app-navbar></app-navbar>
+<div class="gia-page">
+<div class="tracker-card">
+
+    <div class="registration-tracker">
+
+        @for(step of steps; track step.name; let i = $index) {
+
+            <div class="step"
+     [class]="getStepStatus(i)">
+
+                <div class="step-number">
+                    @if(i < currentStep) {
+
+        <i class="bi bi-patch-check-fill text-success"></i>
+
+    }
+    @else {
+
+        <i class="bi {{step.icon}}"></i>
+
+    }
+
+                </div>
+
+                <label class="desktop-label">{{ step.name }}</label>
+
+<label class="mobile-label">
+
+    @if(currentStep === i) {
+        {{ step.shortName }}
+    }
+    @else {
+        {{ i + 1 }}
+    }
+
+</label>
+            </div>
+
+            @if(i < steps.length - 1) {
+                <div class="line"></div>
+            }
+
+        }
+
+    </div> <!-- registration-tracker -->
+</div> <!-- tracker-card -->
+
+<!-- Employee Information Banner -->
+@if (currentStep > 0) {
+    <div class="employee-info-banner shadow-sm rounded-3">
+        
+        <div class="banner-item">
+            <span class="banner-label">HRMS ID:</span>
+            <span class="banner-value">{{ hrmsId }}</span>
+        </div>
+        <div class="banner-divider"></div>
+        <div class="banner-item dob-item">
+            <span class="banner-label">DOB:</span>
+            <span class="banner-value">{{ dob }}</span>
+        </div>
+        <div class="banner-divider dob-divider"></div>
+        <div class="banner-item">
+            <span class="banner-label">Application ID:</span>
+            <span class="banner-value">{{ applicationId }}</span>
+        </div>
+    </div>
+}
+
+<!-- Components to open based on step number -->
+ 
+@if(currentStep === 0){
+    <app-registration
+        (moveNext)="goToPersonal($event)">
+    </app-registration>
+}
+
+@if(currentStep === 1){
+    @if(currentStep === 1){
+    <app-personal-information
+        [applicationId]="applicationId"
+        [hrmsId]="hrmsId"
+        [slrNo]="slrNo"
+        [dob]="dob">
+    </app-personal-information>
+}
+}
+
+@if(currentStep === 2){
+    <app-office-information></app-office-information>
+}
+
+@if(currentStep === 3){
+    <app-beneficiary></app-beneficiary>
+}
+
+@if(currentStep === 4){
+    <app-administrative></app-administrative>
+}
+
+</div>
+
+
+
+

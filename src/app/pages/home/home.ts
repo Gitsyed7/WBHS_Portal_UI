@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { WhatsNew } from './whats-new/whats-new';
 import { Circulars } from './circulars/circulars';
+import { Navbar } from '../../shared/navbar/navbar';
 
 @Component({
   selector: 'app-home',
   standalone:true,
-  imports: [WhatsNew,Circulars],
+  imports: [WhatsNew,Circulars,Navbar,],
   templateUrl: './home.html',
   styleUrl: './home.scss',
   

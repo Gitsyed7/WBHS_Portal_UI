@@ -1,0 +1,301 @@
+<div class="container py-4 py-md-5">
+  <div class="row justify-content-center">
+    <div class="col-xl-10 col-lg-11 col-12">
+      <div class="card registration-card border-0">
+        
+        <!-- TITLE & HEADER BANNER -->
+        <div class="registration-header text-center py-4 px-3 border-bottom">
+          <h3 class="registration-title text-center mb-0">
+            ONLINE REGISTRATION FOR COLLEGE
+          </h3>
+        </div>
+
+        <div class="card-body p-4 p-lg-5">
+          <div class="row g-4 g-lg-5 position-relative align-items-stretch">
+            
+            <!-- LEFT PANEL: HRMS SECTION -->
+            <div class="col-md-6 col-12 left-panel d-flex flex-column justify-content-between">
+              <div>
+                <div class="section-badge-header mb-3">
+                  <span class="step-tag">Step 1</span>
+                  <h5 class="section-heading mb-0">HRMS Identification</h5>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label row justify-content-center justify-content-md-start px-2">
+                    Enter HRMS ID
+                  </label>
+
+                  <div class="input-group custom-input-group">
+                    <span class="input-group-text">
+                      G
+                    </span>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      maxlength="10"
+                      (input)="onlyNumbers($event)"
+                      [(ngModel)]="hrmsID"
+                      (keyup)="validateHRMS()"
+                      placeholder="Enter 10 digits of HRMS ID"
+                      [disabled]="currentStatus === 'DOB'">
+                  </div>
+                </div>
+
+                @if(errorMessage){
+                  <div class="text-danger text-center text-md-start mt-2 error-alert p-2 px-3 rounded-3">
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                    {{ errorMessage }}
+                  </div>
+                }
+              </div>
+
+              <!-- HRMS BUTTON -->
+              @if(currentStatus === 'HRMS'){
+                <div class="text-center text-md-start mt-4">
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-action w-100"
+                    (click)="checkHRMS()">
+                    OK
+                  </button>
+                </div>
+              }
+
+              @if(currentStatus === 'DOB'){
+                <div class="status-verified-badge mt-4 p-3 rounded-3 d-flex align-items-center gap-3">
+                  <div class="badge-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                  </div>
+                  <div>
+                    <div class="badge-title">HRMS Verified</div>
+                    <div class="badge-sub">HRMS ID: G{{ hrmsID }}</div>
+                  </div>
+                </div>
+              }
+            </div>
+
+            <!-- MIDDLE VERTICAL DIVIDER FOR MD+ -->
+            <div class="vertical-divider-wrapper d-none d-md-block">
+              <div class="vertical-divider"></div>
+            </div>
+
+            <!-- RIGHT PANEL: STATE 1 (DOWNLOAD LINKS) OR STATE 2 (DOB SECTION) -->
+            <div class="col-md-6 col-12 right-panel d-flex flex-column justify-content-between">
+              
+              <!-- STATE 1: DOWNLOAD LINKS -->
+              @if(currentStatus === 'HRMS'){
+                <div class="right-content-wrapper fade-in d-flex flex-column justify-content-between h-100">
+                  <div>
+                    <div class="section-badge-header mb-3">
+                      <span class="step-tag bg-warning text-dark">Resources</span>
+                      <h5 class="section-heading mb-0">Offline Form & References</h5>
+                    </div>
+
+                    <div class="download-links-group d-flex flex-column gap-3">
+                      <a
+                        href="/assets/pdf/DownloadOffline.pdf"
+                        target="_blank"
+                        class="download-link-card">
+                        <div class="pdf-icon-wrapper">
+                          <img
+                            src="/images/icon-pdf.png"
+                            width="30"
+                            alt="PDF">
+                        </div>
+                        <div class="download-text">
+                          <span class="download-main-text">Download Offline Form</span>
+                          <span class="download-sub-text">Click to open offline registration PDF</span>
+                        </div>
+                        <i class="bi bi-box-arrow-up-right download-arrow-icon"></i>
+                      </a>
+
+                      <a
+                        href="/assets/pdf/DownloadOffline.pdf"
+                        target="_blank"
+                        class="download-link-card">
+                        <div class="pdf-icon-wrapper">
+                          <img
+                            src="/images/icon-pdf.png"
+                            width="30"
+                            alt="PDF">
+                        </div>
+                        <div class="download-text">
+                          <span class="download-main-text">College Treasury & DDO List</span>
+                          <span class="download-sub-text">Reference directory for Treasury & DDO</span>
+                        </div>
+                        <i class="bi bi-box-arrow-up-right download-arrow-icon"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              }
+
+              <!-- STATE 2: DOB SECTION -->
+              @if(currentStatus === 'DOB'){
+                <div class="right-content-wrapper fade-in h-100">
+                  <fieldset [disabled]="registrationCompleted" class="h-100 d-flex flex-column justify-content-between">
+                    <div>
+                      <div class="section-badge-header mb-3">
+                        <span class="step-tag bg-success text-white">Step 2</span>
+                        <h5 class="section-heading mb-0">Date of Birth Verification</h5>
+                      </div>
+
+                      <div class="mb-4">
+                        <label class="form-label row justify-content-center justify-content-md-start px-2">
+                          Date of Birth
+                        </label>
+
+                        <div class="input-group custom-input-group">
+                          <span class="input-group-text bg-light text-secondary">
+                            <i class="bi bi-calendar3"></i>
+                          </span>
+                          <input
+                            type="date"
+                            class="form-control"
+                            [max]="today"
+                            [(ngModel)]="dob"
+                            (click)="openPicker($event)"
+                            (keydown)="$event.preventDefault()">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="dob-action-buttons d-flex flex-column flex-sm-row gap-2 mt-4 pt-2">
+                      <button
+                        type="button"
+                        class="btn btn-success flex-grow-1"
+                        (click)="saveCollegeRegistration()">
+                        Generate Application ID
+                      </button>
+
+                      <button
+                        type="button"
+                        class="btn btn-danger"
+                        (click)="resetForm()">
+                        RESET
+                      </button>
+                    </div>
+                  </fieldset>
+                </div>
+              }
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SECTION -->
+@if(showMessageModal){
+
+  <div class="modal-backdrop fade show"></div>
+
+  <div
+    class="modal fade show d-block"
+    tabindex="-1">
+
+    <div
+      class="modal-dialog modal-dialog-centered"
+      style="max-width:380px;">
+
+      <div class="modal-content border-0 shadow-lg custom-modal">
+
+        <!-- HEADER -->
+        <div
+          class="modal-header text-white"
+          [ngClass]="{
+            'bg-success': modalType === 'success',
+            'bg-warning': modalType === 'warning',
+            'bg-danger': modalType === 'error',
+            'bg-primary': modalType === 'info'
+          }">
+
+          <h4 class="modal-title mb-0 d-flex align-items-center">
+            @if(modalType == 'success'){
+              <i class="bi bi-check-circle-fill me-2"></i>
+            }
+
+            @if(modalType == 'warning'){
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            }
+
+            @if(modalType == 'error'){
+              <i class="bi bi-x-circle-fill me-2"></i>
+            }
+            
+            @if(modalType == 'info'){
+              <i class="bi bi-info-circle-fill me-2"></i>
+            }
+
+            {{modalTitle}}
+          </h4>
+
+        </div>
+
+        <!-- BODY -->
+        <div class="modal-body text-center p-4">
+
+          <div class="success-icon">
+            @if(modalType == 'success'){
+              <i class="bi bi-patch-check-fill text-success"></i>
+            }
+
+            @if(modalType == 'warning'){
+              <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+            }
+
+            @if(modalType == 'error'){
+              <i class="bi bi-x-circle-fill text-danger"></i>
+            }
+
+            @if(modalType == 'info'){
+              <i class="bi bi-info-circle-fill text-primary"></i>
+            }
+          </div>
+
+          <div class="modal-msg-content my-2">
+            {{modalMessage}}
+          </div>
+
+          @if(applicationId){
+            <div class="app-id-wrapper mt-3 p-2 rounded-3 bg-light border">
+              <span class="small text-muted d-block fw-semibold mb-1">Application ID</span>
+              <p class="application-id">
+                {{applicationId}}
+              </p>
+            </div>
+          }
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="modal-footer justify-content-center">
+
+          <button
+            class="btn"
+            [ngClass]="{
+              'btn-success': modalType=='success',
+              'btn-warning': modalType=='warning',
+              'btn-danger': modalType=='error',
+              'btn-primary': modalType=='info'
+            }"
+            (click)="continueEnrollment()">
+
+            {{buttonText}}
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

@@ -1,0 +1,408 @@
+//body
+
+.gia-page{
+
+    background:#FFF5EA;
+    min-height:100vh;
+    padding: 15px;
+
+}
+
+
+
+// Tracker
+
+// ===============================
+// Tracker Card
+// ===============================
+
+.tracker-card {
+
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    margin-top: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+}
+
+
+// ===============================
+// Tracker Container
+// ===============================
+
+.registration-tracker {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+    flex-wrap: wrap;
+    gap: 2px;
+
+}
+
+
+// ===============================
+// Common Step
+// ===============================
+
+.step {
+
+    flex: 1;
+
+    text-align: center;
+
+    min-width: 120px;
+
+    transition: all .3s ease;
+
+}
+
+
+// ===============================
+// Icons
+// ===============================
+
+.step-number i {
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    font-size: 24px;
+
+    margin-bottom: 8px;
+
+    transition: all .3s ease;
+
+}
+
+
+// ===============================
+// Completed
+// ===============================
+
+.step.completed {
+
+    color: #198754;
+
+}
+
+
+.step.completed .step-number i {
+
+    background: #d8f3df;
+
+    color: #198754;
+
+    font-size: 30px;
+
+}
+
+
+// ===============================
+// Active
+// ===============================
+
+.step.active { 
+    //color: #c2410c; 
+    color: #84cc16;
+    transform: scale(1.05); 
+    } 
+    .step.active .step-number i { 
+        //background: #ffedd5; 
+        //color: #c2410c; 
+        //box-shadow: 0 0 0 5px rgba(234, 88, 12, .12); 
+        background: #f0fff4;
+
+        color: #84cc16;
+
+        box-shadow: 0 0 10px rgba(132, 204, 22, .25);
+    }
+    .step.active label {
+
+        color: #84cc16;
+
+        font-weight: 600;
+
+    }
+
+// ===============================
+// Immediate Next
+// ===============================
+
+.step.next {
+
+    color: #93C5FD;
+
+    .step-number i {
+
+        color: #93C5FD;
+
+        opacity: 0.9;
+
+        box-shadow:
+            0 0 8px rgba(147, 197, 253, .15);
+
+    }
+
+}
+
+.step.next label {
+
+    color: #93C5FD;
+
+}
+
+// ===============================
+// Future Steps
+// ===============================
+
+.step.upcoming {
+
+    color: #9ca3af;
+
+}
+
+
+.step.upcoming .step-number i {
+
+    background: #f3f4f6;
+
+    color: #9ca3af;
+
+}
+
+
+// ===============================
+// Connector Line
+// ===============================
+
+.line {
+
+    height: 3px;
+
+    flex: 0 0 60px;
+
+    background: #ead8c5;
+
+    border-radius: 10px;
+
+    margin-top: -20px;
+
+}
+
+
+// ===============================
+// Desktop / Mobile Labels
+// ===============================
+
+.mobile-label {
+
+    display: none;
+
+}
+
+
+.desktop-label {
+
+    display: block;
+
+}
+
+
+.mobile-name {
+
+    display: none;
+
+}
+
+
+.desktop-name {
+
+    display: block;
+
+}
+
+
+// ===============================
+// Mobile Tracker
+// ===============================
+
+@media (max-width: 768px) {
+
+
+    .tracker-card {
+
+        padding: 10px;
+
+    }
+
+
+    .registration-tracker {
+
+        flex-wrap: nowrap;
+
+        width: 100%;
+
+        gap: 0;
+
+        overflow: hidden;
+
+    }
+
+
+    .step {
+
+        flex: 1;
+
+        min-width: 0;
+
+        text-align: center;
+
+    }
+
+
+    .step-number i {
+
+        width: 34px;
+
+        height: 34px;
+
+        font-size: 18px;
+
+    }
+
+
+    .line {
+
+        flex: 0 0 15px;
+
+        height: 2px;
+
+    }
+
+
+    // Mobile short labels
+
+    .desktop-label {
+
+        display: none;
+
+    }
+
+
+    .mobile-label {
+
+        display: block;
+
+    }
+
+
+    .desktop-name {
+
+        display: none;
+
+    }
+
+
+    .mobile-name {
+
+        display: block;
+
+    }
+
+}
+
+
+// ===============================
+// Employee Information Banner
+// ===============================
+
+.employee-info-banner {
+    background: #ffffff;
+    border: 1px solid #ead8c5;
+    border-left: 4px solid #c2410c;
+    border-radius: 8px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 12px;
+    white-space: nowrap;
+
+    .banner-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+    }
+
+    .banner-label {
+        font-weight: 600;
+        color: #4b5563;
+    }
+
+    .banner-value {
+        font-weight: 700;
+        color: #c2410c;
+        background-color: #ffedd5;
+        padding: 3px 10px;
+        border-radius: 6px;
+        font-size: 13.5px;
+        letter-spacing: 0.3px;
+    }
+
+    .banner-divider {
+        height: 20px;
+        width: 1px;
+        background-color: #ead8c5;
+        flex-shrink: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .employee-info-banner {
+        padding: 8px 12px;
+        gap: 8px;
+        margin-bottom: 15px;
+
+        .banner-item {
+            gap: 5px;
+            font-size: 12px;
+        }
+
+        .banner-label {
+            font-weight: 600;
+        }
+
+        .banner-value {
+            padding: 2px 7px;
+            font-size: 11.5px;
+            border-radius: 4px;
+        }
+
+        .banner-divider {
+            height: 16px;
+        }
+        .dob-item,
+        .dob-divider{
+            display:none !important;
+        }
+    }
+    
+}
+
+
