@@ -128,7 +128,7 @@ ngOnInit(){
                     //alert(response.message);
                     this.openModal(
         response.message,
-        'Warning');
+        'warning');
                     break;
 
                 case "1":
@@ -337,8 +337,6 @@ closeModal(): void {
 }
 @Output()
 moveNext = new EventEmitter<any>();
-
-
 
 continueEnrollment(): void {
 

@@ -114,26 +114,28 @@
 // Active
 // ===============================
 
-.step.active {
+.step.active { 
+    //color: #c2410c; 
+    color: #84cc16;
+    transform: scale(1.05); 
+    } 
+    .step.active .step-number i { 
+        //background: #ffedd5; 
+        //color: #c2410c; 
+        //box-shadow: 0 0 0 5px rgba(234, 88, 12, .12); 
+        background: #f0fff4;
 
-    color: #c2410c;
+        color: #84cc16;
 
-    transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(132, 204, 22, .25);
+    }
+    .step.active label {
 
-}
+        color: #84cc16;
 
+        font-weight: 600;
 
-.step.active .step-number i {
-
-    background: #ffedd5;
-
-    color: #c2410c;
-
-    box-shadow:
-        0 0 0 5px rgba(234, 88, 12, .12);
-
-}
-
+    }
 
 // ===============================
 // Immediate Next
@@ -141,19 +143,26 @@
 
 .step.next {
 
-    color: #2563eb;
+    color: #93C5FD;
+
+    .step-number i {
+
+        color: #93C5FD;
+
+        opacity: 0.9;
+
+        box-shadow:
+            0 0 8px rgba(147, 197, 253, .15);
+
+    }
 
 }
 
+.step.next label {
 
-.step.next .step-number i {
-
-    background: #dbeafe;
-
-    color: #2563eb;
+    color: #93C5FD;
 
 }
-
 
 // ===============================
 // Future Steps
