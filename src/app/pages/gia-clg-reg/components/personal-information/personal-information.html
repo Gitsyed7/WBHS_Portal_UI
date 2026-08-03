@@ -66,8 +66,14 @@
             <label for="sex_ddlist" class="form-label fw-bold text-wbhs-primary">
               Gender <span class="text-danger">*</span>
             </label>
-            <select id="sex_ddlist" name="sex_ddlist" class="form-select">
-              <option value="" selected disabled>-- Select Gender --</option>
+            <select id="sex_ddlist" name="sex_ddlist" class="form-select" [(ngModel)]="selectedGender">
+              <option value="" disabled>Select Gender</option>
+
+                @for (gender of genders; track gender.genCd) {
+                <option [value]="gender.genCd">
+                    {{ gender.gendrDes }}
+                </option>
+                }
             </select>
           </div>
 
@@ -76,8 +82,14 @@
             <label for="mrt_ddlist" class="form-label fw-bold text-wbhs-primary">
               Marital Status <span class="text-danger">*</span>
             </label>
-            <select id="mrt_ddlist" name="mrt_ddlist" class="form-select">
-              <option value="" selected disabled>-- Select Marital Status --</option>
+            <select id="mrt_ddlist" name="mrt_ddlist" class="form-select" [(ngModel)]="selectedMaritalStatus">
+              <option value="" disabled>Select Marital Status</option>
+              @for (gender of genders; track gender.genCd) {
+                <option [value]="gender.genCd">
+                    {{ gender.gendrDes }}
+                </option>
+              }
+
             </select>
           </div>
 
@@ -86,8 +98,9 @@
             <label for="dist_ddlist" class="form-label fw-bold text-wbhs-primary">
               Residing District <span class="text-danger">*</span>
             </label>
-            <select id="dist_ddlist" name="dist_ddlist" class="form-select">
+            <select id="dist_ddlist" name="dist_ddlist" class="form-select" [(ngModel)]="selectedDistrict">
               <option value="" selected disabled>-- Select Residing District --</option>
+             
             </select>
           </div>
 
