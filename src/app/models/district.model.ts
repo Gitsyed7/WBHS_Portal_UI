@@ -1,4 +1,4 @@
 export interface District {
-    distCd: string;
-    distNm: string;
+    dist_cd: string;
+    dist_nm: string;
 }
