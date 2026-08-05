@@ -148,7 +148,7 @@
                         </label>
 
                         <div class="input-group custom-input-group">
-                          <span class="input-group-text bg-light text-secondary" (click)="dp.toggle()" style="cursor: pointer;">
+                          <span class="input-group-text bg-light text-secondary" style="cursor: pointer;">
                             <i class="bi bi-calendar3"></i>
                           </span>
                           <input
@@ -156,10 +156,6 @@
                             class="form-control"
                             placeholder="YYYY-MM-DD"
                             bsDatepicker
-                            #dp="bsDatepicker"
-                            [maxDate]="maxDate"
-                            [(ngModel)]="dobDate"
-                            [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', showWeekNumbers: false, containerClass: 'theme-dark-blue' }"
                             (keydown)="$event.preventDefault()">
                         </div>
                       </div>
