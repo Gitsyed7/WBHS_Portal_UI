@@ -18,7 +18,6 @@ import { IfscResponse } from '../../../../models/ifsc-Response.model';
   styleUrl: './personal-information.scss',
 })
 
-
 export class PersonalInformation implements OnInit {
 @Input() hrmsId ='';
 @Input() applicationId = '';
@@ -30,11 +29,13 @@ selectedMaritalStatus = '';
 selectedDistrict = '';
 isGenderLoading = true;
 
-firstName='';
-lastName='';
 selectedIdProof='';
+email ='';
+emailError = '';
 
 private lookupService = inject(LookupService);
+private readonly emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/;
+
 
 genders: Gender[] = [];
 maritalStatuses: MaritalStatus[] = [];
@@ -189,23 +190,6 @@ onIfscInput(): void {
         });
 }
 
-allowLettersAndSpaces(event: Event): void {
-
-    const input = event.target as HTMLInputElement;
-
-    input.value = input.value.replace(/[^a-zA-Z ]/g, '');
-
-    this.firstName = input.value;
-}
-allowLettersAndNOSpaces(event: Event): void {
-
-    const input = event.target as HTMLInputElement;
-
-    input.value = input.value.replace(/[^a-zA-Z]/g, '');
-
-    this.lastName = input.value;
-}
-
 validateInput(event: Event, pattern: RegExp): void {
 
     const input = event.target as HTMLInputElement;
@@ -213,6 +197,171 @@ validateInput(event: Event, pattern: RegExp): void {
     input.value = input.value.replace(pattern, '');
 
 }
+
+//#endregion
+
+//#region Identity Proof Segmented Input Logic
+
+idProofNo = '';
+
+panPart1 = '';
+panPart2 = '';
+panPart3 = '';
+
+voterPart1 = '';
+voterPart2 = '';
+
+onIdProofTypeChange(): void {
+  this.panPart1 = '';
+  this.panPart2 = '';
+  this.panPart3 = '';
+  this.voterPart1 = '';
+  this.voterPart2 = '';
+  this.idProofNo = '';
+}
+
+onPanPartInput(event: Event, partIndex: number, maxLen: number, nextInputId?: string): void {
+  const input = event.target as HTMLInputElement;
+  let rawVal = input.value.toUpperCase();
+
+  if (partIndex === 1) {
+    rawVal = rawVal.replace(/[^A-Z]/g, '');
+    this.panPart1 = rawVal;
+  } else if (partIndex === 2) {
+    rawVal = rawVal.replace(/[^0-9]/g, '');
+    this.panPart2 = rawVal;
+  } else if (partIndex === 3) {
+    rawVal = rawVal.replace(/[^A-Z]/g, '');
+    this.panPart3 = rawVal;
+  }
+
+  input.value = rawVal;
+  this.updateCombinedIdProof();
+
+  if (rawVal.length === maxLen && nextInputId) {
+    const nextEl = document.getElementById(nextInputId) as HTMLInputElement;
+    if (nextEl) {
+      nextEl.focus();
+    }
+  }
+}
+
+onVoterPartInput(event: Event, partIndex: number, maxLen: number, nextInputId?: string): void {
+  const input = event.target as HTMLInputElement;
+  let rawVal = input.value.toUpperCase();
+
+  if (partIndex === 1) {
+    rawVal = rawVal.replace(/[^A-Z]/g, '');
+    this.voterPart1 = rawVal;
+  } else if (partIndex === 2) {
+    rawVal = rawVal.replace(/[^0-9]/g, '');
+    this.voterPart2 = rawVal;
+  }
+
+  input.value = rawVal;
+  this.updateCombinedIdProof();
+
+  if (rawVal.length === maxLen && nextInputId) {
+    const nextEl = document.getElementById(nextInputId) as HTMLInputElement;
+    if (nextEl) {
+      nextEl.focus();
+    }
+  }
+}
+
+onSegmentKeydown(event: KeyboardEvent, currentVal: string, prevInputId?: string): void {
+  if (event.key === 'Backspace' && (!currentVal || currentVal.length === 0) && prevInputId) {
+    const prevEl = document.getElementById(prevInputId) as HTMLInputElement;
+    if (prevEl) {
+      prevEl.focus();
+    }
+  }
+}
+
+onSegmentPaste(event: ClipboardEvent): void {
+  event.preventDefault();
+  const pastedText = event.clipboardData?.getData('text') || '';
+  const cleaned = pastedText.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+
+  if (this.selectedIdProof === '02') {
+    this.panPart1 = cleaned.substring(0, 5).replace(/[^A-Z]/g, '');
+    this.panPart2 = cleaned.substring(5, 9).replace(/[^0-9]/g, '');
+    this.panPart3 = cleaned.substring(9, 10).replace(/[^A-Z]/g, '');
+  } else if (this.selectedIdProof === '01') {
+    this.voterPart1 = cleaned.substring(0, 3).replace(/[^A-Z]/g, '');
+    this.voterPart2 = cleaned.substring(3, 10).replace(/[^0-9]/g, '');
+  }
+  this.updateCombinedIdProof();
+}
+
+  updateCombinedIdProof(): void {
+    if (this.selectedIdProof === '02') {
+      this.idProofNo = (this.panPart1 + this.panPart2 + this.panPart3).toUpperCase();
+    } else if (this.selectedIdProof === '01') {
+      this.idProofNo = (this.voterPart1 + this.voterPart2).toUpperCase();
+    } else {
+      this.idProofNo = '';
+    }
+  }
+  //#endregion
+
+//#region Aadhaar Segmented Input Logic
+  aadhaarNo = '';
+  aadhaarPart1 = '';
+  aadhaarPart2 = '';
+  aadhaarPart3 = '';
+
+  onAadhaarPartInput(event: Event, partIndex: number, maxLen: number, nextInputId?: string): void {
+    const input = event.target as HTMLInputElement;
+    let rawVal = input.value.replace(/[^0-9]/g, '');
+
+    if (partIndex === 1) {
+      this.aadhaarPart1 = rawVal;
+    } else if (partIndex === 2) {
+      this.aadhaarPart2 = rawVal;
+    } else if (partIndex === 3) {
+      this.aadhaarPart3 = rawVal;
+    }
+
+    input.value = rawVal;
+    this.updateCombinedAadhaar();
+
+    if (rawVal.length === maxLen && nextInputId) {
+      const nextEl = document.getElementById(nextInputId) as HTMLInputElement;
+      if (nextEl) {
+        nextEl.focus();
+      }
+    }
+  }
+
+  onAadhaarPaste(event: ClipboardEvent): void {
+    event.preventDefault();
+    const pastedText = event.clipboardData?.getData('text') || '';
+    const cleaned = pastedText.replace(/[^0-9]/g, '');
+
+    this.aadhaarPart1 = cleaned.substring(0, 4);
+    this.aadhaarPart2 = cleaned.substring(4, 8);
+    this.aadhaarPart3 = cleaned.substring(8, 12);
+
+    this.updateCombinedAadhaar();
+  }
+
+  updateCombinedAadhaar(): void {
+    this.aadhaarNo = this.aadhaarPart1 + this.aadhaarPart2 + this.aadhaarPart3;
+  }
+  //#endregion
+
+//#region Email validator
+
+onEmailInput(event: Event): void { 
+    const input = event.target as HTMLInputElement; // Keep only characters allowed in an email address 
+    let value = input.value .replace(/[^a-zA-Z0-9._%+\-@]/g, '') .toLowerCase(); 
+    this.email = value; // Keep the textbox synchronized after filtering 
+    input.value = value; // Clear error while the user is correcting the value 
+    if (!value) { this.emailError = ''; return; } 
+    if (!this.emailRegex.test(value)) { 
+        this.emailError = 'Please enter a valid email address.'; } 
+    else { this.emailError = ''; } }
 
 //#endregion
 
