@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { CollegeRegistrationService } from '../../../../services/college-registration.service';
 import { Output, EventEmitter } from '@angular/core';
@@ -10,13 +11,14 @@ import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-registration',
-  imports: [FormsModule,
-    CommonModule],
+  imports: [
+    FormsModule,
+    CommonModule,
+    BsDatepickerModule
+  ],
   templateUrl: './registration.html',
   styleUrl: './registration.scss',
 })
-
-
 
 export class Registration {
 
@@ -35,9 +37,37 @@ export class Registration {
   dob='';
   applicationId = '';
   today:string='';
+  maxDate: Date = new Date();
   errorMessage:string='';
 
+  get dobDate(): Date | null {
+    if (!this.dob) return null;
+    const parts = this.dob.split('-');
+    if (parts.length === 3) {
+      const year = parseInt(parts[0], 10);
+      const month = parseInt(parts[1], 10) - 1;
+      const day = parseInt(parts[2], 10);
+      if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+        return new Date(year, month, day);
+      }
+    }
+    const d = new Date(this.dob);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  set dobDate(value: Date | null | undefined) {
+    if (!value || isNaN(value.getTime())) {
+      this.dob = '';
+    } else {
+      const year = value.getFullYear();
+      const month = String(value.getMonth() + 1).padStart(2, '0');
+      const day = String(value.getDate()).padStart(2, '0');
+      this.dob = `${year}-${month}-${day}`;
+    }
+  }
+
   //MODAL VARIABLES
+
 
   showMessageModal = false;
   modalMessage = '';

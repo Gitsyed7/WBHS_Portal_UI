@@ -208,15 +208,10 @@ panPart1 = '';
 panPart2 = '';
 panPart3 = '';
 
-voterPart1 = '';
-voterPart2 = '';
-
 onIdProofTypeChange(): void {
   this.panPart1 = '';
   this.panPart2 = '';
   this.panPart3 = '';
-  this.voterPart1 = '';
-  this.voterPart2 = '';
   this.idProofNo = '';
 }
 
@@ -246,27 +241,11 @@ onPanPartInput(event: Event, partIndex: number, maxLen: number, nextInputId?: st
   }
 }
 
-onVoterPartInput(event: Event, partIndex: number, maxLen: number, nextInputId?: string): void {
+onVoterInput(event: Event): void {
   const input = event.target as HTMLInputElement;
-  let rawVal = input.value.toUpperCase();
-
-  if (partIndex === 1) {
-    rawVal = rawVal.replace(/[^A-Z]/g, '');
-    this.voterPart1 = rawVal;
-  } else if (partIndex === 2) {
-    rawVal = rawVal.replace(/[^0-9]/g, '');
-    this.voterPart2 = rawVal;
-  }
-
+  let rawVal = input.value.toUpperCase().replace(/[^A-Z0-9\/-]/g, '');
   input.value = rawVal;
-  this.updateCombinedIdProof();
-
-  if (rawVal.length === maxLen && nextInputId) {
-    const nextEl = document.getElementById(nextInputId) as HTMLInputElement;
-    if (nextEl) {
-      nextEl.focus();
-    }
-  }
+  this.idProofNo = rawVal;
 }
 
 onSegmentKeydown(event: KeyboardEvent, currentVal: string, prevInputId?: string): void {
@@ -281,28 +260,24 @@ onSegmentKeydown(event: KeyboardEvent, currentVal: string, prevInputId?: string)
 onSegmentPaste(event: ClipboardEvent): void {
   event.preventDefault();
   const pastedText = event.clipboardData?.getData('text') || '';
-  const cleaned = pastedText.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
 
   if (this.selectedIdProof === '02') {
+    const cleaned = pastedText.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
     this.panPart1 = cleaned.substring(0, 5).replace(/[^A-Z]/g, '');
     this.panPart2 = cleaned.substring(5, 9).replace(/[^0-9]/g, '');
     this.panPart3 = cleaned.substring(9, 10).replace(/[^A-Z]/g, '');
+    this.updateCombinedIdProof();
   } else if (this.selectedIdProof === '01') {
-    this.voterPart1 = cleaned.substring(0, 3).replace(/[^A-Z]/g, '');
-    this.voterPart2 = cleaned.substring(3, 10).replace(/[^0-9]/g, '');
+    const cleaned = pastedText.toUpperCase().replace(/[^A-Z0-9\/-]/g, '');
+    this.idProofNo = cleaned;
   }
-  this.updateCombinedIdProof();
 }
 
-  updateCombinedIdProof(): void {
-    if (this.selectedIdProof === '02') {
-      this.idProofNo = (this.panPart1 + this.panPart2 + this.panPart3).toUpperCase();
-    } else if (this.selectedIdProof === '01') {
-      this.idProofNo = (this.voterPart1 + this.voterPart2).toUpperCase();
-    } else {
-      this.idProofNo = '';
-    }
+updateCombinedIdProof(): void {
+  if (this.selectedIdProof === '02') {
+    this.idProofNo = (this.panPart1 + this.panPart2 + this.panPart3).toUpperCase();
   }
+}
   //#endregion
 
 //#region Aadhaar Segmented Input Logic
