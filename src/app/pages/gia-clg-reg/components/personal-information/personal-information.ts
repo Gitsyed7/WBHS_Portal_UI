@@ -3,6 +3,7 @@ import { Component,
   OnInit,
   inject } from '@angular/core';
   import { FormsModule } from '@angular/forms';
+import { ChangeDetectorRef } from '@angular/core';
 
 import { LookupService } from '../../../../services/lookup.service';
 import { Gender } from '../../../../models/gender.model';
@@ -35,6 +36,10 @@ emailError = '';
 
 private lookupService = inject(LookupService);
 private readonly emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/;
+
+constructor(
+    private cdr: ChangeDetectorRef
+) {}
 
 
 genders: Gender[] = [];
@@ -154,6 +159,11 @@ loadIfscDetails(IfscResponse: string): void {
 }
 
 onIfscInput(): void {
+
+    this.ifscCode = this.ifscCode
+        .toUpperCase()
+        .replace(/[^A-Z0-9]/g, '');
+
     console.log('IFSC:', this.ifscCode);
 
     if (this.ifscCode.length !== 11) {
@@ -162,16 +172,15 @@ onIfscInput(): void {
     }
 
     const request: IfscRequest = {
-        IFSC: this.ifscCode.toUpperCase()
+        IFSC: this.ifscCode
     };
-
     this.lookupService.getIfscDetails(request)
         .subscribe({
 
             next: (response) => {
 
                 this.ifscDetails = response;
-
+                this.cdr.detectChanges();
                 console.log(
                     'IFSC Details:',
                     this.ifscDetails
@@ -181,7 +190,10 @@ onIfscInput(): void {
 
             error: (error) => {
 
-                console.error('IFSC API Error:', error);
+                console.error(
+                    'IFSC API Error:',
+                    error
+                );
 
                 this.ifscDetails = null;
 

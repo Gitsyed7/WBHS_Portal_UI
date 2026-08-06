@@ -144,7 +144,7 @@
             <label for="txt_ph_no" class="form-label fw-bold text-wbhs-primary">
               Residence Phone Number
             </label>
-            <input type="tel" id="txt_ph_no" name="txt_ph_no" (input)="validateInput($event, /[^0-9]/g)" class="form-control" placeholder="Enter Phone Number" autocomplete="off">
+            <input type="tel" id="txt_ph_no" name="txt_ph_no" maxlength="13" (input)="validateInput($event, /[^0-9]/g)" class="form-control" placeholder="Enter Phone Number" autocomplete="off">
           </div>
 
           <!-- Identity Proof Selection -->
@@ -507,7 +507,7 @@
             <label for="txt_ac_no" class="form-label fw-bold text-wbhs-primary">
               Account No. <span class="text-danger">*</span>
             </label>
-            <input type="text" id="txt_ac_no" name="txt_ac_no" class="form-control" maxlength="17" placeholder="Enter your account no." autocomplete="off">
+            <input type="text" id="txt_ac_no" name="txt_ac_no" class="form-control" maxlength="17" (input)="validateInput($event, /[^0-9]/g)" placeholder="Enter your account no." autocomplete="off">
           </div>
 
           <!-- Confirm Account No -->
@@ -515,7 +515,7 @@
             <label for="txt_cnfm_ac_no" class="form-label fw-bold text-wbhs-primary">
               Confirm Account No. <span class="text-danger">*</span>
             </label>
-            <input type="text" id="txt_cnfm_ac_no" name="txt_cnfm_ac_no" class="form-control" maxlength="17" placeholder="Confirm your account no." autocomplete="off">
+            <input type="text" id="txt_cnfm_ac_no" name="txt_cnfm_ac_no" class="form-control" maxlength="17" (input)="validateInput($event, /[^0-9]/g)" placeholder="Confirm your account no." autocomplete="off">
           </div>
 
           <div class="col-12 mt-2">

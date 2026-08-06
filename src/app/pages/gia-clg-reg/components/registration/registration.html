@@ -152,11 +152,16 @@
                             <i class="bi bi-calendar3"></i>
                           </span>
                           <input
-                            type="text"
-                            class="form-control"
-                            placeholder="YYYY-MM-DD"
-                            bsDatepicker
-                            (keydown)="$event.preventDefault()">
+    type="text"
+    class="form-control"
+    placeholder="YYYY-MM-DD"
+    bsDatepicker
+    [(ngModel)]="dobDate"
+    [bsConfig]="{
+      dateInputFormat: 'YYYY-MM-DD',
+      maxDate: maxDate
+    }"
+    (keydown)="$event.preventDefault()">
                         </div>
                       </div>
                     </div>

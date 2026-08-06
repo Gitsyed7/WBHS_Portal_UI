@@ -204,6 +204,10 @@ if(!this.dob)
         'DOB is mandatory field.';
     return;
 }
+if (this.dobDate && this.dobDate > this.maxDate) {
+    this.errorMessage = 'Date of birth cannot be a future date.';
+    return;
+}
   const request = {
     hrmsId: this.getCompleteHRMSID(),
     dob: this.dob
