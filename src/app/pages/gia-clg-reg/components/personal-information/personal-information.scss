@@ -1,4 +1,5 @@
 $wbhs-bg: #FFF5EA;
+//$wbhs-bg: #FFFfff;
 $wbhs-primary: #094F7C;
 $wbhs-primary-dark: #063554;
 $wbhs-accent-red: #EE3535;
@@ -91,15 +92,18 @@ $wbhs-border-color: #E2D5C5;
   background-color: $wbhs-primary;
   color: #ffffff;
   border: none;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition: all 0.25s ease;
 
   &:hover, &:focus {
     background-color: $wbhs-primary-dark;
     color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 0.4rem 0.8rem rgba(9, 79, 124, 0.25) !important;
   }
 
   &:active {
-    transform: translateY(1px);
+    transform: translateY(0);
+    box-shadow: 0 0.2rem 0.4rem rgba(9, 79, 124, 0.2) !important;
   }
 }
 

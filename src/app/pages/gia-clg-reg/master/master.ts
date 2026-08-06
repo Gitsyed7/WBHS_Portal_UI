@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Header } from '../../../shared/header/header';
 import { Footer } from '../../../shared/footer/footer';
@@ -37,6 +37,11 @@ slrNo = '';
 dob='';
 applicationId = '';
 hrmsId ='';
+
+@ViewChild('personalComp') personalComp?: PersonalInformation;
+@ViewChild('officeComp') officeComp?: OfficeInformation;
+@ViewChild('beneficiaryComp') beneficiaryComp?: Beneficiary;
+@ViewChild('adminComp') adminComp?: Administrative;
 
 //Tracker Variables
 
@@ -82,6 +87,53 @@ goToPersonal(data: any): void {
     this.currentStep = 1;
 
 }
+
+//#region Step Navigation & Validation
+
+saveAndContinue(): void {
+  let isValid = true;
+
+  if (this.currentStep === 1 && this.personalComp) {
+    isValid = typeof this.personalComp.validateAndSave === 'function' 
+      ? this.personalComp.validateAndSave() 
+      : true;
+  } else if (this.currentStep === 2 && this.officeComp) {
+    isValid = typeof (this.officeComp as any).validateAndSave === 'function' 
+      ? (this.officeComp as any).validateAndSave() 
+      : true;
+  } else if (this.currentStep === 3 && this.beneficiaryComp) {
+    isValid = typeof (this.beneficiaryComp as any).validateAndSave === 'function' 
+      ? (this.beneficiaryComp as any).validateAndSave() 
+      : true;
+  }
+
+  if (isValid && this.currentStep < this.steps.length - 1) {
+    this.currentStep++;
+  } else if (!isValid) {
+    console.warn(`Step ${this.currentStep} validation failed. Staying on current step.`);
+  }
+}
+
+previousStep(): void {
+  if (this.currentStep > 1) {
+    this.currentStep--;
+  }
+}
+
+submitApplication(): void {
+  let isValid = true;
+
+  if (this.adminComp && typeof (this.adminComp as any).validateAndSave === 'function') {
+    isValid = (this.adminComp as any).validateAndSave();
+  }
+
+  if (isValid) {
+    console.log('Application Submitted Successfully!');
+    alert('Application submitted successfully!');
+  }
+}
+
+//#endregion
 
 }
 

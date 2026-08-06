@@ -49,6 +49,8 @@ districts: District[] = [];
 ifscCode = '';
 ifscDetails: IfscResponse | null = null;
 
+
+
 ngOnInit(): void {
 
     console.log('APP ID :', this.applicationId);
@@ -347,8 +349,60 @@ onEmailInput(event: Event): void {
     input.value = value; // Clear error while the user is correcting the value 
     if (!value) { this.emailError = ''; return; } 
     if (!this.emailRegex.test(value)) { 
-        this.emailError = 'Please enter a valid email address.'; } 
-    else { this.emailError = ''; } }
+      this.emailError = 'Please enter a valid email address.'; 
+    } else { 
+      this.emailError = ''; 
+    } 
+  }
+//#endregion
+
+//#region Account Number Logic & Validation
+accountNo = '';
+confirmAccountNo = '';
+accountNoTouched = false;
+confirmAccountNoTouched = false;
+
+onAccountNoInput(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  input.value = input.value.replace(/[^0-9]/g, '');
+  this.accountNo = input.value;
+  this.accountNoTouched = true;
+}
+
+onConfirmAccountNoInput(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  input.value = input.value.replace(/[^0-9]/g, '');
+  this.confirmAccountNo = input.value;
+  this.confirmAccountNoTouched = true;
+}
+
+get isAccountNoValid(): boolean {
+  return this.accountNo.length >= 9 && this.accountNo.length <= 17;
+}
+
+get isConfirmAccountNoMatching(): boolean {
+  return this.confirmAccountNo.length > 0 && this.confirmAccountNo === this.accountNo;
+}
+//#endregion
+
+//#region Step Validation
+
+  validateAndSave(): boolean {
+    console.log('Validating Personal Information form...');
+    
+    if (this.emailError) {
+      console.warn('Personal Info validation failed: Invalid email address');
+      return false;
+    }
+
+    if (this.accountNo && (!this.isAccountNoValid || !this.isConfirmAccountNoMatching)) {
+      console.warn('Personal Info validation failed: Account details invalid/mismatched');
+      return false;
+    }
+
+    console.log('Personal Information validated successfully!');
+    return true;
+  }
 
 //#endregion
 

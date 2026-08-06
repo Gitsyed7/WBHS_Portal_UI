@@ -1,4 +1,4 @@
-<div class="wbhs-page-wrapper py-3">
+<div class="wbhs-page-wrapper py-0">
   <div class="container-fluid px-2 px-md-4">
     
     <!-- Mandatory Notice Banner -->
@@ -507,7 +507,28 @@
             <label for="txt_ac_no" class="form-label fw-bold text-wbhs-primary">
               Account No. <span class="text-danger">*</span>
             </label>
-            <input type="text" id="txt_ac_no" name="txt_ac_no" class="form-control" maxlength="17" (input)="validateInput($event, /[^0-9]/g)" placeholder="Enter your account no." autocomplete="off">
+            <input 
+              type="text" 
+              id="txt_ac_no" 
+              name="txt_ac_no" 
+              class="form-control" 
+              [class.is-invalid]="accountNoTouched && accountNo && !isAccountNoValid"
+              [class.is-valid]="accountNoTouched && isAccountNoValid"
+              maxlength="17" 
+              [(ngModel)]="accountNo"
+              (input)="onAccountNoInput($event)" 
+              placeholder="Enter your account no." 
+              autocomplete="off">
+
+            @if (accountNoTouched && accountNo && !isAccountNoValid) {
+              <div class="text-danger small mt-1 d-flex align-items-center">
+                <i class="bi bi-exclamation-circle me-1"></i> Account No. must be 9 to 17 digits.
+              </div>
+            } @else {
+              <div class="text-muted fs-8 mt-1">
+                Account No. should be 9-17 digits.
+              </div>
+            }
           </div>
 
           <!-- Confirm Account No -->
@@ -515,30 +536,40 @@
             <label for="txt_cnfm_ac_no" class="form-label fw-bold text-wbhs-primary">
               Confirm Account No. <span class="text-danger">*</span>
             </label>
-            <input type="text" id="txt_cnfm_ac_no" name="txt_cnfm_ac_no" class="form-control" maxlength="17" (input)="validateInput($event, /[^0-9]/g)" placeholder="Confirm your account no." autocomplete="off">
-          </div>
+            <input 
+              type="text" 
+              id="txt_cnfm_ac_no" 
+              name="txt_cnfm_ac_no" 
+              class="form-control" 
+              [class.is-invalid]="confirmAccountNoTouched && confirmAccountNo && (!isConfirmAccountNoMatching || !isAccountNoValid)"
+              [class.is-valid]="confirmAccountNoTouched && confirmAccountNo && isConfirmAccountNoMatching && isAccountNoValid"
+              maxlength="17" 
+              [(ngModel)]="confirmAccountNo"
+              (input)="onConfirmAccountNoInput($event)" 
+              placeholder="Confirm your account no." 
+              autocomplete="off">
 
-          <div class="col-12 mt-2">
-            <div class="alert alert-danger py-2 px-3 mb-0 d-inline-flex align-items-center fs-7">
-              <i class="bi bi-info-circle me-2"></i>
-              <span>Account No. should be 9-17 digits.</span>
-            </div>
+            @if (confirmAccountNoTouched && confirmAccountNo) {
+              @if (!isAccountNoValid) {
+                <div class="text-danger small mt-1 d-flex align-items-center">
+                  <i class="bi bi-exclamation-circle me-1"></i> Account No. must be 9 to 17 digits.
+                </div>
+              } @else if (!isConfirmAccountNoMatching) {
+                <div class="text-danger small mt-1 d-flex align-items-center">
+                  <i class="bi bi-exclamation-circle me-1"></i> Account numbers do not match.
+                </div>
+              } @else {
+                <div class="text-success small mt-1 d-flex align-items-center fw-semibold">
+                  <i class="bi bi-check-circle me-1"></i> Account numbers match.
+                </div>
+              }
+            }
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Submit / Action Section -->
-    <div class="row my-4">
-      <div class="col-12 d-flex justify-content-center gap-3">
-        <button type="button" id="btn_next_per" class="btn btn-wbhs-submit px-4 py-2 shadow-sm fw-bold">
-          Save &amp; Continue
-        </button>
-        <button type="button" id="final_nxt_per" class="btn btn-secondary px-4 py-2 shadow-sm fw-bold d-none">
-          Next
-        </button>
-      </div>
-    </div>
+
 
   </div>
 </div>
