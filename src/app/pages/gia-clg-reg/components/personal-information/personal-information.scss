@@ -242,5 +242,24 @@ $wbhs-border-color: #E2D5C5;
     background-color: #FAF4EB;
   }
 }
+.form-control.is-invalid {
+  border-color: #dc3545 !important;
+}
 
+.form-control.is-invalid:focus {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 0 0.15rem rgba(220, 53, 69, 0.15) !important;
+}
+.validation-radio-error {
+  border: 2px solid #dc3545 !important;
+  box-shadow: 0 0 0 0.15rem rgba(220, 53, 69, 0.15) !important;
+}
+.form-select.is-invalid {
+    border-color: #dc3545 !important;
+}
+
+.form-select.is-invalid:focus {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.15rem rgba(220, 53, 69, 0.15) !important;
+}
 

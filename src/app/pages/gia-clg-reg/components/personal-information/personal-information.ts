@@ -1,3 +1,5 @@
+
+//#region Imports
 import { Component,
   Input,
   OnInit,
@@ -11,6 +13,7 @@ import { MaritalStatus } from '../../../../models/marital-status.model';
 import { District } from '../../../../models/district.model';
 import { IfscRequest } from '../../../../models/ifsc-Request.model';
 import { IfscResponse } from '../../../../models/ifsc-Response.model';
+//#endregion
 
 @Component({
   selector: 'app-personal-information',
@@ -20,6 +23,9 @@ import { IfscResponse } from '../../../../models/ifsc-Response.model';
 })
 
 export class PersonalInformation implements OnInit {
+
+//#region Variable Declaration
+
 @Input() hrmsId ='';
 @Input() applicationId = '';
 @Input() slrNo = '';
@@ -34,38 +40,47 @@ selectedIdProof='';
 email ='';
 emailError = '';
 
-private lookupService = inject(LookupService);
-private readonly emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/;
-
-constructor(
-    private cdr: ChangeDetectorRef
-) {}
-
+retirementAge = '';
+firstName = '';
+lastName = '';
+permanentAddress = '';
+mobileNo = '';
+fieldErrors: { [key: string]: string } = {};
+toastMessage = '';
+showToastMessage = false;
 
 genders: Gender[] = [];
 maritalStatuses: MaritalStatus[] = [];
 districts: District[] = [];
 
+private readonly emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/;
+
 ifscCode = '';
+ifscError ='';
 ifscDetails: IfscResponse | null = null;
 
+//#endregion
 
+//#region Dependency Injection
 
+private lookupService = inject(LookupService);
+
+constructor(private cdr: ChangeDetectorRef) {}
+
+//#endregion
+
+//#region OnInit
 ngOnInit(): void {
 
-    console.log('APP ID :', this.applicationId);
-    console.log("HRMS ID :", this.hrmsId);
-    console.log('SLR NO :', this.slrNo);
-    console.log('DOB :', this.dob);
-
-    this.loadGender();
+  this.loadGender();
     this.loadMaritalStatus();
     this.loadDistrict();
-    
 
 }
+//#endregion
 
 //#region Utility
+
 loadGender(): void {
 
     this.lookupService.getGender()
@@ -163,15 +178,32 @@ loadIfscDetails(IfscResponse: string): void {
 onIfscInput(): void {
 
     this.ifscCode = this.ifscCode
-        .toUpperCase()
-        .replace(/[^A-Z0-9]/g, '');
+        .toUpperCase();
 
-    console.log('IFSC:', this.ifscCode);
+    //console.log('IFSC:', this.ifscCode);
+    this.ifscError = '';
+    this.ifscDetails = null;
 
-    if (this.ifscCode.length !== 11) {
-        this.ifscDetails = null;
-        return;
-    }
+    const value = this.ifscCode;
+
+  // First 4 characters must be letters
+  if (value.length >= 1 && !/^[A-Z]{1,4}$/.test(value.substring(0, Math.min(value.length, 4)))) {
+    this.ifscError = 'First 4 characters of IFSC must be letters.';
+    return;
+  }
+
+  // 5th character must be a digit
+  if (value.length >= 5 && !/^[A-Z]{4}[0-9]$/.test(value.substring(0, 5))) {
+    this.ifscError = 'The 5th character of IFSC must be a number.';
+    return;
+  }
+
+  // Characters 6–11 must be digits
+  if (value.length >= 6 && !/^[A-Z]{4}[0-9][0-9]{0,6}$/.test(value)) {
+    this.ifscError = 'Last 6 characters of IFSC must be numbers.';
+    return;
+  }
+
 
     const request: IfscRequest = {
         IFSC: this.ifscCode
@@ -212,6 +244,87 @@ validateInput(event: Event, pattern: RegExp): void {
 
 }
 
+private focusControl(controlId: string): void {
+
+  setTimeout(() => {
+
+    const control = document.getElementById(controlId) as HTMLElement | null;
+
+    if (!control) {
+      console.log('Control not found:', controlId);
+      return;
+    }
+
+    console.log('Control found:', control);
+
+    control.focus();
+
+    let parent = control.parentElement;
+
+    while (parent) {
+
+      const style = window.getComputedStyle(parent);
+
+      console.log(
+        'Parent:',
+        parent.className,
+        'overflowY:',
+        style.overflowY,
+        'scrollHeight:',
+        parent.scrollHeight,
+        'clientHeight:',
+        parent.clientHeight
+      );
+
+      if (
+        parent.scrollHeight > parent.clientHeight &&
+        (style.overflowY === 'auto' || style.overflowY === 'scroll')
+      ) {
+
+        parent.scrollTo({
+          top: control.offsetTop - 150,
+          behavior: 'smooth'
+        });
+
+        return;
+      }
+
+      parent = parent.parentElement;
+    }
+
+    // Fallback to document scrolling
+    control.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    });
+
+  }, 100);
+}
+showToast(message: string): void {
+  this.toastMessage = message;
+  this.showToastMessage = true;
+
+  setTimeout(() => {
+    this.showToastMessage = false;
+  }, 3000);
+}
+private validationError(
+  field: string,
+  message: string,
+  controlId: string
+): boolean {
+
+  this.fieldErrors[field] = message;
+  this.showToast(message);
+  this.focusControl(controlId);
+
+  return false;
+}
+clearFieldError(field: string): void {
+  if (this.fieldErrors[field]) {
+    delete this.fieldErrors[field];
+  }
+}
 //#endregion
 
 //#region Identity Proof Segmented Input Logic
@@ -387,13 +500,297 @@ get isConfirmAccountNoMatching(): boolean {
 
 //#region Step Validation
 
-  validateAndSave(): boolean {
+validateAndSave(): boolean {
+
+  console.log('Validating Personal Information form...');
+
+  // Clear previous validation state
+  this.ifscError = '';
+  this.fieldErrors = {};
+
+  // ---------------------------------
+  // Retirement Age
+  // ---------------------------------
+
+  if (!this.retirementAge) {
+    return this.validationError(
+      'retirementAge',
+      'Retirement Age is a mandatory field.',
+      'ret_yr_60'
+    );
+  }
+
+  // ---------------------------------
+  // First Name
+  // ---------------------------------
+
+  if (!this.firstName.trim()) {
+    return this.validationError(
+      'firstName',
+      'First Name is required.',
+      'txt_fname'
+    );
+  }
+
+  // ---------------------------------
+  // Last Name
+  // ---------------------------------
+
+  if (!this.lastName.trim()) {
+    return this.validationError(
+      'lastName',
+      'Last Name is required.',
+      'txt_lname'
+    );
+  }
+
+  // ---------------------------------
+  // Gender
+  // ---------------------------------
+
+  if (!this.selectedGender) {
+    return this.validationError(
+      'selectedGender',
+      'Gender selection is mandatory.',
+      'sex_ddlist'
+    );
+  }
+
+  // ---------------------------------
+  // Marital Status
+  // ---------------------------------
+
+  if (!this.selectedMaritalStatus) {
+    return this.validationError(
+      'selectedMaritalStatus',
+      'Marital Status selection is mandatory.',
+      'mrt_ddlist'
+    );
+  }
+
+  // ---------------------------------
+  // Residing District
+  // ---------------------------------
+
+  if (!this.selectedDistrict) {
+    return this.validationError(
+      'selectedDistrict',
+      'Residing District selection is mandatory.',
+      'dist_ddlist'
+    );
+  }
+
+  // ---------------------------------
+  // Permanent Address
+  // ---------------------------------
+
+  if (!this.permanentAddress.trim()) {
+    return this.validationError(
+      'permanentAddress',
+      'Permanent Address is a mandatory field.',
+      'txt_addr'
+    );
+  }
+
+  // ---------------------------------
+  // Mobile Number
+  // ---------------------------------
+
+  if (!this.mobileNo.trim()) {
+    return this.validationError(
+      'mobileNo',
+      'Mobile Number is mandatory.',
+      'txt_mob'
+    );
+  }
+
+  // ---------------------------------
+  // Email
+  // ---------------------------------
+
+  if (!this.email.trim()) {
+    return this.validationError(
+      'email',
+      'Email is required.',
+      'txt_email'
+    );
+  }
+
+  // Existing live email validation
+  if (this.emailError) {
+    const message = 'Invalid email address.';
+
+    this.showToast(message);
+    this.focusControl('txt_email');
+
+    return false;
+  }
+
+  // ---------------------------------
+  // Identity Proof Type
+  // ---------------------------------
+
+  if (!this.selectedIdProof) {
+    return this.validationError(
+      'selectedIdProof',
+      'Identity Proof Type is required.',
+      'ddl_id_proof'
+    );
+  }
+
+  // ---------------------------------
+  // Identity Proof Number
+  // ---------------------------------
+
+  if (!this.idProofNo.trim()) {
+
+    if (this.selectedIdProof === '02') {
+
+      return this.validationError(
+        'idProofNo',
+        'PAN Card Number is required.',
+        'pan_part_1'
+      );
+
+    } else if (this.selectedIdProof === '01') {
+
+      return this.validationError(
+        'idProofNo',
+        'Voter ID Number is required.',
+        'voter_single_input'
+      );
+
+    } else {
+
+      return this.validationError(
+        'idProofNo',
+        'Identity Proof Number is required.',
+        'txt_id_prf'
+      );
+    }
+  }
+
+  // ---------------------------------
+  // Aadhaar
+  // ---------------------------------
+
+  if (!this.aadhaarNo.trim()) {
+    return this.validationError(
+      'aadhaarNo',
+      'Aadhaar Number is required.',
+      'aadhaar_part_1'
+    );
+  }
+
+  // ---------------------------------
+  // IFSC
+  // ---------------------------------
+
+  if (!this.ifscCode.trim()) {
+
+    const message = 'IFSC code is mandatory.';
+
+    this.ifscError = message;
+    this.showToast(message);
+    this.focusControl('txt_ifsc');
+
+    return false;
+  }
+
+  // ---------------------------------
+  // IFSC Length
+  // ---------------------------------
+
+  if (this.ifscCode.length < 11) {
+
+    const message = 'IFSC code must be 11 characters.';
+
+    this.ifscError = message;
+    this.showToast(message);
+    this.focusControl('txt_ifsc');
+
+    return false;
+  }
+
+  // ---------------------------------
+  // IFSC Lookup Result
+  // ---------------------------------
+
+  if (!this.ifscDetails?.bank) {
+
+    const message = 'IFSC not found. Contact support.';
+
+    this.ifscError = message;
+    this.showToast(message);
+    this.focusControl('txt_ifsc');
+
+    return false;
+  }
+
+  // ---------------------------------
+  // Account Number
+  // ---------------------------------
+
+  if (!this.accountNo.trim()) {
+    return this.validationError(
+      'accountNo',
+      'Account Number is required.',
+      'txt_ac_no'
+    );
+  }
+
+  // ---------------------------------
+  // Confirm Account Number
+  // ---------------------------------
+
+  if (!this.confirmAccountNo.trim()) {
+    return this.validationError(
+      'confirmAccountNo',
+      'Confirm Account Number is required.',
+      'txt_cnfm_ac_no'
+    );
+  }
+
+  // ---------------------------------
+  // Account Number Validation
+  // ---------------------------------
+
+  if (!this.isAccountNoValid) {
+
+    const message = 'Invalid Account Number.';
+
+    this.showToast(message);
+    this.focusControl('txt_ac_no');
+
+    return false;
+  }
+
+  // ---------------------------------
+  // Account Number Matching
+  // ---------------------------------
+
+  if (!this.isConfirmAccountNoMatching) {
+
+    const message = 'Account Numbers do not match.';
+
+    this.showToast(message);
+    this.focusControl('txt_cnfm_ac_no');
+
+    return false;
+  }
+
+  // ---------------------------------
+  // Everything Passed
+  // ---------------------------------
+
+  console.log('Personal Information validated successfully!');
+
+  return true;
+}
+  /* validateAndSave(): boolean {
     console.log('Validating Personal Information form...');
     
-    if (this.emailError) {
-      console.warn('Personal Info validation failed: Invalid email address');
-      return false;
-    }
+    
 
     if (this.accountNo && (!this.isAccountNoValid || !this.isConfirmAccountNoMatching)) {
       console.warn('Personal Info validation failed: Account details invalid/mismatched');
@@ -402,7 +799,7 @@ get isConfirmAccountNoMatching(): boolean {
 
     console.log('Personal Information validated successfully!');
     return true;
-  }
+  } */
 
 //#endregion
 

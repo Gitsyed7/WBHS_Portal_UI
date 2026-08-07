@@ -1,6 +1,34 @@
 <div class="wbhs-page-wrapper py-0">
   <div class="container-fluid px-2 px-md-4">
-    
+  <!-- Toast notification section -->
+    @if (showToastMessage) {
+  <div
+    class="toast-container position-fixed top-0 end-0 p-3"
+    style="z-index: 9999;">
+
+    <div
+      class="toast show text-bg-danger border-0 shadow"
+      role="alert">
+
+      <div class="d-flex align-items-center">
+
+        <div class="toast-body">
+          <i class="bi bi-exclamation-circle me-2"></i>
+          {{ toastMessage }}
+        </div>
+
+        <button
+          type="button"
+          class="btn-close btn-close-white me-2"
+          (click)="showToastMessage = false">
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+}
     <!-- Mandatory Notice Banner -->
     <div class="alert alert-wbhs-notice shadow-sm mb-4" role="alert">
       <div class="d-flex align-items-start">
@@ -25,19 +53,30 @@
             <label class="form-label fw-bold text-wbhs-primary">
               Select Retirement Age <span class="text-danger">*</span>
             </label>
-            <div class="d-flex flex-wrap gap-4 mt-1 p-3 rounded retirement-box">
+            <div class="d-flex flex-wrap gap-4 mt-1 p-3 rounded retirement-box"
+            [class.validation-radio-error]="!!fieldErrors['retirementAge']">
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="rad_ret_yr" id="ret_yr_60" value="60">
+                <input class="form-check-input" type="radio" name="rad_ret_yr" 
+                id="ret_yr_60" 
+                value="60" 
+                [(ngModel)]="retirementAge"
+                (change)="clearFieldError('retirementAge')" >
                 <label class="form-check-label fw-bold text-wbhs-navy" for="ret_yr_60">60 Years</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="rad_ret_yr" id="ret_yr_62" value="62">
+                <input class="form-check-input" type="radio" name="rad_ret_yr" id="ret_yr_62" value="62" [(ngModel)]="retirementAge">
                 <label class="form-check-label fw-bold text-wbhs-navy" for="ret_yr_62">62 Years</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="rad_ret_yr" id="ret_yr_65" value="65">
+                <input class="form-check-input" type="radio" name="rad_ret_yr" id="ret_yr_65" value="65" [(ngModel)]="retirementAge">
                 <label class="form-check-label fw-bold text-wbhs-navy" for="ret_yr_65">65 Years</label>
               </div>
+              @if (fieldErrors['retirementAge']) {
+      <div class="text-danger small mt-1">
+        <i class="bi bi-exclamation-circle me-1"></i>
+        {{ fieldErrors['retirementAge'] }}
+      </div>
+    }
             </div>
           </div>
         </div>
@@ -48,7 +87,18 @@
             <label for="txt_fname" class="form-label fw-bold text-wbhs-primary">
               First Name <span class="text-danger">*</span>
             </label>
-            <input type="text" id="txt_fname" (input)="validateInput($event, /[^a-zA-Z ]/g)" name="txt_fname" class="form-control text-uppercase" placeholder="Enter First Name + Middle Name (Space allowed)" autocomplete="off">
+            <input type="text" id="txt_fname" 
+            [(ngModel)]="firstName" 
+            (input)="validateInput($event, /[^a-zA-Z ]/g); clearFieldError('firstName')"
+            [class.is-invalid]="fieldErrors['firstName']"
+            name="txt_fname" class="form-control text-uppercase" 
+            placeholder="Enter First Name + Middle Name (Space allowed)" autocomplete="off">
+            @if (fieldErrors['firstName']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ fieldErrors['firstName'] }}
+  </div>
+}
             <div class="form-text text-muted small"></div>
           </div>
 
@@ -57,7 +107,20 @@
             <label for="txt_lname" class="form-label fw-bold text-wbhs-primary">
               Last Name <span class="text-danger">*</span>
             </label>
-            <input type="text" id="txt_lname" (input)="validateInput($event, /[^a-zA-Z]/g)" name="txt_lname" class="form-control text-uppercase" placeholder="Enter Last Name (No space allowed)" autocomplete="off">
+            <input type="text" id="txt_lname" 
+            [(ngModel)]="lastName" 
+            (input)="validateInput($event, /[^a-zA-Z]/g); clearFieldError('lastName')"
+            [class.is-invalid]="fieldErrors['lastName']"
+            name="txt_lname" 
+            class="form-control text-uppercase" 
+            placeholder="Enter Last Name (No space allowed)" 
+            autocomplete="off">
+            @if (fieldErrors['lastName']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ fieldErrors['lastName'] }}
+  </div>
+}
             <div class="form-text text-muted small"></div>
           </div>
 
@@ -66,7 +129,12 @@
             <label for="sex_ddlist" class="form-label fw-bold text-wbhs-primary">
               Gender <span class="text-danger">*</span>
             </label>
-            <select id="sex_ddlist" name="sex_ddlist" class="form-select" [(ngModel)]="selectedGender">
+            <select id="sex_ddlist" name="sex_ddlist"
+            class="form-select" 
+            [(ngModel)]="selectedGender"
+            (change)="clearFieldError('selectedGender')"
+            [class.is-invalid]="fieldErrors['selectedGender']">
+            
               <option value="" disabled>Select Gender</option>
 
                 @for (gender of genders; track gender.genCd) {
@@ -75,6 +143,12 @@
                 </option>
                 }
             </select>
+            @if (fieldErrors['selectedGender']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ fieldErrors['selectedGender'] }}
+  </div>
+}
           </div>
 
           <!-- Marital Status -->
@@ -82,7 +156,10 @@
             <label for="mrt_ddlist" class="form-label fw-bold text-wbhs-primary">
               Marital Status <span class="text-danger">*</span>
             </label>
-            <select id="mrt_ddlist" name="mrt_ddlist" class="form-select" [(ngModel)]="selectedMaritalStatus">
+            <select id="mrt_ddlist" name="mrt_ddlist" class="form-select" 
+            [(ngModel)]="selectedMaritalStatus"
+            (change)="clearFieldError('selectedMaritalStatus')"
+            [class.is-invalid]="fieldErrors['selectedMaritalStatus']">
               <option value="" disabled>Select Marital Status</option>
               @for (maritalStatus of maritalStatuses; track maritalStatus.stsCd) {
                 <option [value]="maritalStatus.stsCd">
@@ -91,6 +168,12 @@
               }
 
             </select>
+            @if (fieldErrors['selectedMaritalStatus']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ fieldErrors['selectedMaritalStatus'] }}
+  </div>
+}
           </div>
 
           <!-- Residing District -->
@@ -98,7 +181,10 @@
             <label for="dist_ddlist" class="form-label fw-bold text-wbhs-primary">
               Residing District <span class="text-danger">*</span>
             </label>
-            <select id="dist_ddlist" name="dist_ddlist" class="form-select" [(ngModel)]="selectedDistrict">
+            <select id="dist_ddlist" name="dist_ddlist" class="form-select" 
+            [(ngModel)]="selectedDistrict"
+            (change)="clearFieldError('selectedDistrict')"
+            [class.is-invalid]="fieldErrors['selectedDistrict']">
               <option value="" disabled>Select Residing District</option>
               @for (district of districts; track district.dist_cd) {
                 <option [value]="district.dist_cd">
@@ -106,6 +192,12 @@
                 </option>
               }
             </select>
+            @if (fieldErrors['selectedDistrict']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ fieldErrors['selectedDistrict'] }}
+  </div>
+}
           </div>
 
           <!-- Permanent Address -->
@@ -113,7 +205,18 @@
             <label for="txt_addr" class="form-label fw-bold text-wbhs-primary">
               Permanent Address <span class="text-danger">*</span>
             </label>
-            <textarea id="txt_addr" name="txt_addr" (input)="validateInput($event, /[^a-zA-Z0-9\/\- ]/g)" class="form-control text-uppercase" rows="3" placeholder="Enter Permanent Address" autocomplete="off"></textarea>
+            <textarea id="txt_addr" name="txt_addr" 
+            [(ngModel)]="permanentAddress" 
+            (input)="validateInput($event, /[^a-zA-Z0-9\/\- ]/g); clearFieldError('permanentAddress')"
+            [class.is-invalid]="fieldErrors['permanentAddress']"
+            class="form-control text-uppercase" rows="3" placeholder="Enter Permanent Address" 
+            autocomplete="off"></textarea>
+            @if (fieldErrors['permanentAddress']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ fieldErrors['permanentAddress'] }}
+  </div>
+}
           </div>
 
           <!-- Mobile No -->
@@ -121,7 +224,17 @@
             <label for="txt_mob" class="form-label fw-bold text-wbhs-primary">
               Mobile No. <span class="text-danger">*</span>
             </label>
-            <input type="tel" id="txt_mob" (input)="validateInput($event, /[^0-9]/g)" name="txt_mob" class="form-control" maxlength="10" placeholder="10-digit Mobile Number" autocomplete="off">
+            <input type="tel" id="txt_mob" [(ngModel)]="mobileNo" 
+            (input)="validateInput($event, /[^0-9]/g); clearFieldError('mobileNo')"
+            [class.is-invalid]="fieldErrors['mobileNo']"
+            name="txt_mob" class="form-control" maxlength="10" placeholder="10-digit Mobile Number" 
+            autocomplete="off">
+            @if (fieldErrors['mobileNo']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ fieldErrors['mobileNo'] }}
+  </div>
+}
           </div>
 
           <!-- Email Address -->
@@ -222,7 +335,7 @@
                   maxlength="10"
                   name="txt_id_prf"
                   class="form-control text-uppercase text-center border-0 bg-transparent py-2 text-muted"
-                  placeholder="Select Identity Proof first"
+                  placeholder="Select Type of Identity Proof first"
                   autocomplete="off">
               </div>
             } @else {
@@ -319,6 +432,7 @@
                       maxlength="16"
                       placeholder="e.g. ABC1234567 or WB/01/001/000123"
                       [(ngModel)]="idProofNo"
+                      (input)="onVoterInput($event)"
                       (paste)="onSegmentPaste($event)"
                       autocomplete="off">
                   </div>
@@ -457,8 +571,14 @@
     placeholder="Please enter bank IFSC"
     autocomplete="off"
     [(ngModel)]="ifscCode"
-    (input)="onIfscInput()"
->
+    (input)="validateInput($event, /[^a-zA-Z0-9]/g)"
+    (input)="onIfscInput()">
+    @if (ifscError) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ ifscError }}
+  </div>
+}
     </div>
 
     <!-- Bank Name -->
