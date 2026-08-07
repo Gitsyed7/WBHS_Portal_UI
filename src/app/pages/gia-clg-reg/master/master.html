@@ -76,26 +76,77 @@
 }
 
 @if(currentStep === 1){
-    @if(currentStep === 1){
     <app-personal-information
+        #personalComp
         [applicationId]="applicationId"
         [hrmsId]="hrmsId"
         [slrNo]="slrNo"
         [dob]="dob">
     </app-personal-information>
 }
-}
 
 @if(currentStep === 2){
-    <app-office-information></app-office-information>
+    <app-office-information #officeComp></app-office-information>
 }
 
 @if(currentStep === 3){
-    <app-beneficiary></app-beneficiary>
+    <app-beneficiary #beneficiaryComp></app-beneficiary>
 }
 
 @if(currentStep === 4){
-    <app-administrative></app-administrative>
+    <app-administrative #adminComp></app-administrative>
+}
+
+<!-- Master Action Bar (Steps 1 through 4) -->
+@if (currentStep > 0) {
+  <div class="master-action-wrapper mt-1 mb-4">
+    <div class="master-action-card p-3 p-md-3 d-flex flex-column flex-sm-row align-items-center justify-content-between gap-3 shadow-lg rounded-4 border">
+      
+      <!-- Left: Step Indicator & Info -->
+      <div class="d-flex align-items-center gap-3">
+        <div class="step-badge rounded-circle d-flex align-items-center justify-content-center fw-bold text-white shadow-sm">
+          {{ currentStep }}
+        </div>
+        <div>
+          <div class="fw-bold text-wbhs-navy mb-0 fs-6">
+            Step {{ currentStep }} of {{ steps.length - 1 }}: {{ steps[currentStep].name }}
+          </div>
+          <small class="text-muted d-flex align-items-center gap-1">
+            <i class="bi bi-shield-check text-success"></i>
+            <span>All entries are validated and saved securely before proceeding.</span>
+          </small>
+        </div>
+      </div>
+
+      <!-- Right: Action Buttons -->
+      <div class="d-flex align-items-center gap-2 w-100 w-sm-auto justify-content-center justify-content-sm-end">
+        <!-- Previous Button (Only for Steps 2, 3, 4) -->
+        @if (currentStep > 1) {
+          <button type="button" (click)="previousStep()" class="btn btn-outline-secondary px-4 py-2 rounded-pill fw-bold btn-hover-lift d-inline-flex align-items-center gap-1">
+            <i class="bi bi-arrow-left"></i>
+            <span>Previous</span>
+          </button>
+        }
+
+        <!-- Save & Continue Button (For Steps 1, 2, 3) -->
+        @if (currentStep < 4) {
+          <button type="button" (click)="saveAndContinue()" class="btn btn-wbhs-primary-gradient px-4 py-2 rounded-pill fw-bold text-white btn-hover-glow d-inline-flex align-items-center gap-2">
+            <span>Save &amp; Continue</span>
+            <i class="bi bi-arrow-right-circle-fill fs-6"></i>
+          </button>
+        }
+
+        <!-- Submit Application Button (For Step 4) -->
+        @if (currentStep === 4) {
+          <button type="button" (click)="submitApplication()" class="btn btn-wbhs-submit-final px-4 py-2 rounded-pill fw-bold text-white btn-hover-glow d-inline-flex align-items-center gap-2">
+            <i class="bi bi-send-check-fill"></i>
+            <span>Submit Application</span>
+          </button>
+        }
+      </div>
+
+    </div>
+  </div>
 }
 
 </div>

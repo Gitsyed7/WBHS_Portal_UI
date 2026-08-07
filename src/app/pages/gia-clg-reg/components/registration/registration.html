@@ -148,16 +148,20 @@
                         </label>
 
                         <div class="input-group custom-input-group">
-                          <span class="input-group-text bg-light text-secondary">
+                          <span class="input-group-text bg-light text-secondary" style="cursor: pointer;">
                             <i class="bi bi-calendar3"></i>
                           </span>
                           <input
-                            type="date"
-                            class="form-control"
-                            [max]="today"
-                            [(ngModel)]="dob"
-                            (click)="openPicker($event)"
-                            (keydown)="$event.preventDefault()">
+    type="text"
+    class="form-control"
+    placeholder="YYYY-MM-DD"
+    bsDatepicker
+    [(ngModel)]="dobDate"
+    [bsConfig]="{
+      dateInputFormat: 'YYYY-MM-DD',
+      maxDate: maxDate
+    }"
+    (keydown)="$event.preventDefault()">
                         </div>
                       </div>
                     </div>
