@@ -36,15 +36,18 @@ selectedMaritalStatus = '';
 selectedDistrict = '';
 isGenderLoading = true;
 
-selectedIdProof='';
-email ='';
-emailError = '';
-
 retirementAge = '';
 firstName = '';
 lastName = '';
 permanentAddress = '';
 mobileNo = '';
+mobileError = '';
+email ='';
+emailError = '';
+selectedIdProof='';
+aadhaarError = '';
+
+
 fieldErrors: { [key: string]: string } = {};
 toastMessage = '';
 showToastMessage = false;
@@ -336,6 +339,9 @@ panPart2 = '';
 panPart3 = '';
 
 onIdProofTypeChange(): void {
+
+   this.clearFieldError('idProofNo');
+
   this.panPart1 = '';
   this.panPart2 = '';
   this.panPart3 = '';
@@ -428,6 +434,16 @@ updateCombinedIdProof(): void {
     input.value = rawVal;
     this.updateCombinedAadhaar();
 
+    // Live Aadhaar validation
+  if (this.aadhaarNo.length > 0 && this.aadhaarNo.length < 12) {
+    this.aadhaarError = 'Aadhaar Number must be 12 digits.';
+  } else {
+    this.aadhaarError = '';
+  }
+
+  // Clear validate-time error when user starts correcting
+  this.clearFieldError('aadhaarNo');
+
     if (rawVal.length === maxLen && nextInputId) {
       const nextEl = document.getElementById(nextInputId) as HTMLInputElement;
       if (nextEl) {
@@ -446,12 +462,38 @@ updateCombinedIdProof(): void {
     this.aadhaarPart3 = cleaned.substring(8, 12);
 
     this.updateCombinedAadhaar();
+
+    // Live Aadhaar validation
+  if (this.aadhaarNo.length > 0 && this.aadhaarNo.length < 12) {
+    this.aadhaarError = 'Aadhaar Number must be 12 digits.';
+  } else {
+    this.aadhaarError = '';
+  }
+
+  this.clearFieldError('aadhaarNo');
   }
 
   updateCombinedAadhaar(): void {
     this.aadhaarNo = this.aadhaarPart1 + this.aadhaarPart2 + this.aadhaarPart3;
   }
   //#endregion
+
+//#region Mobile Number Length Validator
+onMobileInput(event: Event): void {
+  const input = event.target as HTMLInputElement;
+
+  const value = input.value.replace(/\D/g, '');
+
+  input.value = value;
+  this.mobileNo = value;
+
+  if (value.length > 0 && value.length < 10) {
+    this.mobileError = 'Mobile Number must be 10 digits.';
+  } else {
+    this.mobileError = '';
+  }
+}
+//#endregion
 
 //#region Email validator
 
@@ -681,6 +723,13 @@ validateAndSave(): boolean {
       'aadhaar_part_1'
     );
   }
+  if (this.aadhaarNo.length !== 12) {
+  return this.validationError(
+    'aadhaarNo',
+    'Aadhaar Number must be 12 digits.',
+    'aadhaar_part_1'
+  );
+}
 
   // ---------------------------------
   // IFSC
@@ -692,7 +741,7 @@ validateAndSave(): boolean {
 
     this.ifscError = message;
     this.showToast(message);
-    this.focusControl('txt_ifsc');
+    this.focusControl('txt_ifsc_cd');
 
     return false;
   }
@@ -707,7 +756,7 @@ validateAndSave(): boolean {
 
     this.ifscError = message;
     this.showToast(message);
-    this.focusControl('txt_ifsc');
+    this.focusControl('txt_ifsc_cd');
 
     return false;
   }
@@ -722,7 +771,7 @@ validateAndSave(): boolean {
 
     this.ifscError = message;
     this.showToast(message);
-    this.focusControl('txt_ifsc');
+    this.focusControl('txt_ifsc_cd');
 
     return false;
   }

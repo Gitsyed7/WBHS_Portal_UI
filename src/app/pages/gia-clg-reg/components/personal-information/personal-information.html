@@ -225,10 +225,16 @@
               Mobile No. <span class="text-danger">*</span>
             </label>
             <input type="tel" id="txt_mob" [(ngModel)]="mobileNo" 
-            (input)="validateInput($event, /[^0-9]/g); clearFieldError('mobileNo')"
+            (input)="onMobileInput($event); validateInput($event, /[^0-9]/g); clearFieldError('mobileNo')"
             [class.is-invalid]="fieldErrors['mobileNo']"
             name="txt_mob" class="form-control" maxlength="10" placeholder="10-digit Mobile Number" 
             autocomplete="off">
+            @if (mobileError) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ mobileError }}
+  </div>
+}
             @if (fieldErrors['mobileNo']) {
   <div class="text-danger small mt-1">
     <i class="bi bi-exclamation-circle me-1"></i>
@@ -269,7 +275,8 @@
               </span>
             </label>
 
-            <div class="identity-radio-wrapper shadow-sm rounded p-2 bg-white border flex-grow-1 d-flex align-items-center">
+            <div class="identity-radio-wrapper shadow-sm rounded p-2 bg-white border flex-grow-1 d-flex align-items-center"
+            [class.validation-radio-error]="!!fieldErrors['selectedIdProof']">
               <div class="d-flex w-100 gap-2 justify-content-around">
                 <div class="custom-radio-card flex-fill text-center">
                   <input
@@ -279,7 +286,7 @@
                     id="id_prf_voter"
                     value="01"
                     [(ngModel)]="selectedIdProof"
-                    (change)="onIdProofTypeChange()">
+                    (change)="onIdProofTypeChange();clearFieldError('selectedIdProof')">
                   <label
                     class="btn identity-radio-btn btn-sm w-100 py-2 fw-semibold"
                     for="id_prf_voter">
@@ -295,13 +302,19 @@
                     id="id_prf_pan"
                     value="02"
                     [(ngModel)]="selectedIdProof"
-                    (change)="onIdProofTypeChange()">
+                    (change)="onIdProofTypeChange(); ">
                   <label
                     class="btn identity-radio-btn btn-sm w-100 py-2 fw-semibold"
                     for="id_prf_pan">
                     <i class="bi bi-person-vcard me-1"></i> PAN Card
                   </label>
                 </div>
+                @if (fieldErrors['selectedIdProof']) {
+      <div class="text-danger small mt-1">
+        <i class="bi bi-exclamation-circle me-1"></i>
+        {{ fieldErrors['selectedIdProof'] }}
+      </div>
+    }
               </div>
             </div>
           </div>
@@ -338,19 +351,23 @@
                   placeholder="Select Type of Identity Proof first"
                   autocomplete="off">
               </div>
-            } @else {
+               
+            } 
+           
+            @else {
               <!-- Hidden synced input for original ID contract -->
               <input
                 type="text"
                 id="txt_id_prf"
                 name="txt_id_prf"
-                [(ngModel)]="idProofNo"
                 class="d-none"
-                autocomplete="off">
+                autocomplete="off"
+                [(ngModel)]="idProofNo">
 
               @if (selectedIdProof === '02') {
                 <!-- Segmented Input UI for PAN Card (02) -->
-                <div class="segmented-input-wrapper shadow-sm rounded p-2 bg-white border flex-grow-1 d-flex flex-column justify-content-between">
+                <div class="segmented-input-wrapper shadow-sm rounded p-2 bg-white border flex-grow-1 d-flex flex-column justify-content-between"
+                [class.validation-error-wrapper]="fieldErrors['idProofNo']">
                   <div class="d-flex align-items-center gap-1 gap-md-2">
                     <!-- Part 1: 5 Letters -->
                     <div class="segment-box flex-fill text-center">
@@ -362,12 +379,12 @@
                         maxlength="5"
                         placeholder="AAAAA"
                         [(ngModel)]="panPart1"
-                        (input)="onPanPartInput($event, 1, 5, 'pan_part_2')"
+                        (input)="onPanPartInput($event, 1, 5, 'pan_part_2');clearFieldError('idProofNo')"
                         (keydown)="onSegmentKeydown($event, panPart1)"
                         (paste)="onSegmentPaste($event)"
                         autocomplete="off">
                     </div>
-
+                    
                     <span class="segment-separator fw-bold text-muted">-</span>
 
                     <!-- Part 2: 4 Digits -->
@@ -380,7 +397,7 @@
                         maxlength="4"
                         placeholder="0000"
                         [(ngModel)]="panPart2"
-                        (input)="onPanPartInput($event, 2, 4, 'pan_part_3')"
+                        (input)="onPanPartInput($event, 2, 4, 'pan_part_3');clearFieldError('idProofNo')"
                         (keydown)="onSegmentKeydown($event, panPart2, 'pan_part_1')"
                         (paste)="onSegmentPaste($event)"
                         autocomplete="off">
@@ -398,7 +415,7 @@
                         maxlength="1"
                         placeholder="A"
                         [(ngModel)]="panPart3"
-                        (input)="onPanPartInput($event, 3, 1)"
+                        (input)="onPanPartInput($event, 3, 1);clearFieldError('idProofNo')"
                         (keydown)="onSegmentKeydown($event, panPart3, 'pan_part_2')"
                         (paste)="onSegmentPaste($event)"
                         autocomplete="off">
@@ -422,7 +439,8 @@
 
               @if (selectedIdProof === '01') {
                 <!-- Flexible Single Input UI for Voter Card (01) matched to Segmented Wrapper -->
-                <div class="segmented-input-wrapper shadow-sm rounded p-2 bg-white border flex-grow-1 d-flex flex-column justify-content-between">
+                <div class="segmented-input-wrapper shadow-sm rounded p-2 bg-white border flex-grow-1 d-flex flex-column justify-content-between"
+                [class.validation-error-wrapper]="fieldErrors['idProofNo']">
                   <div class="segment-box flex-fill text-center">
                     <span class="segment-hint">Voter Card No. (Modern / Legacy Format)</span>
                     <input
@@ -432,7 +450,7 @@
                       maxlength="16"
                       placeholder="e.g. ABC1234567 or WB/01/001/000123"
                       [(ngModel)]="idProofNo"
-                      (input)="onVoterInput($event)"
+                      (input)="onVoterInput($event); clearFieldError('idProofNo')"
                       (paste)="onSegmentPaste($event)"
                       autocomplete="off">
                   </div>
@@ -448,6 +466,12 @@
                   </div>
                 </div>
               }
+              @if (fieldErrors['idProofNo']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ fieldErrors['idProofNo'] }}
+  </div>
+}
             }
 
           </div>
@@ -468,10 +492,12 @@
               name="txt_aadhaar_no"
               [(ngModel)]="aadhaarNo"
               class="d-none"
-              autocomplete="off">
+              autocomplete="off"
+              >
 
             <!-- Segmented 4-4-4 Input UI for Aadhaar -->
-            <div class="segmented-input-wrapper shadow-sm rounded p-2 bg-white border flex-grow-1 d-flex flex-column justify-content-between">
+            <div class="segmented-input-wrapper shadow-sm rounded p-2 bg-white border flex-grow-1 d-flex flex-column justify-content-between"
+            [class.validation-error-wrapper]="!!fieldErrors['aadhaarNo']">
               <div class="d-flex align-items-center gap-1 gap-md-2">
                 <!-- Part 1: 4 Digits -->
                 <div class="segment-box flex-fill text-center">
@@ -483,7 +509,7 @@
                     maxlength="4"
                     placeholder="0000"
                     [(ngModel)]="aadhaarPart1"
-                    (input)="onAadhaarPartInput($event, 1, 4, 'aadhaar_part_2')"
+                    (input)="onAadhaarPartInput($event, 1, 4, 'aadhaar_part_2'); clearFieldError('aadhaarNo')"
                     (keydown)="onSegmentKeydown($event, aadhaarPart1)"
                     (paste)="onAadhaarPaste($event)"
                     autocomplete="off">
@@ -501,7 +527,7 @@
                     maxlength="4"
                     placeholder="0000"
                     [(ngModel)]="aadhaarPart2"
-                    (input)="onAadhaarPartInput($event, 2, 4, 'aadhaar_part_3')"
+                    (input)="onAadhaarPartInput($event, 2, 4, 'aadhaar_part_3'); clearFieldError('aadhaarNo')"
                     (keydown)="onSegmentKeydown($event, aadhaarPart2, 'aadhaar_part_1')"
                     (paste)="onAadhaarPaste($event)"
                     autocomplete="off">
@@ -520,7 +546,7 @@
                     placeholder="0000"
                     [(ngModel)]="aadhaarPart3"
                     (input)="onAadhaarPartInput($event, 3, 4)"
-                    (keydown)="onSegmentKeydown($event, aadhaarPart3, 'aadhaar_part_2')"
+                    (keydown)="onSegmentKeydown($event, aadhaarPart3, 'aadhaar_part_2'); clearFieldError('aadhaarNo')"
                     (paste)="onAadhaarPaste($event)"
                     autocomplete="off">
                 </div>
@@ -539,6 +565,12 @@
                 </span>
               </div>
             </div>
+            @if (aadhaarError || fieldErrors['aadhaarNo']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ aadhaarError || fieldErrors['aadhaarNo'] }}
+  </div>
+}
           </div>
         </div>
       </div>
@@ -571,8 +603,7 @@
     placeholder="Please enter bank IFSC"
     autocomplete="off"
     [(ngModel)]="ifscCode"
-    (input)="validateInput($event, /[^a-zA-Z0-9]/g)"
-    (input)="onIfscInput()">
+    (input)="validateInput($event, /[^a-zA-Z0-9]/g); onIfscInput()">
     @if (ifscError) {
   <div class="text-danger small mt-1">
     <i class="bi bi-exclamation-circle me-1"></i>
@@ -636,9 +667,10 @@
               [class.is-valid]="accountNoTouched && isAccountNoValid"
               maxlength="17" 
               [(ngModel)]="accountNo"
-              (input)="onAccountNoInput($event)" 
+              (input)="onAccountNoInput($event); clearFieldError('accountNo')" 
               placeholder="Enter your account no." 
-              autocomplete="off">
+              autocomplete="off"
+              [class.is-invalid]="fieldErrors['accountNo']">
 
             @if (accountNoTouched && accountNo && !isAccountNoValid) {
               <div class="text-danger small mt-1 d-flex align-items-center">
@@ -665,9 +697,10 @@
               [class.is-valid]="confirmAccountNoTouched && confirmAccountNo && isConfirmAccountNoMatching && isAccountNoValid"
               maxlength="17" 
               [(ngModel)]="confirmAccountNo"
-              (input)="onConfirmAccountNoInput($event)" 
+              (input)="onConfirmAccountNoInput($event); clearFieldError('confirmAccountNo')" 
               placeholder="Confirm your account no." 
-              autocomplete="off">
+              autocomplete="off"
+              [class.is-invalid]="fieldErrors['confirmAccountNo']">
 
             @if (confirmAccountNoTouched && confirmAccountNo) {
               @if (!isAccountNoValid) {
