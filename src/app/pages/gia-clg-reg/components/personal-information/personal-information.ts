@@ -13,6 +13,7 @@ import { MaritalStatus } from '../../../../models/marital-status.model';
 import { District } from '../../../../models/district.model';
 import { IfscRequest } from '../../../../models/ifsc-Request.model';
 import { IfscResponse } from '../../../../models/ifsc-Response.model';
+import { UiValidationService } from '../../../../shared/Services/ui-validation.service';
 //#endregion
 
 @Component({
@@ -47,16 +48,12 @@ emailError = '';
 selectedIdProof='';
 aadhaarError = '';
 
-
-fieldErrors: { [key: string]: string } = {};
-toastMessage = '';
-showToastMessage = false;
-
 genders: Gender[] = [];
 maritalStatuses: MaritalStatus[] = [];
 districts: District[] = [];
 
 private readonly emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/;
+public uiValidation = inject(UiValidationService);
 
 ifscCode = '';
 ifscError ='';
@@ -239,95 +236,6 @@ onIfscInput(): void {
         });
 }
 
-validateInput(event: Event, pattern: RegExp): void {
-
-    const input = event.target as HTMLInputElement;
-
-    input.value = input.value.replace(pattern, '');
-
-}
-
-private focusControl(controlId: string): void {
-
-  setTimeout(() => {
-
-    const control = document.getElementById(controlId) as HTMLElement | null;
-
-    if (!control) {
-      console.log('Control not found:', controlId);
-      return;
-    }
-
-    console.log('Control found:', control);
-
-    control.focus();
-
-    let parent = control.parentElement;
-
-    while (parent) {
-
-      const style = window.getComputedStyle(parent);
-
-      console.log(
-        'Parent:',
-        parent.className,
-        'overflowY:',
-        style.overflowY,
-        'scrollHeight:',
-        parent.scrollHeight,
-        'clientHeight:',
-        parent.clientHeight
-      );
-
-      if (
-        parent.scrollHeight > parent.clientHeight &&
-        (style.overflowY === 'auto' || style.overflowY === 'scroll')
-      ) {
-
-        parent.scrollTo({
-          top: control.offsetTop - 150,
-          behavior: 'smooth'
-        });
-
-        return;
-      }
-
-      parent = parent.parentElement;
-    }
-
-    // Fallback to document scrolling
-    control.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center'
-    });
-
-  }, 100);
-}
-showToast(message: string): void {
-  this.toastMessage = message;
-  this.showToastMessage = true;
-
-  setTimeout(() => {
-    this.showToastMessage = false;
-  }, 3000);
-}
-private validationError(
-  field: string,
-  message: string,
-  controlId: string
-): boolean {
-
-  this.fieldErrors[field] = message;
-  this.showToast(message);
-  this.focusControl(controlId);
-
-  return false;
-}
-clearFieldError(field: string): void {
-  if (this.fieldErrors[field]) {
-    delete this.fieldErrors[field];
-  }
-}
 //#endregion
 
 //#region Identity Proof Segmented Input Logic
@@ -340,7 +248,7 @@ panPart3 = '';
 
 onIdProofTypeChange(): void {
 
-   this.clearFieldError('idProofNo');
+   this.uiValidation.clearFieldError('idProofNo');
 
   this.panPart1 = '';
   this.panPart2 = '';
@@ -442,7 +350,7 @@ updateCombinedIdProof(): void {
   }
 
   // Clear validate-time error when user starts correcting
-  this.clearFieldError('aadhaarNo');
+  this.uiValidation.clearFieldError('aadhaarNo');
 
     if (rawVal.length === maxLen && nextInputId) {
       const nextEl = document.getElementById(nextInputId) as HTMLInputElement;
@@ -470,7 +378,7 @@ updateCombinedIdProof(): void {
     this.aadhaarError = '';
   }
 
-  this.clearFieldError('aadhaarNo');
+  this.uiValidation.clearFieldError('aadhaarNo');
   }
 
   updateCombinedAadhaar(): void {
@@ -548,14 +456,14 @@ validateAndSave(): boolean {
 
   // Clear previous validation state
   this.ifscError = '';
-  this.fieldErrors = {};
+  this.uiValidation.fieldErrors = {};
 
   // ---------------------------------
   // Retirement Age
   // ---------------------------------
 
   if (!this.retirementAge) {
-    return this.validationError(
+    return this.uiValidation.validationError(
       'retirementAge',
       'Retirement Age is a mandatory field.',
       'ret_yr_60'
@@ -567,7 +475,7 @@ validateAndSave(): boolean {
   // ---------------------------------
 
   if (!this.firstName.trim()) {
-    return this.validationError(
+    return this.uiValidation.validationError(
       'firstName',
       'First Name is required.',
       'txt_fname'
@@ -579,7 +487,7 @@ validateAndSave(): boolean {
   // ---------------------------------
 
   if (!this.lastName.trim()) {
-    return this.validationError(
+    return this.uiValidation.validationError(
       'lastName',
       'Last Name is required.',
       'txt_lname'
@@ -591,7 +499,7 @@ validateAndSave(): boolean {
   // ---------------------------------
 
   if (!this.selectedGender) {
-    return this.validationError(
+    return this.uiValidation.validationError(
       'selectedGender',
       'Gender selection is mandatory.',
       'sex_ddlist'
@@ -603,7 +511,7 @@ validateAndSave(): boolean {
   // ---------------------------------
 
   if (!this.selectedMaritalStatus) {
-    return this.validationError(
+    return this.uiValidation.validationError(
       'selectedMaritalStatus',
       'Marital Status selection is mandatory.',
       'mrt_ddlist'
@@ -615,7 +523,7 @@ validateAndSave(): boolean {
   // ---------------------------------
 
   if (!this.selectedDistrict) {
-    return this.validationError(
+    return this.uiValidation.validationError(
       'selectedDistrict',
       'Residing District selection is mandatory.',
       'dist_ddlist'
@@ -627,7 +535,7 @@ validateAndSave(): boolean {
   // ---------------------------------
 
   if (!this.permanentAddress.trim()) {
-    return this.validationError(
+    return this.uiValidation.validationError(
       'permanentAddress',
       'Permanent Address is a mandatory field.',
       'txt_addr'
@@ -639,7 +547,7 @@ validateAndSave(): boolean {
   // ---------------------------------
 
   if (!this.mobileNo.trim()) {
-    return this.validationError(
+    return this.uiValidation.validationError(
       'mobileNo',
       'Mobile Number is mandatory.',
       'txt_mob'
@@ -651,7 +559,7 @@ validateAndSave(): boolean {
   // ---------------------------------
 
   if (!this.email.trim()) {
-    return this.validationError(
+    return this.uiValidation.validationError(
       'email',
       'Email is required.',
       'txt_email'
@@ -662,8 +570,8 @@ validateAndSave(): boolean {
   if (this.emailError) {
     const message = 'Invalid email address.';
 
-    this.showToast(message);
-    this.focusControl('txt_email');
+    this.uiValidation.showToast(message);
+    this.uiValidation.focusControl('txt_email');
 
     return false;
   }
@@ -673,7 +581,7 @@ validateAndSave(): boolean {
   // ---------------------------------
 
   if (!this.selectedIdProof) {
-    return this.validationError(
+    return this.uiValidation.validationError(
       'selectedIdProof',
       'Identity Proof Type is required.',
       'ddl_id_proof'
@@ -688,7 +596,7 @@ validateAndSave(): boolean {
 
     if (this.selectedIdProof === '02') {
 
-      return this.validationError(
+      return this.uiValidation.validationError(
         'idProofNo',
         'PAN Card Number is required.',
         'pan_part_1'
@@ -696,7 +604,7 @@ validateAndSave(): boolean {
 
     } else if (this.selectedIdProof === '01') {
 
-      return this.validationError(
+      return this.uiValidation.validationError(
         'idProofNo',
         'Voter ID Number is required.',
         'voter_single_input'
@@ -704,7 +612,7 @@ validateAndSave(): boolean {
 
     } else {
 
-      return this.validationError(
+      return this.uiValidation.validationError(
         'idProofNo',
         'Identity Proof Number is required.',
         'txt_id_prf'
@@ -717,14 +625,14 @@ validateAndSave(): boolean {
   // ---------------------------------
 
   if (!this.aadhaarNo.trim()) {
-    return this.validationError(
+    return this.uiValidation.validationError(
       'aadhaarNo',
       'Aadhaar Number is required.',
       'aadhaar_part_1'
     );
   }
   if (this.aadhaarNo.length !== 12) {
-  return this.validationError(
+  return this.uiValidation.validationError(
     'aadhaarNo',
     'Aadhaar Number must be 12 digits.',
     'aadhaar_part_1'
@@ -740,8 +648,8 @@ validateAndSave(): boolean {
     const message = 'IFSC code is mandatory.';
 
     this.ifscError = message;
-    this.showToast(message);
-    this.focusControl('txt_ifsc_cd');
+    this.uiValidation.showToast(message);
+    this.uiValidation.focusControl('txt_ifsc_cd');
 
     return false;
   }
@@ -755,8 +663,8 @@ validateAndSave(): boolean {
     const message = 'IFSC code must be 11 characters.';
 
     this.ifscError = message;
-    this.showToast(message);
-    this.focusControl('txt_ifsc_cd');
+    this.uiValidation.showToast(message);
+    this.uiValidation.focusControl('txt_ifsc_cd');
 
     return false;
   }
@@ -770,8 +678,8 @@ validateAndSave(): boolean {
     const message = 'IFSC not found. Contact support.';
 
     this.ifscError = message;
-    this.showToast(message);
-    this.focusControl('txt_ifsc_cd');
+    this.uiValidation.showToast(message);
+    this.uiValidation.focusControl('txt_ifsc_cd');
 
     return false;
   }
@@ -781,7 +689,7 @@ validateAndSave(): boolean {
   // ---------------------------------
 
   if (!this.accountNo.trim()) {
-    return this.validationError(
+    return this.uiValidation.validationError(
       'accountNo',
       'Account Number is required.',
       'txt_ac_no'
@@ -793,7 +701,7 @@ validateAndSave(): boolean {
   // ---------------------------------
 
   if (!this.confirmAccountNo.trim()) {
-    return this.validationError(
+    return this.uiValidation.validationError(
       'confirmAccountNo',
       'Confirm Account Number is required.',
       'txt_cnfm_ac_no'
@@ -808,8 +716,8 @@ validateAndSave(): boolean {
 
     const message = 'Invalid Account Number.';
 
-    this.showToast(message);
-    this.focusControl('txt_ac_no');
+    this.uiValidation.showToast(message);
+    this.uiValidation.focusControl('txt_ac_no');
 
     return false;
   }
@@ -822,8 +730,8 @@ validateAndSave(): boolean {
 
     const message = 'Account Numbers do not match.';
 
-    this.showToast(message);
-    this.focusControl('txt_cnfm_ac_no');
+    this.uiValidation.showToast(message);
+    this.uiValidation.focusControl('txt_cnfm_ac_no');
 
     return false;
   }
@@ -836,19 +744,6 @@ validateAndSave(): boolean {
 
   return true;
 }
-  /* validateAndSave(): boolean {
-    console.log('Validating Personal Information form...');
-    
-    
-
-    if (this.accountNo && (!this.isAccountNoValid || !this.isConfirmAccountNoMatching)) {
-      console.warn('Personal Info validation failed: Account details invalid/mismatched');
-      return false;
-    }
-
-    console.log('Personal Information validated successfully!');
-    return true;
-  } */
 
 //#endregion
 

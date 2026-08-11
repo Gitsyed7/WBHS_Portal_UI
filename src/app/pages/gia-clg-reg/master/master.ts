@@ -37,6 +37,7 @@ slrNo = '';
 dob='';
 applicationId = '';
 hrmsId ='';
+personalSaved = false;
 
 @ViewChild('personalComp') personalComp?: PersonalInformation;
 @ViewChild('officeComp') officeComp?: OfficeInformation;
@@ -87,7 +88,11 @@ goToPersonal(data: any): void {
     this.currentStep = 1;
 
 }
-
+continueToNextStep(): void {
+  if (this.currentStep < this.steps.length - 1) {
+    this.currentStep++;
+  }
+}
 //#region Step Navigation & Validation
 
 saveAndContinue(): void {

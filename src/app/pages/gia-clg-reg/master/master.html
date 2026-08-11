@@ -101,48 +101,129 @@
 @if (currentStep > 0) {
   <div class="master-action-wrapper mt-1 mb-4">
     <div class="master-action-card p-3 p-md-3 d-flex flex-column flex-sm-row align-items-center justify-content-between gap-3 shadow-lg rounded-4 border">
-      
+
       <!-- Left: Step Indicator & Info -->
       <div class="d-flex align-items-center gap-3">
+
         <div class="step-badge rounded-circle d-flex align-items-center justify-content-center fw-bold text-white shadow-sm">
           {{ currentStep }}
         </div>
+
         <div>
-          <div class="fw-bold text-wbhs-navy mb-0 fs-6">
-            Step {{ currentStep }} of {{ steps.length - 1 }}: {{ steps[currentStep].name }}
+          <div class="fw-bold text-wbhs-navy mb-2 fs-6">
+            Step {{ currentStep }} of {{ steps.length - 1 }}:
+            {{ steps[currentStep].name }}
           </div>
-          <small class="text-muted d-flex align-items-center gap-1">
-            <i class="bi bi-shield-check text-success"></i>
-            <span>All entries are validated and saved securely before proceeding.</span>
-          </small>
+
+          <!-- STEP 1 STATUS -->
+          @if (currentStep === 1) {
+
+            @if (!personalSaved) {
+              <div class="action-status action-status-danger">
+                <i class="bi bi-exclamation-circle-fill"></i>
+                <span>
+                  Please validate and save your Personal Information before continuing.
+                </span>
+              </div>
+            }
+
+            @if (personalSaved) {
+              <div class="action-status action-status-success">
+                <i class="bi bi-check-circle-fill"></i>
+                <span>
+                  Personal Information saved successfully. You can continue to Office Information.
+                </span>
+              </div>
+            }
+
+          }
+
+          <!-- FUTURE STEPS -->
+          @if (currentStep > 1) {
+            <small class="text-muted d-flex align-items-center gap-1">
+              <i class="bi bi-shield-check text-success"></i>
+              <span>
+                All entries are validated and saved securely before proceeding.
+              </span>
+            </small>
+          }
+
         </div>
       </div>
 
+
       <!-- Right: Action Buttons -->
       <div class="d-flex align-items-center gap-2 w-100 w-sm-auto justify-content-center justify-content-sm-end">
+
         <!-- Previous Button (Only for Steps 2, 3, 4) -->
         @if (currentStep > 1) {
-          <button type="button" (click)="previousStep()" class="btn btn-outline-secondary px-4 py-2 rounded-pill fw-bold btn-hover-lift d-inline-flex align-items-center gap-1">
+          <button
+            type="button"
+            (click)="previousStep()"
+            class="btn btn-outline-secondary px-4 py-2 rounded-pill fw-bold btn-hover-lift d-inline-flex align-items-center gap-1">
+
             <i class="bi bi-arrow-left"></i>
             <span>Previous</span>
+
           </button>
         }
 
-        <!-- Save & Continue Button (For Steps 1, 2, 3) -->
-        @if (currentStep < 4) {
-          <button type="button" (click)="saveAndContinue()" class="btn btn-wbhs-primary-gradient px-4 py-2 rounded-pill fw-bold text-white btn-hover-glow d-inline-flex align-items-center gap-2">
+
+        <!-- STEP 1: Validate & Save -->
+        @if (currentStep === 1 && !personalSaved) {
+          <button
+            type="button"
+            (click)="saveAndContinue()"
+            class="btn btn-wbhs-primary-gradient px-4 py-2 rounded-pill fw-bold text-white btn-hover-glow d-inline-flex align-items-center gap-2">
+
+            <i class="bi bi-check2-circle"></i>
+            <span>Validate &amp; Save</span>
+
+          </button>
+        }
+
+
+        <!-- STEP 1: Continue after successful save -->
+        @if (currentStep === 1 && personalSaved) {
+          <button
+            type="button"
+            (click)="continueToNextStep()"
+            class="btn btn-wbhs-primary-gradient px-4 py-2 rounded-pill fw-bold text-white btn-hover-glow d-inline-flex align-items-center gap-2">
+
+            <span>Continue</span>
+            <i class="bi bi-arrow-right-circle-fill fs-6"></i>
+
+          </button>
+        }
+
+
+        <!-- STEPS 2 & 3: Existing Save & Continue -->
+        @if (currentStep > 1 && currentStep < 4) {
+          <button
+            type="button"
+            (click)="saveAndContinue()"
+            class="btn btn-wbhs-primary-gradient px-4 py-2 rounded-pill fw-bold text-white btn-hover-glow d-inline-flex align-items-center gap-2">
+
             <span>Save &amp; Continue</span>
             <i class="bi bi-arrow-right-circle-fill fs-6"></i>
+
           </button>
         }
 
-        <!-- Submit Application Button (For Step 4) -->
+
+        <!-- STEP 4: Submit Application -->
         @if (currentStep === 4) {
-          <button type="button" (click)="submitApplication()" class="btn btn-wbhs-submit-final px-4 py-2 rounded-pill fw-bold text-white btn-hover-glow d-inline-flex align-items-center gap-2">
+          <button
+            type="button"
+            (click)="submitApplication()"
+            class="btn btn-wbhs-submit-final px-4 py-2 rounded-pill fw-bold text-white btn-hover-glow d-inline-flex align-items-center gap-2">
+
             <i class="bi bi-send-check-fill"></i>
             <span>Submit Application</span>
+
           </button>
         }
+
       </div>
 
     </div>

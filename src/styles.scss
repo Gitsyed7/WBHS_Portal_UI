@@ -1,3 +1,5 @@
+@use './app/shared/styles/ui-validation';
+
 :root {
     --wbhs-primary: #6b2f11;
     --wbhs-menu-bg: #e7dbc0;
@@ -97,4 +99,4 @@ app-root {
       }
     }
   }
-}
+}
