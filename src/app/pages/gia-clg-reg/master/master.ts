@@ -17,123 +17,255 @@ import { Administrative } from '../components/administrative/administrative';
 
 @Component({
   selector: 'app-master',
-  imports: [Navbar,
+  imports: [
+    Navbar,
     Registration,
     PersonalInformation,
     OfficeInformation,
     Beneficiary,
     Administrative,
     FormsModule,
-    CommonModule],
+    CommonModule
+  ],
   templateUrl: './master.html',
   styleUrl: './master.scss',
 })
-
 export class Master {
 
-//#region Variable declaration
+  //#region Variable declaration
 
-slrNo = '';
-dob='';
-applicationId = '';
-hrmsId ='';
+  slrNo = '';
+  dob = '';
+  applicationId = '';
+  hrmsId = '';
 
-@ViewChild('personalComp') personalComp?: PersonalInformation;
-@ViewChild('officeComp') officeComp?: OfficeInformation;
-@ViewChild('beneficiaryComp') beneficiaryComp?: Beneficiary;
-@ViewChild('adminComp') adminComp?: Administrative;
+  // Personal Information workflow state
+  personalSaved = false;
 
-//Tracker Variables
+  @ViewChild('personalComp') personalComp?: PersonalInformation;
+  @ViewChild('officeComp') officeComp?: OfficeInformation;
+  @ViewChild('beneficiaryComp') beneficiaryComp?: Beneficiary;
+  @ViewChild('adminComp') adminComp?: Administrative;
+
+  // Tracker Variables
 
   steps = [
-  { name: 'Registration',shortName: 'Registration', icon: 'bi-person-badge' },
-  { name: 'Personal Information',shortName: 'Personal', icon: 'bi-person-vcard' },
-  { name: 'Office Information',shortName: 'Office', icon: 'bi-building' },
-  { name: 'Beneficiary Addition',shortName: 'Beneficiary', icon: 'bi-people-fill' },
-  { name: 'Administrative Information',shortName: 'Administration', icon: 'bi-clipboard-check' }
-];
+    {
+      name: 'Registration',
+      shortName: 'Registration',
+      icon: 'bi-person-badge'
+    },
+    {
+      name: 'Personal Information',
+      shortName: 'Personal',
+      icon: 'bi-person-vcard'
+    },
+    {
+      name: 'Office Information',
+      shortName: 'Office',
+      icon: 'bi-building'
+    },
+    {
+      name: 'Beneficiary Addition',
+      shortName: 'Beneficiary',
+      icon: 'bi-people-fill'
+    },
+    {
+      name: 'Administrative Information',
+      shortName: 'Administration',
+      icon: 'bi-clipboard-check'
+    }
+  ];
 
-currentStep = 0;
+  currentStep = 0;
+
+  //#endregion
 
 
-//#endregion
+  //#region Tracker
 
-getStepStatus(index: number): string {
+  getStepStatus(index: number): string {
 
-  if (index < this.currentStep) {
-    return 'completed';
+    if (index < this.currentStep) {
+      return 'completed';
+    }
+
+    if (index === this.currentStep) {
+      return 'active';
+    }
+
+    if (index === this.currentStep + 1) {
+      return 'next';
+    }
+
+    return 'upcoming';
   }
 
-  if (index === this.currentStep) {
-    return 'active';
-  }
+  //#endregion
 
-  if (index === this.currentStep + 1) {
-    return 'next';
-  }
 
-  return 'upcoming';
+  //#region Registration Navigation
 
-}
-goToPersonal(data: any): void {
+  goToPersonal(data: any): void {
 
     console.log(data);
-    
+
     this.applicationId = data.applicationId;
     this.hrmsId = data.hrmsId;
     this.slrNo = data.slrNo;
     this.dob = data.dob;
 
+    // Fresh entry into Personal Information
+    this.personalSaved = false;
+
     this.currentStep = 1;
-
-}
-
-//#region Step Navigation & Validation
-
-saveAndContinue(): void {
-  let isValid = true;
-
-  if (this.currentStep === 1 && this.personalComp) {
-    isValid = typeof this.personalComp.validateAndSave === 'function' 
-      ? this.personalComp.validateAndSave() 
-      : true;
-  } else if (this.currentStep === 2 && this.officeComp) {
-    isValid = typeof (this.officeComp as any).validateAndSave === 'function' 
-      ? (this.officeComp as any).validateAndSave() 
-      : true;
-  } else if (this.currentStep === 3 && this.beneficiaryComp) {
-    isValid = typeof (this.beneficiaryComp as any).validateAndSave === 'function' 
-      ? (this.beneficiaryComp as any).validateAndSave() 
-      : true;
   }
 
-  if (isValid && this.currentStep < this.steps.length - 1) {
-    this.currentStep++;
-  } else if (!isValid) {
-    console.warn(`Step ${this.currentStep} validation failed. Staying on current step.`);
+  //#endregion
+
+
+  //#region Step Navigation & Validation
+
+  saveAndContinue(): void {
+
+    // ---------------------------------
+    // Personal Information
+    // ---------------------------------
+
+    if (this.currentStep === 1 && this.personalComp) {
+
+      const isValid =
+        typeof this.personalComp.validateAndSave === 'function'
+          ? this.personalComp.validateAndSave()
+          : true;
+
+      if (!isValid) {
+
+        console.warn(
+          'Personal Information validation failed. Staying on current step.'
+        );
+
+        return;
+      }
+
+      // Validation + API save succeeded.
+      // IMPORTANT:
+      // Do NOT move to Office Information here.
+      this.personalSaved = true;
+
+      console.log(
+        'Personal Information validated and saved successfully.'
+      );
+
+      return;
+    }
+
+
+    // ---------------------------------
+    // Office Information
+    // ---------------------------------
+
+    if (this.currentStep === 2 && this.officeComp) {
+
+      const isValid =
+        typeof (this.officeComp as any).validateAndSave === 'function'
+          ? (this.officeComp as any).validateAndSave()
+          : true;
+
+      if (!isValid) {
+
+        console.warn(
+          'Office Information validation failed. Staying on current step.'
+        );
+
+        return;
+      }
+
+      if (this.currentStep < this.steps.length - 1) {
+        this.currentStep++;
+      }
+
+      return;
+    }
+
+
+    // ---------------------------------
+    // Beneficiary Information
+    // ---------------------------------
+
+    if (this.currentStep === 3 && this.beneficiaryComp) {
+
+      const isValid =
+        typeof (this.beneficiaryComp as any).validateAndSave === 'function'
+          ? (this.beneficiaryComp as any).validateAndSave()
+          : true;
+
+      if (!isValid) {
+
+        console.warn(
+          'Beneficiary Information validation failed. Staying on current step.'
+        );
+
+        return;
+      }
+
+      if (this.currentStep < this.steps.length - 1) {
+        this.currentStep++;
+      }
+
+      return;
+    }
   }
-}
 
-previousStep(): void {
-  if (this.currentStep > 1) {
-    this.currentStep--;
+
+  continueToNextStep(): void {
+
+    if (this.currentStep < this.steps.length - 1) {
+
+      this.currentStep++;
+
+      console.log(
+        `Moved to step ${this.currentStep}: ${this.steps[this.currentStep].name}`
+      );
+    }
   }
-}
 
-submitApplication(): void {
-  let isValid = true;
 
-  if (this.adminComp && typeof (this.adminComp as any).validateAndSave === 'function') {
-    isValid = (this.adminComp as any).validateAndSave();
+  previousStep(): void {
+
+    if (this.currentStep > 1) {
+
+      this.currentStep--;
+
+      console.log(
+        `Returned to step ${this.currentStep}: ${this.steps[this.currentStep].name}`
+      );
+    }
   }
 
-  if (isValid) {
-    console.log('Application Submitted Successfully!');
-    alert('Application submitted successfully!');
+
+  submitApplication(): void {
+
+    let isValid = true;
+
+    if (
+      this.adminComp &&
+      typeof (this.adminComp as any).validateAndSave === 'function'
+    ) {
+      isValid = (this.adminComp as any).validateAndSave();
+    }
+
+    if (isValid) {
+
+      console.log(
+        'Application Submitted Successfully!'
+      );
+
+      alert(
+        'Application submitted successfully!'
+      );
+    }
   }
+
+  //#endregion
 }
-
-//#endregion
-
-}
-
