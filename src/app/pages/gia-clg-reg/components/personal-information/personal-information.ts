@@ -14,6 +14,8 @@ import { District } from '../../../../models/district.model';
 import { IfscRequest } from '../../../../models/ifsc-Request.model';
 import { IfscResponse } from '../../../../models/ifsc-Response.model';
 import { UiValidationService } from '../../../../shared/Services/ui-validation.service';
+import { CollegeRegistrationService } from '../../../../services/college-registration.service';
+
 //#endregion
 
 @Component({
@@ -45,6 +47,7 @@ mobileNo = '';
 mobileError = '';
 email ='';
 emailError = '';
+residencePhoneNo = '';
 selectedIdProof='';
 aadhaarError = '';
 
@@ -54,6 +57,7 @@ districts: District[] = [];
 
 private readonly emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/;
 public uiValidation = inject(UiValidationService);
+private collegeRegistrationService = inject(CollegeRegistrationService);
 
 ifscCode = '';
 ifscError ='';
@@ -742,7 +746,53 @@ validateAndSave(): boolean {
 
   console.log('Personal Information validated successfully!');
 
-  return true;
+  console.log('Personal Information validated successfully!');
+
+const request = {
+  slrNo: this.slrNo,
+  appId: this.applicationId,
+  hrmsId: this.hrmsId,
+  firstName: this.firstName,
+  lastName: this.lastName,
+  dob: this.dob,
+  maritalStatus: this.selectedMaritalStatus,
+  gender: this.selectedGender,
+  districtCode: this.selectedDistrict,
+  address: this.permanentAddress,
+  identityProofNo: this.idProofNo,
+  aadhaarNo: this.aadhaarNo,
+  mobileNo: this.mobileNo,
+  emailId: this.email,
+  residencePhoneNo: this.residencePhoneNo || null,
+  retirementAge: this.retirementAge,
+  bankIfsc: this.ifscCode,
+  bankName: this.ifscDetails?.bank ?? '',
+  bankBranchName: this.ifscDetails?.branch ?? '',
+  bankMicr: this.ifscDetails?.micR_CODE ?? '',
+  bankAccountNo: this.accountNo,
+  identityProofType: this.selectedIdProof
+};
+console.log('Personal Information Request:', request);
+
+this.collegeRegistrationService
+  .savePersonalInformation(request)
+  .subscribe({
+    next: (response) => {
+      console.log(
+        'Personal Information saved successfully:',
+        response
+      );
+    },
+
+    error: (error) => {
+      console.error(
+        'Personal Information save failed:',
+        error
+      );
+    }
+  });
+
+return true;
 }
 
 //#endregion

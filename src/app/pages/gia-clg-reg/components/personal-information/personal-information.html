@@ -263,7 +263,7 @@
             <label for="txt_ph_no" class="form-label fw-bold text-wbhs-primary">
               Residence Phone Number
             </label>
-            <input type="tel" id="txt_ph_no" name="txt_ph_no" maxlength="13" (input)="uiValidation.validateInput($event, /[^0-9]/g)" class="form-control" placeholder="Enter Phone Number" autocomplete="off">
+            <input type="tel" id="txt_ph_no" name="txt_ph_no" maxlength="13"  [(ngModel)]="residencePhoneNo" (input)="uiValidation.validateInput($event, /[^0-9]/g)" class="form-control" placeholder="Enter Phone Number" autocomplete="off">
           </div>
 
           <!-- Identity Proof Selection -->

@@ -1,237 +1,336 @@
 <app-navbar></app-navbar>
+
 <div class="gia-page">
-<div class="tracker-card">
+
+  <!-- Registration Tracker -->
+  <div class="tracker-card">
 
     <div class="registration-tracker">
 
-        @for(step of steps; track step.name; let i = $index) {
+      @for (step of steps; track step.name; let i = $index) {
 
-            <div class="step"
-     [class]="getStepStatus(i)">
+        <div
+          class="step"
+          [class]="getStepStatus(i)">
 
-                <div class="step-number">
-                    @if(i < currentStep) {
+          <div class="step-number">
 
-        <i class="bi bi-patch-check-fill text-success"></i>
+            @if (i < currentStep) {
 
-    }
-    @else {
+              <i class="bi bi-patch-check-fill text-success"></i>
 
-        <i class="bi {{step.icon}}"></i>
+            } @else {
 
-    }
+              <i class="bi {{ step.icon }}"></i>
+
+            }
+
+          </div>
+
+          <label class="desktop-label">
+            {{ step.name }}
+          </label>
+
+          <label class="mobile-label">
+
+            @if (currentStep === i) {
+              {{ step.shortName }}
+            } @else {
+              {{ i + 1 }}
+            }
+
+          </label>
+
+        </div>
+
+        @if (i < steps.length - 1) {
+          <div class="line"></div>
+        }
+
+      }
+
+    </div>
+
+  </div>
+
+
+  <!-- Employee Information Banner -->
+  @if (currentStep > 0) {
+
+    <div class="employee-info-banner shadow-sm rounded-3">
+
+      <div class="banner-item">
+        <span class="banner-label">HRMS ID:</span>
+        <span class="banner-value">{{ hrmsId }}</span>
+      </div>
+
+      <div class="banner-divider"></div>
+
+      <div class="banner-item dob-item">
+        <span class="banner-label">DOB:</span>
+        <span class="banner-value">{{ dob }}</span>
+      </div>
+
+      <div class="banner-divider dob-divider"></div>
+
+      <div class="banner-item">
+        <span class="banner-label">Application ID:</span>
+        <span class="banner-value">{{ applicationId }}</span>
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- Components to open based on step number -->
+
+  @if (currentStep === 0) {
+
+    <app-registration
+      (moveNext)="goToPersonal($event)">
+    </app-registration>
+
+  }
+
+
+  @if (currentStep === 1) {
+
+    <app-personal-information
+      #personalComp
+      [applicationId]="applicationId"
+      [hrmsId]="hrmsId"
+      [slrNo]="slrNo"
+      [dob]="dob">
+    </app-personal-information>
+
+  }
+
+
+  @if (currentStep === 2) {
+
+    <app-office-information
+      #officeComp>
+    </app-office-information>
+
+  }
+
+
+  @if (currentStep === 3) {
+
+    <app-beneficiary
+      #beneficiaryComp>
+    </app-beneficiary>
+
+  }
+
+
+  @if (currentStep === 4) {
+
+    <app-administrative
+      #adminComp>
+    </app-administrative>
+
+  }
+
+
+  <!-- Master Action Bar -->
+  @if (currentStep > 0) {
+
+    <div class="master-action-wrapper mt-1 mb-4">
+
+      <div
+        class="master-action-card p-3 p-md-3 d-flex flex-column flex-sm-row align-items-center justify-content-between gap-3 shadow-lg rounded-4 border">
+
+
+        <!-- Left: Step Indicator & Status -->
+        <div class="d-flex align-items-center gap-3">
+
+          <!-- Step Number -->
+          <div
+            class="step-badge rounded-circle d-flex align-items-center justify-content-center fw-bold text-white shadow-sm">
+
+            {{ currentStep }}
+
+          </div>
+
+
+          <div>
+
+            <!-- Step Title -->
+            <div class="fw-bold text-wbhs-navy mb-2 fs-6">
+
+              Step {{ currentStep }} of {{ steps.length - 1 }}:
+              {{ steps[currentStep].name }}
+
+            </div>
+
+
+            <!-- Personal Information Status -->
+            @if (currentStep === 1) {
+
+              <!-- Before Validate & Save -->
+              @if (!personalSaved) {
+
+                <div class="action-status action-status-danger">
+
+                  <i class="bi bi-exclamation-circle-fill"></i>
+
+                  <span>
+                    Please validate and save your Personal Information
+                    before continuing.
+                  </span>
 
                 </div>
 
-                <label class="desktop-label">{{ step.name }}</label>
+              }
 
-<label class="mobile-label">
 
-    @if(currentStep === i) {
-        {{ step.shortName }}
-    }
-    @else {
-        {{ i + 1 }}
-    }
+              <!-- After Successful Validate & Save -->
+              @if (personalSaved) {
 
-</label>
-            </div>
+                <div class="action-status action-status-success">
 
-            @if(i < steps.length - 1) {
-                <div class="line"></div>
+                  <i class="bi bi-check-circle-fill"></i>
+
+                  <span>
+                    Personal Information saved successfully.
+                    You can continue to Office Information.
+                  </span>
+
+                </div>
+
+              }
+
             }
 
-        }
 
-    </div> <!-- registration-tracker -->
-</div> <!-- tracker-card -->
+            <!-- Future Steps -->
+            @if (currentStep > 1) {
 
-<!-- Employee Information Banner -->
-@if (currentStep > 0) {
-    <div class="employee-info-banner shadow-sm rounded-3">
-        
-        <div class="banner-item">
-            <span class="banner-label">HRMS ID:</span>
-            <span class="banner-value">{{ hrmsId }}</span>
-        </div>
-        <div class="banner-divider"></div>
-        <div class="banner-item dob-item">
-            <span class="banner-label">DOB:</span>
-            <span class="banner-value">{{ dob }}</span>
-        </div>
-        <div class="banner-divider dob-divider"></div>
-        <div class="banner-item">
-            <span class="banner-label">Application ID:</span>
-            <span class="banner-value">{{ applicationId }}</span>
-        </div>
-    </div>
-}
+              <small class="text-muted d-flex align-items-center gap-1">
 
-<!-- Components to open based on step number -->
- 
-@if(currentStep === 0){
-    <app-registration
-        (moveNext)="goToPersonal($event)">
-    </app-registration>
-}
+                <i class="bi bi-shield-check text-success"></i>
 
-@if(currentStep === 1){
-    <app-personal-information
-        #personalComp
-        [applicationId]="applicationId"
-        [hrmsId]="hrmsId"
-        [slrNo]="slrNo"
-        [dob]="dob">
-    </app-personal-information>
-}
+                <span>
+                  All entries are validated and saved securely
+                  before proceeding.
+                </span>
 
-@if(currentStep === 2){
-    <app-office-information #officeComp></app-office-information>
-}
+              </small>
 
-@if(currentStep === 3){
-    <app-beneficiary #beneficiaryComp></app-beneficiary>
-}
+            }
 
-@if(currentStep === 4){
-    <app-administrative #adminComp></app-administrative>
-}
-
-<!-- Master Action Bar (Steps 1 through 4) -->
-@if (currentStep > 0) {
-  <div class="master-action-wrapper mt-1 mb-4">
-    <div class="master-action-card p-3 p-md-3 d-flex flex-column flex-sm-row align-items-center justify-content-between gap-3 shadow-lg rounded-4 border">
-
-      <!-- Left: Step Indicator & Info -->
-      <div class="d-flex align-items-center gap-3">
-
-        <div class="step-badge rounded-circle d-flex align-items-center justify-content-center fw-bold text-white shadow-sm">
-          {{ currentStep }}
-        </div>
-
-        <div>
-          <div class="fw-bold text-wbhs-navy mb-2 fs-6">
-            Step {{ currentStep }} of {{ steps.length - 1 }}:
-            {{ steps[currentStep].name }}
           </div>
 
-          <!-- STEP 1 STATUS -->
-          @if (currentStep === 1) {
+        </div>
 
-            @if (!personalSaved) {
-              <div class="action-status action-status-danger">
-                <i class="bi bi-exclamation-circle-fill"></i>
-                <span>
-                  Please validate and save your Personal Information before continuing.
-                </span>
-              </div>
-            }
 
-            @if (personalSaved) {
-              <div class="action-status action-status-success">
-                <i class="bi bi-check-circle-fill"></i>
-                <span>
-                  Personal Information saved successfully. You can continue to Office Information.
-                </span>
-              </div>
-            }
+        <!-- Right: Action Buttons -->
+        <div
+          class="d-flex align-items-center gap-2 w-100 w-sm-auto justify-content-center justify-content-sm-end">
+
+
+          <!-- Previous Button -->
+          @if (currentStep > 1) {
+
+            <button
+              type="button"
+              (click)="previousStep()"
+              class="btn btn-outline-secondary px-4 py-2 rounded-pill fw-bold btn-hover-lift d-inline-flex align-items-center gap-1">
+
+              <i class="bi bi-arrow-left"></i>
+
+              <span>
+                Previous
+              </span>
+
+            </button>
 
           }
 
-          <!-- FUTURE STEPS -->
-          @if (currentStep > 1) {
-            <small class="text-muted d-flex align-items-center gap-1">
-              <i class="bi bi-shield-check text-success"></i>
+
+          <!-- Step 1: Validate & Save -->
+          @if (currentStep === 1 && !personalSaved) {
+
+            <button
+              type="button"
+              (click)="saveAndContinue()"
+              class="btn btn-wbhs-primary-gradient px-4 py-2 rounded-pill fw-bold text-white btn-hover-glow d-inline-flex align-items-center gap-2">
+
+              <i class="bi bi-check2-circle"></i>
+
               <span>
-                All entries are validated and saved securely before proceeding.
+                Validate &amp; Save
               </span>
-            </small>
+
+            </button>
+
+          }
+
+
+          <!-- Step 1: Continue -->
+          @if (currentStep === 1 && personalSaved) {
+
+            <button
+              type="button"
+              (click)="continueToNextStep()"
+              class="btn btn-wbhs-primary-gradient px-4 py-2 rounded-pill fw-bold text-white btn-hover-glow d-inline-flex align-items-center gap-2">
+
+              <span>
+                Continue
+              </span>
+
+              <i class="bi bi-arrow-right-circle-fill fs-6"></i>
+
+            </button>
+
+          }
+
+
+          <!-- Steps 2 & 3: Save & Continue -->
+          @if (currentStep > 1 && currentStep < 4) {
+
+            <button
+              type="button"
+              (click)="saveAndContinue()"
+              class="btn btn-wbhs-primary-gradient px-4 py-2 rounded-pill fw-bold text-white btn-hover-glow d-inline-flex align-items-center gap-2">
+
+              <span>
+                Save &amp; Continue
+              </span>
+
+              <i class="bi bi-arrow-right-circle-fill fs-6"></i>
+
+            </button>
+
+          }
+
+
+          <!-- Step 4: Submit Application -->
+          @if (currentStep === 4) {
+
+            <button
+              type="button"
+              (click)="submitApplication()"
+              class="btn btn-wbhs-submit-final px-4 py-2 rounded-pill fw-bold text-white btn-hover-glow d-inline-flex align-items-center gap-2">
+
+              <i class="bi bi-send-check-fill"></i>
+
+              <span>
+                Submit Application
+              </span>
+
+            </button>
+
           }
 
         </div>
-      </div>
-
-
-      <!-- Right: Action Buttons -->
-      <div class="d-flex align-items-center gap-2 w-100 w-sm-auto justify-content-center justify-content-sm-end">
-
-        <!-- Previous Button (Only for Steps 2, 3, 4) -->
-        @if (currentStep > 1) {
-          <button
-            type="button"
-            (click)="previousStep()"
-            class="btn btn-outline-secondary px-4 py-2 rounded-pill fw-bold btn-hover-lift d-inline-flex align-items-center gap-1">
-
-            <i class="bi bi-arrow-left"></i>
-            <span>Previous</span>
-
-          </button>
-        }
-
-
-        <!-- STEP 1: Validate & Save -->
-        @if (currentStep === 1 && !personalSaved) {
-          <button
-            type="button"
-            (click)="saveAndContinue()"
-            class="btn btn-wbhs-primary-gradient px-4 py-2 rounded-pill fw-bold text-white btn-hover-glow d-inline-flex align-items-center gap-2">
-
-            <i class="bi bi-check2-circle"></i>
-            <span>Validate &amp; Save</span>
-
-          </button>
-        }
-
-
-        <!-- STEP 1: Continue after successful save -->
-        @if (currentStep === 1 && personalSaved) {
-          <button
-            type="button"
-            (click)="continueToNextStep()"
-            class="btn btn-wbhs-primary-gradient px-4 py-2 rounded-pill fw-bold text-white btn-hover-glow d-inline-flex align-items-center gap-2">
-
-            <span>Continue</span>
-            <i class="bi bi-arrow-right-circle-fill fs-6"></i>
-
-          </button>
-        }
-
-
-        <!-- STEPS 2 & 3: Existing Save & Continue -->
-        @if (currentStep > 1 && currentStep < 4) {
-          <button
-            type="button"
-            (click)="saveAndContinue()"
-            class="btn btn-wbhs-primary-gradient px-4 py-2 rounded-pill fw-bold text-white btn-hover-glow d-inline-flex align-items-center gap-2">
-
-            <span>Save &amp; Continue</span>
-            <i class="bi bi-arrow-right-circle-fill fs-6"></i>
-
-          </button>
-        }
-
-
-        <!-- STEP 4: Submit Application -->
-        @if (currentStep === 4) {
-          <button
-            type="button"
-            (click)="submitApplication()"
-            class="btn btn-wbhs-submit-final px-4 py-2 rounded-pill fw-bold text-white btn-hover-glow d-inline-flex align-items-center gap-2">
-
-            <i class="bi bi-send-check-fill"></i>
-            <span>Submit Application</span>
-
-          </button>
-        }
 
       </div>
 
     </div>
-  </div>
-}
+
+  }
 
 </div>
-
-
-
-

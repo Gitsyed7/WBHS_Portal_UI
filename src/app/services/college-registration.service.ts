@@ -31,5 +31,12 @@ saveCollegeRegistration(request: any) {
     `${this.apiUrl}/CollegeRegistration/save-college-registration`,
     request
   );
+
+}
+savePersonalInformation(request: any): Observable<any> {
+  return this.http.post<any>(
+    `${environment.apiUrl}/CollegeRegistration/save-personal-information`,
+    request
+  );
 }
 }
