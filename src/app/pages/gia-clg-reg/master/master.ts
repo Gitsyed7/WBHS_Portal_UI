@@ -1,12 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Header } from '../../../shared/header/header';
-import { Footer } from '../../../shared/footer/footer';
-import { Navbar } from '../../../shared/navbar/navbar';
-import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
-import { CollegeRegistrationService } from '../../../services/college-registration.service';
-import { ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { CollegeRegistrationService } from '../../../services/college-registration.service';
 
 // Components of master
 import { Registration } from '../components/registration/registration';
@@ -15,8 +11,12 @@ import { OfficeInformation } from '../components/office-information/office-infor
 import { Beneficiary } from '../components/beneficiary/beneficiary';
 import { Administrative } from '../components/administrative/administrative';
 
+// Shared components
+import { Navbar } from '../../../shared/navbar/navbar';
+
 @Component({
   selector: 'app-master',
+
   imports: [
     Navbar,
     Registration,
@@ -27,10 +27,15 @@ import { Administrative } from '../components/administrative/administrative';
     FormsModule,
     CommonModule
   ],
+
   templateUrl: './master.html',
-  styleUrl: './master.scss',
+  styleUrl: './master.scss'
 })
 export class Master {
+
+  constructor(
+    private collegeRegistrationService: CollegeRegistrationService
+  ) {}
 
   //#region Variable declaration
 
@@ -39,13 +44,22 @@ export class Master {
   applicationId = '';
   hrmsId = '';
 
+  personalInformationData: any = null;
+
   // Personal Information workflow state
   personalSaved = false;
 
-  @ViewChild('personalComp') personalComp?: PersonalInformation;
-  @ViewChild('officeComp') officeComp?: OfficeInformation;
-  @ViewChild('beneficiaryComp') beneficiaryComp?: Beneficiary;
-  @ViewChild('adminComp') adminComp?: Administrative;
+  @ViewChild('personalComp')
+  personalComp?: PersonalInformation;
+
+  @ViewChild('officeComp')
+  officeComp?: OfficeInformation;
+
+  @ViewChild('beneficiaryComp')
+  beneficiaryComp?: Beneficiary;
+
+  @ViewChild('adminComp')
+  adminComp?: Administrative;
 
   // Tracker Variables
 
@@ -103,26 +117,42 @@ export class Master {
 
   //#endregion
 
-
   //#region Registration Navigation
 
   goToPersonal(data: any): void {
 
-    console.log(data);
+  console.log('Registration data received:', data);
 
-    this.applicationId = data.applicationId;
-    this.hrmsId = data.hrmsId;
-    this.slrNo = data.slrNo;
-    this.dob = data.dob;
+  // ---------------------------------
+  // Store application context
+  // ---------------------------------
 
-    // Fresh entry into Personal Information
-    this.personalSaved = false;
+  this.applicationId = data.applicationId;
+  this.hrmsId = data.hrmsId;
+  this.slrNo = data.slrNo;
+  this.dob = data.dob;
 
-    this.currentStep = 1;
-  }
+  // ---------------------------------
+  // Reset Personal Information state
+  // ---------------------------------
+
+  this.personalSaved = false;
+  this.personalInformationData = null;
+
+  // ---------------------------------
+  // Load existing Personal Information
+  // ---------------------------------
+
+  this.loadPersonalInformation();
+
+  // ---------------------------------
+  // Move to Personal Information
+  // ---------------------------------
+
+  this.currentStep = 1;
+}
 
   //#endregion
-
 
   //#region Step Navigation & Validation
 
@@ -149,7 +179,6 @@ export class Master {
       }
 
       // Validation + API save succeeded.
-      // IMPORTANT:
       // Do NOT move to Office Information here.
       this.personalSaved = true;
 
@@ -268,4 +297,46 @@ export class Master {
   }
 
   //#endregion
+
+  //#region Personal Information Fetch
+
+  loadPersonalInformation(): void {
+
+    this.collegeRegistrationService
+      .getPersonalInformation(
+        this.applicationId,
+        this.hrmsId
+      )
+      .subscribe({
+
+        next: (response) => {
+
+          console.log(
+    '🔥 MASTER personalInformationData:',
+    this.personalInformationData
+  );
+
+          this.personalInformationData = response;
+
+          console.log(
+    '🔥 MASTER personalInformationData:',
+    this.personalInformationData
+  );
+
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Failed to load Personal Information:',
+            error
+          );
+
+        }
+
+      });
+  }
+
+  //#endregion
+
 }

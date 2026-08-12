@@ -3,7 +3,9 @@
 import { Component,
   Input,
   OnInit,
-  inject } from '@angular/core';
+  inject,
+  OnChanges, 
+  SimpleChanges } from '@angular/core';
   import { FormsModule } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';
 
@@ -25,7 +27,7 @@ import { CollegeRegistrationService } from '../../../../services/college-registr
   styleUrl: './personal-information.scss',
 })
 
-export class PersonalInformation implements OnInit {
+export class PersonalInformation implements OnInit, OnChanges {
 
 //#region Variable Declaration
 
@@ -33,6 +35,7 @@ export class PersonalInformation implements OnInit {
 @Input() applicationId = '';
 @Input() slrNo = '';
 @Input() dob = '';
+@Input() personalInformationData: any = null;
 
 selectedGender = '';
 selectedMaritalStatus = '';
@@ -391,6 +394,7 @@ updateCombinedIdProof(): void {
   //#endregion
 
 //#region Mobile Number Length Validator
+
 onMobileInput(event: Event): void {
   const input = event.target as HTMLInputElement;
 
@@ -452,7 +456,7 @@ get isConfirmAccountNoMatching(): boolean {
 }
 //#endregion
 
-//#region Step Validation
+//#region Step Validation and Data Saving
 
 validateAndSave(): boolean {
 
@@ -551,12 +555,20 @@ validateAndSave(): boolean {
   // ---------------------------------
 
   if (!this.mobileNo.trim()) {
-    return this.uiValidation.validationError(
-      'mobileNo',
-      'Mobile Number is mandatory.',
-      'txt_mob'
-    );
-  }
+  return this.uiValidation.validationError(
+    'mobileNo',
+    'Mobile Number is mandatory.',
+    'txt_mob'
+  );
+}
+
+if (this.mobileNo.trim().length !== 10) {
+  return this.uiValidation.validationError(
+    'mobileNo',
+    'Mobile Number must be exactly 10 digits.',
+    'txt_mob'
+  );
+}
 
   // ---------------------------------
   // Email
@@ -770,9 +782,15 @@ const request = {
   bankBranchName: this.ifscDetails?.branch ?? '',
   bankMicr: this.ifscDetails?.micR_CODE ?? '',
   bankAccountNo: this.accountNo,
-  identityProofType: this.selectedIdProof
+
+  //identityProofType: this.selectedIdProof
+  identityProofType :
+  this.selectedIdProof === '01'
+    ? 'Voter Card'
+    : this.selectedIdProof === '02'
+      ? 'PAN Card'
+      : ''
 };
-console.log('Personal Information Request:', request);
 
 this.collegeRegistrationService
   .savePersonalInformation(request)
@@ -797,4 +815,66 @@ return true;
 
 //#endregion
 
+//#region On Changes
+ngOnChanges(changes: SimpleChanges): void {
+
+  console.log('🔥 CHILD ngOnChanges:', changes);
+
+  if (
+    changes['personalInformationData'] &&
+    this.personalInformationData
+  ) {
+
+    console.log(
+      '🔥 CHILD RECEIVED DATA:',
+      this.personalInformationData
+    );
+
+    this.populatePersonalInformation();
+    this.cdr.detectChanges();
+  }
+}
+
+//#endregion
+
+populatePersonalInformation(): void {
+
+  const data = this.personalInformationData;
+  console.log(
+    '🔥 populatePersonalInformation CALLED',
+    this.personalInformationData
+  );
+
+  this.firstName = data.firstName ?? '';
+  this.lastName = data.lastName ?? '';
+
+  this.dob = data.dob ?? '';
+
+  this.selectedMaritalStatus = data.maritalStatus ?? '';
+  this.selectedGender = data.gender ?? '';
+
+  this.selectedDistrict = data.districtCode ?? '';
+
+  this.permanentAddress = data.address ?? '';
+
+  this.idProofNo = data.identityProofNo ?? '';
+  this.aadhaarNo = data.aadhaarNo ?? '';
+
+  this.mobileNo = data.mobileNo ?? '';
+  this.email = data.emailId ?? '';
+  this.residencePhoneNo = data.residencePhoneNo ?? '';
+
+  this.retirementAge = data.retirementAge ?? '';
+
+  this.ifscCode = data.bankIfsc ?? '';
+  this.accountNo = data.bankAccountNo ?? '';
+
+  // Store IFSC-related information
+  this.ifscDetails = {
+  bank: data.bankName ?? '',
+  branch: data.bankBranchName ?? '',
+  micR_CODE: data.bankMicr ?? ''
+};
+
+}
 }

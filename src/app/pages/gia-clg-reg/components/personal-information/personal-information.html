@@ -229,12 +229,12 @@
             [class.is-invalid]="uiValidation.fieldErrors['mobileNo']"
             name="txt_mob" class="form-control" maxlength="10" placeholder="10-digit Mobile Number" 
             autocomplete="off">
-            @if (mobileError) {
+            <!-- @if (mobileError) {
   <div class="text-danger small mt-1">
     <i class="bi bi-exclamation-circle me-1"></i>
     {{ mobileError }}
   </div>
-}
+} -->
             @if (uiValidation.fieldErrors['mobileNo']) {
   <div class="text-danger small mt-1">
     <i class="bi bi-exclamation-circle me-1"></i>
@@ -302,7 +302,7 @@
                     id="id_prf_pan"
                     value="02"
                     [(ngModel)]="selectedIdProof"
-                    (change)="onIdProofTypeChange(); ">
+                    (change)="onIdProofTypeChange();;uiValidation.clearFieldError('selectedIdProof')">
                   <label
                     class="btn identity-radio-btn btn-sm w-100 py-2 fw-semibold"
                     for="id_prf_pan">

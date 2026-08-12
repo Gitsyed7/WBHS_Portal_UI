@@ -39,4 +39,17 @@ savePersonalInformation(request: any): Observable<any> {
     request
   );
 }
+getPersonalInformation(
+  appId: string,
+  hrmsId: string
+): Observable<any> {
+
+  return this.http.post<any>(
+    `${environment.apiUrl}/CollegeRegistration/get-personal-information`,
+    {
+      appId,
+      hrmsId
+    }
+  );
+}
 }

@@ -378,15 +378,10 @@ continueEnrollment(): void {
     if(this.modalType === 'success' && this.applicationId)
     {
         //this.moveNext.emit();
-        console.log({
-    applicationId: this.applicationId,
-    hrmsId: this.hrmsID,
-    slrNo: this.slrNo,
-    dob: this.dob
-});
         this.moveNext.emit({
             applicationId: this.applicationId,
-            hrmsId: this.hrmsID,
+
+            hrmsId: this.getCompleteHRMSID(),
             slrNo: this.slrNo,
             dob: this.dob
         });
