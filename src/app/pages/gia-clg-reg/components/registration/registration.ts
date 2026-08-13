@@ -40,29 +40,49 @@ export class Registration {
   maxDate: Date = new Date();
   errorMessage:string='';
 
+  private _cachedDobDate: Date | null = null;
+  private _lastParsedDobStr = '';
+
   get dobDate(): Date | null {
-    if (!this.dob) return null;
-    const parts = this.dob.split('-');
-    if (parts.length === 3) {
-      const year = parseInt(parts[0], 10);
-      const month = parseInt(parts[1], 10) - 1;
-      const day = parseInt(parts[2], 10);
-      if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
-        return new Date(year, month, day);
+    if (!this.dob) {
+      this._cachedDobDate = null;
+      this._lastParsedDobStr = '';
+      return null;
+    }
+
+    if (this.dob !== this._lastParsedDobStr) {
+      this._lastParsedDobStr = this.dob;
+      const parts = this.dob.split('-');
+      if (parts.length === 3) {
+        const year = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1;
+        const day = parseInt(parts[2], 10);
+        if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+          this._cachedDobDate = new Date(year, month, day);
+        } else {
+          this._cachedDobDate = null;
+        }
+      } else {
+        const d = new Date(this.dob);
+        this._cachedDobDate = isNaN(d.getTime()) ? null : d;
       }
     }
-    const d = new Date(this.dob);
-    return isNaN(d.getTime()) ? null : d;
+
+    return this._cachedDobDate;
   }
 
   set dobDate(value: Date | null | undefined) {
     if (!value || isNaN(value.getTime())) {
+      this._cachedDobDate = null;
+      this._lastParsedDobStr = '';
       this.dob = '';
     } else {
+      this._cachedDobDate = value;
       const year = value.getFullYear();
       const month = String(value.getMonth() + 1).padStart(2, '0');
       const day = String(value.getDate()).padStart(2, '0');
       this.dob = `${year}-${month}-${day}`;
+      this._lastParsedDobStr = this.dob;
     }
   }
 
@@ -114,12 +134,10 @@ ngOnInit(){
             {
                 case null:
                     this.currentStatus='DOB';
-                    this.cdr.detectChanges();
-                    //alert(response.message);
                     this.openModal(
-        response.message,
-        'success'
-    );
+                        response.message,
+                        'success'
+                    );
                     break;
                        
                 case "0":
@@ -132,7 +150,6 @@ ngOnInit(){
 
                     this.registrationCompleted = true;
                     this.currentStatus = 'DOB';
-                    this.cdr.detectChanges();
                     this.openModal(
                         response.message,
                         'success',
@@ -144,7 +161,6 @@ ngOnInit(){
 
                     this.registrationCompleted = false;
                     this.currentStatus = 'DOB';
-                    this.cdr.detectChanges();
                     this.openModal(
                         response.message,
                         'success'
@@ -155,43 +171,39 @@ ngOnInit(){
 
                 case "3":
                     this.currentStatus = 'DOB';
-                    this.cdr.detectChanges();
-                    //alert(response.message);
                     this.openModal(
-        response.message,
-        'warning');
+                        response.message,
+                        'warning'
+                    );
                     break;
 
                 case "1":
-                  this.currentStatus = 'HRMS';
-    this.hrmsID = '';
-    this.cdr.detectChanges();
-    this.openModal(
-        response.message,
-        'warning');
+                    this.currentStatus = 'HRMS';
+                    this.hrmsID = '';
+                    this.openModal(
+                        response.message,
+                        'warning'
+                    );
+                    break;
 
-    break;
                 case "2":
-                  this.currentStatus = 'HRMS';
-    this.hrmsID = '';
-    this.cdr.detectChanges();
-    this.openModal(
-        response.message,
-        'info'
-    );
+                    this.currentStatus = 'HRMS';
+                    this.hrmsID = '';
+                    this.openModal(
+                        response.message,
+                        'info'
+                    );
+                    break;
 
-    break;
                 case "4":
                 case "5":
                     this.currentStatus = 'HRMS';
-    this.hrmsID = '';
-this.cdr.detectChanges();
-    this.openModal(
-        response.message,
-        'error'
-    );
-
-    break;
+                    this.hrmsID = '';
+                    this.openModal(
+                        response.message,
+                        'error'
+                    );
+                    break;
             }
         });
 }
@@ -235,7 +247,6 @@ if (this.dobDate && this.dobDate > this.maxDate) {
         'success',
         response.applicationId
     );
-            this.cdr.detectChanges();
           }
         },
 
@@ -313,6 +324,8 @@ resetForm(): void {
 
   this.hrmsID = '';
   this.dob = '';
+  this._cachedDobDate = null;
+  this._lastParsedDobStr = '';
   this.errorMessage = '';
 
   this.currentStatus = 'HRMS';
@@ -358,6 +371,7 @@ openModal(
 }
 
     this.showMessageModal = true;
+    this.cdr.markForCheck();
 }
 
 closeModal(): void {

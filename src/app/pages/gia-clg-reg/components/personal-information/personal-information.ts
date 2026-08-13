@@ -83,6 +83,10 @@ ngOnInit(): void {
   this.loadMaritalStatus();
   this.loadDistrict();
 
+  if (this.personalInformationData) {
+    this.populatePersonalInformation();
+  }
+
 }
 //#endregion
 
@@ -97,7 +101,7 @@ loadGender(): void {
 
                 this.genders = response;
                 console.log('Gender:', this.genders);
-                
+                this.cdr.markForCheck();
 
             },
 
@@ -119,7 +123,7 @@ loadMaritalStatus(): void {
 
                 this.maritalStatuses = response;
                 console.log('Marital:', this.maritalStatuses);
-                
+                this.cdr.markForCheck();
 
             },
 
@@ -141,6 +145,7 @@ loadDistrict(): void {
 
                 this.districts = response;
                 console.log('District:', this.districts);
+                this.cdr.markForCheck();
 
             },
 
@@ -832,6 +837,8 @@ ngOnChanges(changes: SimpleChanges): void {
 populatePersonalInformation(): void {
 
   const data = this.personalInformationData;
+  if (!data) return;
+
   console.log(
     '🔥 populatePersonalInformation CALLED',
     this.personalInformationData
@@ -859,14 +866,13 @@ populatePersonalInformation(): void {
 
   const idProofNo = data.identityProofNo ?? '';
 
-this.idProofNo = idProofNo;
+  this.idProofNo = idProofNo;
 
-if (this.selectedIdProof === '02') {
-  this.panPart1 = idProofNo.substring(0, 5);
-  this.panPart2 = idProofNo.substring(5, 9);
-  this.panPart3 = idProofNo.substring(9, 10);
-}
-
+  if (this.selectedIdProof === '02') {
+    this.panPart1 = idProofNo.substring(0, 5);
+    this.panPart2 = idProofNo.substring(5, 9);
+    this.panPart3 = idProofNo.substring(9, 10);
+  }
 
   // Aadhaar
   const aadhaar = data.aadhaarNo ?? '';
@@ -888,10 +894,14 @@ if (this.selectedIdProof === '02') {
 
   // Store IFSC-related information
   this.ifscDetails = {
-  bank: data.bankName ?? '',
-  branch: data.bankBranchName ?? '',
-  micR_CODE: data.bankMicr ?? ''
-};
+    bank: data.bankName ?? '',
+    branch: data.bankBranchName ?? '',
+    micR_CODE: data.bankMicr ?? ''
+  };
+
+  this.cdr.markForCheck();
+  this.cdr.detectChanges();
 
 }
+
 }

@@ -142,25 +142,16 @@ export class Master {
   this.personalInformationData = null;
 
   // ---------------------------------
-  // Move to Personal Information
-  // ---------------------------------
-console.log('🟢 MASTER BEFORE STEP:', {
-  currentStep: this.currentStep,
-  applicationId: this.applicationId
-});
-
-  this.currentStep = 1;
-
-console.log('🟢 MASTER AFTER STEP:', {
-  currentStep: this.currentStep
-});
-  // ---------------------------------
   // Load existing Personal Information
   // ---------------------------------
 
   this.loadPersonalInformation();
 
-  
+  // ---------------------------------
+  // Move to Personal Information
+  // ---------------------------------
+
+  this.currentStep = 1;
 }
 
   //#endregion
@@ -331,7 +322,7 @@ console.log('🟢 MASTER AFTER STEP:', {
     this.personalInformationData
   );
 
-  //this.currentStep = 1;
+  this.currentStep = 1;
 
         },
 
