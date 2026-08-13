@@ -80,8 +80,8 @@ constructor(private cdr: ChangeDetectorRef) {}
 ngOnInit(): void {
 
   this.loadGender();
-    this.loadMaritalStatus();
-    this.loadDistrict();
+  this.loadMaritalStatus();
+  this.loadDistrict();
 
 }
 //#endregion
@@ -818,20 +818,12 @@ return true;
 //#region On Changes
 ngOnChanges(changes: SimpleChanges): void {
 
-  console.log('🔥 CHILD ngOnChanges:', changes);
-
   if (
     changes['personalInformationData'] &&
     this.personalInformationData
   ) {
 
-    console.log(
-      '🔥 CHILD RECEIVED DATA:',
-      this.personalInformationData
-    );
-
     this.populatePersonalInformation();
-    this.cdr.detectChanges();
   }
 }
 
@@ -857,8 +849,32 @@ populatePersonalInformation(): void {
 
   this.permanentAddress = data.address ?? '';
 
-  this.idProofNo = data.identityProofNo ?? '';
-  this.aadhaarNo = data.aadhaarNo ?? '';
+  // Identity proof
+  this.selectedIdProof =
+    data.identityProofType === 'Voter Card'
+      ? '01'
+      : data.identityProofType === 'PAN Card'
+        ? '02'
+        : '';
+
+  const idProofNo = data.identityProofNo ?? '';
+
+this.idProofNo = idProofNo;
+
+if (this.selectedIdProof === '02') {
+  this.panPart1 = idProofNo.substring(0, 5);
+  this.panPart2 = idProofNo.substring(5, 9);
+  this.panPart3 = idProofNo.substring(9, 10);
+}
+
+
+  // Aadhaar
+  const aadhaar = data.aadhaarNo ?? '';
+
+  this.aadhaarNo = aadhaar;
+  this.aadhaarPart1 = aadhaar.substring(0, 4);
+  this.aadhaarPart2 = aadhaar.substring(4, 8);
+  this.aadhaarPart3 = aadhaar.substring(8, 12);
 
   this.mobileNo = data.mobileNo ?? '';
   this.email = data.emailId ?? '';
@@ -868,6 +884,7 @@ populatePersonalInformation(): void {
 
   this.ifscCode = data.bankIfsc ?? '';
   this.accountNo = data.bankAccountNo ?? '';
+  this.confirmAccountNo = data.bankAccountNo ?? '';
 
   // Store IFSC-related information
   this.ifscDetails = {

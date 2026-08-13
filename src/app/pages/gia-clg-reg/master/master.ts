@@ -44,6 +44,8 @@ export class Master {
   applicationId = '';
   hrmsId = '';
 
+  status = '';
+
   personalInformationData: any = null;
 
   // Personal Information workflow state
@@ -140,16 +142,25 @@ export class Master {
   this.personalInformationData = null;
 
   // ---------------------------------
+  // Move to Personal Information
+  // ---------------------------------
+console.log('🟢 MASTER BEFORE STEP:', {
+  currentStep: this.currentStep,
+  applicationId: this.applicationId
+});
+
+  this.currentStep = 1;
+
+console.log('🟢 MASTER AFTER STEP:', {
+  currentStep: this.currentStep
+});
+  // ---------------------------------
   // Load existing Personal Information
   // ---------------------------------
 
   this.loadPersonalInformation();
 
-  // ---------------------------------
-  // Move to Personal Information
-  // ---------------------------------
-
-  this.currentStep = 1;
+  
 }
 
   //#endregion
@@ -311,17 +322,16 @@ export class Master {
 
         next: (response) => {
 
-          console.log(
-    '🔥 MASTER personalInformationData:',
-    this.personalInformationData
-  );
+          console.log('🔥 API RESPONSE:', response);
 
           this.personalInformationData = response;
 
           console.log(
-    '🔥 MASTER personalInformationData:',
+    '🔥 MASTER AFTER ASSIGN:',
     this.personalInformationData
   );
+
+  //this.currentStep = 1;
 
         },
 
