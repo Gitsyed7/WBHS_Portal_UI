@@ -66,6 +66,17 @@ ifscCode = '';
 ifscError ='';
 ifscDetails: IfscResponse | null = null;
 
+
+private originalPersonalSnapshot: string | null = null;
+
+get personalDataChanged(): boolean {
+  if (!this.originalPersonalSnapshot) {
+    return true;
+  }
+
+  return this.createPersonalSnapshot() !== this.originalPersonalSnapshot;
+}
+
 //#endregion
 
 //#region Dependency Injection
@@ -270,6 +281,38 @@ private normalizeDob(dob: string): string {
   }
 
   return '';
+}
+
+private createPersonalSnapshot(): string {
+
+  const snapshot = {
+    firstName: this.firstName.trim(),
+    lastName: this.lastName.trim(),
+    dob: this.dob,
+    maritalStatus: this.selectedMaritalStatus,
+    gender: this.selectedGender,
+    districtCode: this.selectedDistrict,
+    address: this.permanentAddress.trim(),
+
+    identityProofType: this.selectedIdProof,
+    identityProofNo: this.idProofNo,
+
+    aadhaarNo: this.aadhaarNo,
+
+    mobileNo: this.mobileNo.trim(),
+    emailId: this.email.trim(),
+    residencePhoneNo: this.residencePhoneNo.trim(),
+
+    retirementAge: this.retirementAge,
+
+    bankIfsc: this.ifscCode.trim(),
+    bankName: this.ifscDetails?.bank ?? '',
+    bankBranchName: this.ifscDetails?.branch ?? '',
+    bankMicr: this.ifscDetails?.micR_CODE ?? '',
+    bankAccountNo: this.accountNo.trim()
+  };
+
+  return JSON.stringify(snapshot);
 }
 //#endregion
 
@@ -828,6 +871,10 @@ this.collegeRegistrationService
         'Personal Information saved successfully:',
         response
       );
+
+      //Captures the form state inputs and remember for comparison
+      this.originalPersonalSnapshot =
+    this.createPersonalSnapshot();
     },
 
     error: (error) => {
@@ -924,6 +971,8 @@ populatePersonalInformation(): void {
     branch: data.bankBranchName ?? '',
     micR_CODE: data.bankMicr ?? ''
   };
+
+  this.originalPersonalSnapshot = this.createPersonalSnapshot();
 
   this.cdr.markForCheck();
   this.cdr.detectChanges();
