@@ -1,6 +1,19 @@
-import { Component, inject } from '@angular/core';
+
+//#region imports
+
+import { Component, inject,
+  Input,
+  OnInit,
+  OnChanges, 
+  SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ChangeDetectorRef } from '@angular/core';
+
+import { LookupService } from '../../../../services/lookup.service';
 import { UiValidationService } from '../../../../shared/Services/ui-validation.service';
+import { CollegeRegistrationService } from '../../../../services/college-registration.service';
+
+//#endregion
 
 @Component({
   selector: 'app-office-information',
@@ -10,6 +23,8 @@ import { UiValidationService } from '../../../../shared/Services/ui-validation.s
 })
 export class OfficeInformation {
   uiValidation = inject(UiValidationService);
+
+  //#region Variable declaration
 
   collegeDistrict = '';
   selectedCollege = '';
@@ -24,6 +39,25 @@ export class OfficeInformation {
   bandPay = '';
   payLevel = '';
   basicSalary = '';
+
+  //#endregion
+
+  //#region Dependency Injection
+
+private lookupService = inject(LookupService);
+
+constructor(private cdr: ChangeDetectorRef) {}
+
+//#endregion
+
+//#region OnInit
+ngOnInit(): void {
+
+
+}
+//#endregion
+
+//#region Step Validation and Data Saving
 
   validateAndSave(): boolean {
     console.log('Validating Office Information form...');
@@ -140,4 +174,6 @@ export class OfficeInformation {
 
     return true;
   }
+
+//#endregion
 }

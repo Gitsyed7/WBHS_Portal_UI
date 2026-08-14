@@ -6,7 +6,7 @@ import { Component,
   inject,
   OnChanges, 
   SimpleChanges } from '@angular/core';
-  import { FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';
 
 import { LookupService } from '../../../../services/lookup.service';
@@ -248,6 +248,29 @@ onIfscInput(): void {
         });
 }
 
+private normalizeDob(dob: string): string {
+
+  if (!dob) {
+    return '';
+  }
+
+  // Already ISO format
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dob)) {
+    return dob;
+  }
+
+  // Convert DD/MM/YYYY → YYYY-MM-DD
+  const parts = dob.split('/');
+
+  if (parts.length === 3) {
+
+    const [day, month, year] = parts;
+
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+  }
+
+  return '';
+}
 //#endregion
 
 //#region Identity Proof Segmented Input Logic
@@ -834,6 +857,8 @@ ngOnChanges(changes: SimpleChanges): void {
 
 //#endregion
 
+//#region Fetch existing Personal data
+
 populatePersonalInformation(): void {
 
   const data = this.personalInformationData;
@@ -847,7 +872,8 @@ populatePersonalInformation(): void {
   this.firstName = data.firstName ?? '';
   this.lastName = data.lastName ?? '';
 
-  this.dob = data.dob ?? '';
+  //this.dob = data.dob ?? '';
+  this.dob = this.normalizeDob(data.dob);
 
   this.selectedMaritalStatus = data.maritalStatus ?? '';
   this.selectedGender = data.gender ?? '';
@@ -903,5 +929,7 @@ populatePersonalInformation(): void {
   this.cdr.detectChanges();
 
 }
+
+//#endregion
 
 }
