@@ -1,5 +1,34 @@
 <div class="wbhs-page-wrapper py-0">
   <div class="container-fluid px-2 px-md-4">
+    <!-- Toast notification section -->
+    @if (uiValidation.showToastMessage) {
+  <div
+    class="toast-container position-fixed top-0 end-0 p-3"
+    style="z-index: 9999;">
+
+    <div
+      class="toast show text-bg-danger border-0 shadow"
+      role="alert">
+
+      <div class="d-flex align-items-center">
+
+        <div class="toast-body">
+          <i class="bi bi-exclamation-circle me-2"></i>
+          {{ uiValidation.toastMessage }}
+        </div>
+
+        <button
+          type="button"
+          class="btn-close btn-close-white me-2"
+          (click)="uiValidation.showToastMessage = false">
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+}
     <!-- Mandatory Notice Banner -->
     <div class="alert alert-wbhs-notice shadow-sm mb-4" role="alert">
       <div class="d-flex align-items-start">
@@ -32,9 +61,18 @@
               name="clg_dist_ddlist"
               class="form-select text-uppercase"
               autocomplete="off"
+              [(ngModel)]="collegeDistrict"
+              (change)="uiValidation.clearFieldError('collegeDistrict')"
+              [class.is-invalid]="uiValidation.fieldErrors['collegeDistrict']"
             >
               <option value="" disabled selected>Select College District</option>
             </select>
+            @if (uiValidation.fieldErrors['collegeDistrict']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ uiValidation.fieldErrors['collegeDistrict'] }}
+  </div>
+}
           </div>
 
           <!-- Name of College -->
@@ -47,9 +85,18 @@
               name="clg_list_ddlist"
               class="form-select text-uppercase"
               autocomplete="off"
+              [(ngModel)]="selectedCollege"
+              (change)="uiValidation.clearFieldError('selectedCollege')"
+              [class.is-invalid]="uiValidation.fieldErrors['selectedCollege']"
             >
               <option value="" disabled selected>Select College</option>
             </select>
+            @if (uiValidation.fieldErrors['selectedCollege']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ uiValidation.fieldErrors['selectedCollege'] }}
+  </div>
+}
           </div>
 
           <!-- Sub-Division -->
@@ -62,9 +109,18 @@
               name="subdiv_ddlist"
               class="form-select text-uppercase"
               autocomplete="off"
+              [(ngModel)]="subDivision"
+              (change)="uiValidation.clearFieldError('subDivision')"
+              [class.is-invalid]="uiValidation.fieldErrors['subDivision']"
             >
               <option value="" disabled selected>Select Sub-Division</option>
             </select>
+            @if (uiValidation.fieldErrors['subDivision']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ uiValidation.fieldErrors['subDivision'] }}
+  </div>
+}
           </div>
 
           <!-- Block -->
@@ -77,9 +133,18 @@
               name="block_ddlist"
               class="form-select text-uppercase"
               autocomplete="off"
+              [(ngModel)]="block"
+              (change)="uiValidation.clearFieldError('block')"
+              [class.is-invalid]="uiValidation.fieldErrors['block']"
             >
               <option value="" disabled selected>Select Block</option>
             </select>
+            @if (uiValidation.fieldErrors['block']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ uiValidation.fieldErrors['block'] }}
+  </div>
+}
           </div>
 
           <!-- Designation -->
@@ -92,9 +157,18 @@
               name="desig_ddlist"
               class="form-select text-uppercase"
               autocomplete="off"
+              [(ngModel)]="designation"
+              (change)="uiValidation.clearFieldError('designation')"
+              [class.is-invalid]="uiValidation.fieldErrors['designation']"
             >
               <option value="" disabled selected>Select Designation</option>
             </select>
+            @if (uiValidation.fieldErrors['designation']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ uiValidation.fieldErrors['designation'] }}
+  </div>
+}
           </div>
 
           <!-- Date of Entry Into College Service -->
@@ -112,8 +186,17 @@
                 name="txt_serv_dt"
                 class="form-control"
                 autocomplete="off"
+                [(ngModel)]="dateOfEntry"
+                (change)="uiValidation.clearFieldError('dateOfEntry')"
+                [class.is-invalid]="uiValidation.fieldErrors['dateOfEntry']"
               />
             </div>
+            @if (uiValidation.fieldErrors['dateOfEntry']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ uiValidation.fieldErrors['dateOfEntry'] }}
+  </div>
+}
           </div>
 
           <!-- Full Address (College) -->
@@ -128,7 +211,16 @@
               rows="3"
               placeholder="Enter Full Address of the College"
               autocomplete="off"
+              [(ngModel)]="collegeAddress"
+              (input)="uiValidation.clearFieldError('collegeAddress')"
+              [class.is-invalid]="uiValidation.fieldErrors['collegeAddress']"
             ></textarea>
+            @if (uiValidation.fieldErrors['collegeAddress']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ uiValidation.fieldErrors['collegeAddress'] }}
+  </div>
+}
           </div>
         </div>
       </div>
@@ -151,6 +243,7 @@
 
             <div
               class="ropa-radio-group shadow-sm rounded p-2 bg-white border d-flex flex-wrap gap-2"
+              [class.validation-radio-error]="!!uiValidation.fieldErrors['selectedRopa']"
             >
               <div class="flex-fill text-center">
                 <input
@@ -160,6 +253,8 @@
                   id="id_ropa_2009"
                   value="01"
                   checked
+                  [(ngModel)]="selectedRopa"
+                  (change)="uiValidation.clearFieldError('selectedRopa')"
                 />
                 <label class="btn ropa-radio-btn btn-sm w-100 py-2 fw-semibold" for="id_ropa_2009">
                   <i class="bi bi-bank me-1"></i> ROPA 2009
@@ -173,12 +268,20 @@
                   name="rbl_ropa"
                   id="id_ropa_2019"
                   value="02"
+                  [(ngModel)]="selectedRopa"
+                  (change)="uiValidation.clearFieldError('selectedRopa')"
                 />
                 <label class="btn ropa-radio-btn btn-sm w-100 py-2 fw-semibold" for="id_ropa_2019">
                   <i class="bi bi-currency-rupee me-1"></i> ROPA 2019
                 </label>
               </div>
             </div>
+            @if (uiValidation.fieldErrors['selectedRopa']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ uiValidation.fieldErrors['selectedRopa'] }}
+  </div>
+}
           </div>
         </div>
 
@@ -195,9 +298,18 @@
                 name="pay_band_ddlist"
                 class="form-select text-uppercase"
                 autocomplete="off"
+                [(ngModel)]="payBand"
+                (change)="uiValidation.clearFieldError('payBand')"
+                [class.is-invalid]="uiValidation.fieldErrors['payBand']"
               >
                 <option value="" disabled selected>Select Pay Band</option>
               </select>
+              @if (uiValidation.fieldErrors['payBand']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ uiValidation.fieldErrors['payBand'] }}
+  </div>
+}
             </div>
 
             <!-- Grade Pay -->
@@ -210,9 +322,18 @@
                 name="grade_ddlist"
                 class="form-select text-uppercase"
                 autocomplete="off"
+                [(ngModel)]="gradePay"
+                (change)="uiValidation.clearFieldError('gradePay')"
+                [class.is-invalid]="uiValidation.fieldErrors['gradePay']"
               >
                 <option value="" disabled selected>Select Grade Pay</option>
               </select>
+              @if (uiValidation.fieldErrors['gradePay']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ uiValidation.fieldErrors['gradePay'] }}
+  </div>
+}
             </div>
 
             <!-- Band Pay -->
@@ -229,7 +350,16 @@
                 maxlength="10"
                 placeholder="Enter Band Pay"
                 autocomplete="off"
+                [(ngModel)]="bandPay"
+                (input)="uiValidation.clearFieldError('bandPay')"
+                [class.is-invalid]="uiValidation.fieldErrors['bandPay']"
               />
+              @if (uiValidation.fieldErrors['bandPay']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ uiValidation.fieldErrors['bandPay'] }}
+  </div>
+}
             </div>
 
             <!-- Basic Pay (Read-only) -->
@@ -255,9 +385,18 @@
                 name="ddl_pay_level"
                 class="form-select text-uppercase"
                 autocomplete="off"
+                [(ngModel)]="payLevel"
+                (change)="uiValidation.clearFieldError('payLevel')"
+                [class.is-invalid]="uiValidation.fieldErrors['payLevel']"
               >
                 <option value="" disabled selected>Select Pay Level</option>
               </select>
+              @if (uiValidation.fieldErrors['payLevel']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ uiValidation.fieldErrors['payLevel'] }}
+  </div>
+}
             </div>
 
             <!-- Basic Salary -->
@@ -271,9 +410,18 @@
                 class="form-select text-uppercase"
                 disabled
                 autocomplete="off"
+                [(ngModel)]="basicSalary"
+                (change)="uiValidation.clearFieldError('basicSalary')"
+                [class.is-invalid]="uiValidation.fieldErrors['basicSalary']"
               >
                 <option value="" disabled selected>Select Basic Salary</option>
               </select>
+              @if (uiValidation.fieldErrors['basicSalary']) {
+  <div class="text-danger small mt-1">
+    <i class="bi bi-exclamation-circle me-1"></i>
+    {{ uiValidation.fieldErrors['basicSalary'] }}
+  </div>
+}
               <div class="form-text text-muted small">Enables after selecting Pay Level</div>
             </div>
           </div>

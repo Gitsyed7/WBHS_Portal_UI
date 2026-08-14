@@ -251,15 +251,28 @@ export class Master {
 
   continueToNextStep(): void {
 
-    if (this.currentStep < this.steps.length - 1) {
+  if (this.currentStep < this.steps.length - 1) {
 
-      this.currentStep++;
+    this.currentStep++;
 
-      console.log(
-        `Moved to step ${this.currentStep}: ${this.steps[this.currentStep].name}`
-      );
-    }
+    console.log(
+      `Moved to step ${this.currentStep}: ${this.steps[this.currentStep].name}`
+    );
+
+    setTimeout(() => {
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+
+      if (this.currentStep === 2) {
+        document.getElementById('clg_dist_ddlist')?.focus();
+      }
+
+    }, 0);
   }
+}
 
 
   previousStep(): void {
