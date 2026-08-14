@@ -83,9 +83,9 @@ ngOnInit(): void {
   this.loadMaritalStatus();
   this.loadDistrict();
 
-  if (this.personalInformationData) {
+  /* if (this.personalInformationData) {
     this.populatePersonalInformation();
-  }
+  } */
 
 }
 //#endregion

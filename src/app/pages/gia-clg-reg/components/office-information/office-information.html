@@ -1,1 +1,284 @@
-<p>office-information works!</p>
+<div class="wbhs-page-wrapper py-0">
+  <div class="container-fluid px-2 px-md-4">
+    <!-- Mandatory Notice Banner -->
+    <div class="alert alert-wbhs-notice shadow-sm mb-4" role="alert">
+      <div class="d-flex align-items-start">
+        <i class="bi bi-exclamation-triangle-fill text-danger me-2 fs-5 mt-1"></i>
+        <div>
+          <strong class="text-danger">Important Notice:</strong> Inputs marked with
+          <span class="text-danger fw-bold">*</span> are mandatory data. You must enter those
+          details for your online registration to be successful and for availing reimbursement
+          benefits.
+        </div>
+      </div>
+    </div>
+
+    <!-- College / Office Details Card -->
+    <div class="card wbhs-card shadow-sm mb-4">
+      <div class="card-header wbhs-card-header d-flex align-items-center py-3">
+        <i class="bi bi-building header-icon me-2"></i>
+        <h5 class="card-title mb-0 fw-bold">College / Office Details</h5>
+      </div>
+
+      <div class="card-body p-3 p-md-4">
+        <div class="row g-3">
+          <!-- College District -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <label for="clg_dist_ddlist" class="form-label fw-bold text-wbhs-primary">
+              College District <span class="text-danger">*</span>
+            </label>
+            <select
+              id="clg_dist_ddlist"
+              name="clg_dist_ddlist"
+              class="form-select text-uppercase"
+              autocomplete="off"
+            >
+              <option value="" disabled selected>Select College District</option>
+            </select>
+          </div>
+
+          <!-- Name of College -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <label for="clg_list_ddlist" class="form-label fw-bold text-wbhs-primary">
+              Name of College <span class="text-danger">*</span>
+            </label>
+            <select
+              id="clg_list_ddlist"
+              name="clg_list_ddlist"
+              class="form-select text-uppercase"
+              autocomplete="off"
+            >
+              <option value="" disabled selected>Select College</option>
+            </select>
+          </div>
+
+          <!-- Sub-Division -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <label for="subdiv_ddlist" class="form-label fw-bold text-wbhs-primary">
+              Sub-Division <span class="text-danger">*</span>
+            </label>
+            <select
+              id="subdiv_ddlist"
+              name="subdiv_ddlist"
+              class="form-select text-uppercase"
+              autocomplete="off"
+            >
+              <option value="" disabled selected>Select Sub-Division</option>
+            </select>
+          </div>
+
+          <!-- Block -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <label for="block_ddlist" class="form-label fw-bold text-wbhs-primary">
+              Block <span class="text-danger">*</span>
+            </label>
+            <select
+              id="block_ddlist"
+              name="block_ddlist"
+              class="form-select text-uppercase"
+              autocomplete="off"
+            >
+              <option value="" disabled selected>Select Block</option>
+            </select>
+          </div>
+
+          <!-- Designation -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <label for="desig_ddlist" class="form-label fw-bold text-wbhs-primary">
+              Designation <span class="text-danger">*</span>
+            </label>
+            <select
+              id="desig_ddlist"
+              name="desig_ddlist"
+              class="form-select text-uppercase"
+              autocomplete="off"
+            >
+              <option value="" disabled selected>Select Designation</option>
+            </select>
+          </div>
+
+          <!-- Date of Entry Into College Service -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <label for="txt_serv_dt" class="form-label fw-bold text-wbhs-primary">
+              Date of Entry Into College Service <span class="text-danger">*</span>
+            </label>
+            <div class="input-group">
+              <span class="input-group-text bg-light text-secondary">
+                <i class="bi bi-calendar3"></i>
+              </span>
+              <input
+                type="date"
+                id="txt_serv_dt"
+                name="txt_serv_dt"
+                class="form-control"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+
+          <!-- Full Address (College) -->
+          <div class="col-12">
+            <label for="txt_clg_addr" class="form-label fw-bold text-wbhs-primary">
+              Full Address (College) <span class="text-danger">*</span>
+            </label>
+            <textarea
+              id="txt_clg_addr"
+              name="txt_clg_addr"
+              class="form-control text-uppercase"
+              rows="3"
+              placeholder="Enter Full Address of the College"
+              autocomplete="off"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pay Details Card -->
+    <div class="card wbhs-card shadow-sm mb-4">
+      <div class="card-header wbhs-card-header d-flex align-items-center py-3">
+        <i class="bi bi-cash-coin header-icon me-2"></i>
+        <h5 class="card-title mb-0 fw-bold">Pay Details</h5>
+      </div>
+
+      <div class="card-body p-3 p-md-4 ropa-card-body">
+        <!-- Revision of Pay and Allowance -->
+        <div class="row mb-4">
+          <div class="col-12">
+            <label class="form-label fw-bold text-wbhs-primary">
+              Revision of Pay and Allowance <span class="text-danger">*</span>
+            </label>
+
+            <div
+              class="ropa-radio-group shadow-sm rounded p-2 bg-white border d-flex flex-wrap gap-2"
+            >
+              <div class="flex-fill text-center">
+                <input
+                  class="btn-check"
+                  type="radio"
+                  name="rbl_ropa"
+                  id="id_ropa_2009"
+                  value="01"
+                  checked
+                />
+                <label class="btn ropa-radio-btn btn-sm w-100 py-2 fw-semibold" for="id_ropa_2009">
+                  <i class="bi bi-bank me-1"></i> ROPA 2009
+                </label>
+              </div>
+
+              <div class="flex-fill text-center">
+                <input
+                  class="btn-check"
+                  type="radio"
+                  name="rbl_ropa"
+                  id="id_ropa_2019"
+                  value="02"
+                />
+                <label class="btn ropa-radio-btn btn-sm w-100 py-2 fw-semibold" for="id_ropa_2019">
+                  <i class="bi bi-currency-rupee me-1"></i> ROPA 2019
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ROPA 2009 Panel -->
+        <div class="ropa-panel ropa-panel-2009">
+          <div class="row g-3">
+            <!-- Pay Band -->
+            <div class="col-12 col-md-6 col-lg-4">
+              <label for="pay_band_ddlist" class="form-label fw-bold text-wbhs-primary">
+                Pay Band <span class="text-danger">*</span>
+              </label>
+              <select
+                id="pay_band_ddlist"
+                name="pay_band_ddlist"
+                class="form-select text-uppercase"
+                autocomplete="off"
+              >
+                <option value="" disabled selected>Select Pay Band</option>
+              </select>
+            </div>
+
+            <!-- Grade Pay -->
+            <div class="col-12 col-md-6 col-lg-4">
+              <label for="grade_ddlist" class="form-label fw-bold text-wbhs-primary">
+                Grade Pay <span class="text-danger">*</span>
+              </label>
+              <select
+                id="grade_ddlist"
+                name="grade_ddlist"
+                class="form-select text-uppercase"
+                autocomplete="off"
+              >
+                <option value="" disabled selected>Select Grade Pay</option>
+              </select>
+            </div>
+
+            <!-- Band Pay -->
+            <div class="col-12 col-md-6 col-lg-4">
+              <label for="txt_band" class="form-label fw-bold text-wbhs-primary">
+                Band Pay <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                id="txt_band"
+                name="txt_band"
+                inputmode="numeric"
+                class="form-control"
+                maxlength="10"
+                placeholder="Enter Band Pay"
+                autocomplete="off"
+              />
+            </div>
+
+            <!-- Basic Pay (Read-only) -->
+            <div class="col-12 col-md-6 col-lg-4">
+              <label class="form-label fw-bold text-wbhs-primary">Basic Pay</label>
+              <div class="display-field rounded px-3 py-2 fw-semibold" id="lbl_basic">
+                Grade Pay + Band Pay
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ROPA 2019 Panel -->
+        <div class="ropa-panel ropa-panel-2019">
+          <div class="row g-3">
+            <!-- Pay Level -->
+            <div class="col-12 col-md-6 col-lg-4">
+              <label for="ddl_pay_level" class="form-label fw-bold text-wbhs-primary">
+                Pay Level <span class="text-danger">*</span>
+              </label>
+              <select
+                id="ddl_pay_level"
+                name="ddl_pay_level"
+                class="form-select text-uppercase"
+                autocomplete="off"
+              >
+                <option value="" disabled selected>Select Pay Level</option>
+              </select>
+            </div>
+
+            <!-- Basic Salary -->
+            <div class="col-12 col-md-6 col-lg-4">
+              <label for="ddl_basic_sal" class="form-label fw-bold text-wbhs-primary">
+                Basic Salary <span class="text-danger">*</span>
+              </label>
+              <select
+                id="ddl_basic_sal"
+                name="ddl_basic_sal"
+                class="form-select text-uppercase"
+                disabled
+                autocomplete="off"
+              >
+                <option value="" disabled selected>Select Basic Salary</option>
+              </select>
+              <div class="form-text text-muted small">Enables after selecting Pay Level</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

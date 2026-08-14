@@ -1,0 +1,134 @@
+$wbhs-bg: #fff5ea;
+$wbhs-primary: #094f7c;
+$wbhs-primary-dark: #063554;
+$wbhs-accent-red: #ee3535;
+$wbhs-card-bg: #ffffff;
+$wbhs-border-color: #e2d5c5;
+
+.wbhs-page-wrapper {
+  background-color: $wbhs-bg;
+  min-height: 100%;
+  border-radius: 8px;
+}
+
+.text-wbhs-primary {
+  color: $wbhs-primary;
+}
+
+.alert-wbhs-notice {
+  background-color: #fff0f0;
+  border-left: 5px solid $wbhs-accent-red;
+  border-top: 1px solid #fad2d2;
+  border-right: 1px solid #fad2d2;
+  border-bottom: 1px solid #fad2d2;
+  color: #333333;
+  font-size: 0.9rem;
+}
+
+.wbhs-card {
+  border: 1px solid $wbhs-border-color;
+  border-radius: 8px;
+  background-color: $wbhs-card-bg;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease;
+
+  &:hover {
+    box-shadow: 0 0.5rem 1rem rgba(9, 79, 124, 0.08) !important;
+  }
+}
+
+.wbhs-card-header {
+  background: linear-gradient(135deg, #094f7c 0%, #063554 100%);
+  color: #ffffff;
+  border-bottom: none;
+
+  .header-icon {
+    font-size: 1.25rem;
+  }
+
+  .card-title {
+    color: #ffffff !important;
+    text-decoration: none !important;
+  }
+}
+
+.form-label {
+  font-size: 0.875rem;
+  margin-bottom: 0.35rem;
+}
+
+.form-control,
+.form-select {
+  border-color: #d1c5b5;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:focus {
+    border-color: $wbhs-primary;
+    box-shadow: 0 0 0 0.2rem rgba(9, 79, 124, 0.18);
+  }
+}
+
+.input-group-text {
+  background-color: #f8f9fa;
+  border-color: #d1c5b5;
+}
+
+.display-field {
+  background-color: #f8f9fa;
+  border: 1px solid #d1c5b5;
+  color: $wbhs-primary-dark;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+}
+
+.ropa-radio-group {
+  background-color: #ffffff;
+  border: 1px solid #d1c5b5 !important;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:focus-within {
+    border-color: $wbhs-primary !important;
+    box-shadow: 0 0 0 0.2rem rgba(9, 79, 124, 0.15) !important;
+  }
+}
+
+.ropa-radio-btn {
+  border: 1px solid #e8dac8;
+  color: $wbhs-primary;
+  background-color: #faf4eb;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: #e6f0f7;
+    color: $wbhs-primary;
+    border-color: $wbhs-primary;
+  }
+}
+
+.btn-check:checked + .ropa-radio-btn {
+  background-color: $wbhs-primary !important;
+  color: #ffffff !important;
+  border-color: $wbhs-primary !important;
+  box-shadow: 0 2px 5px rgba(9, 79, 124, 0.3);
+}
+
+.ropa-panel {
+  display: none;
+}
+
+.ropa-card-body:has(#id_ropa_2009:checked) .ropa-panel-2009 {
+  display: block;
+}
+
+.ropa-card-body:has(#id_ropa_2019:checked) .ropa-panel-2019 {
+  display: block;
+}
